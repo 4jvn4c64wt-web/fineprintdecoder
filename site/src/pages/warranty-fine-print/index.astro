@@ -1,0 +1,29 @@
+---
+import BaseLayout from '../../layouts/BaseLayout.astro';
+
+const warranties = [
+  { slug: 'applecare', name: 'AppleCare+' },
+  { slug: 'geek-squad-protection', name: 'Best Buy / Geek Squad Protection' },
+  { slug: 'samsung-care', name: 'Samsung Care+' },
+  { slug: 'home-depot-protection', name: 'Home Depot Protection Plan' },
+  { slug: 'costco-warranty', name: 'Costco Extended Warranty' },
+];
+---
+
+<BaseLayout title="Warranty Fine Print" description="What's really covered by warranties and protection plans — and what voids them.">
+  <div class="container">
+    <div class="category-header">
+      <h1>Warranty Fine Print</h1>
+      <p>What's really covered — and what voids it.</p>
+    </div>
+
+    <div class="card-grid">
+      {warranties.map(item => (
+        <a href={`/warranty-fine-print/${item.slug}/`} class="card">
+          <h3>{item.name}</h3>
+          <p>Warranty summary coming soon.</p>
+        </a>
+      ))}
+    </div>
+  </div>
+</BaseLayout>

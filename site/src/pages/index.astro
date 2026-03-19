@@ -1,0 +1,105 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+
+const categories = [
+  {
+    href: '/return-policies/',
+    title: 'Return Policies',
+    description: 'What you can return, when, and what they don\'t tell you upfront.',
+  },
+  {
+    href: '/cancellation-policies/',
+    title: 'Cancellation Policies',
+    description: 'How to actually cancel — and what it costs when they make it hard.',
+  },
+  {
+    href: '/credit-card-agreements/',
+    title: 'Credit Card Agreements',
+    description: 'Fees, rates, and the clauses buried on page 12.',
+  },
+  {
+    href: '/warranty-fine-print/',
+    title: 'Warranty Fine Print',
+    description: 'What\'s really covered — and what voids it.',
+  },
+  {
+    href: '/terms-of-service/',
+    title: 'Terms of Service',
+    description: 'The rights you\'re giving up by clicking "I agree."',
+  },
+];
+
+const popularSummaries = [
+  { href: '/return-policies/amazon/', title: 'Amazon Return Policy' },
+  { href: '/return-policies/costco/', title: 'Costco Return Policy' },
+  { href: '/cancellation-policies/planet-fitness/', title: 'Planet Fitness Cancellation' },
+  { href: '/return-policies/target/', title: 'Target Return Policy' },
+  { href: '/credit-card-agreements/chase-sapphire-preferred/', title: 'Chase Sapphire Preferred Agreement' },
+  { href: '/cancellation-policies/netflix/', title: 'Netflix Cancellation Policy' },
+  { href: '/return-policies/best-buy/', title: 'Best Buy Return Policy' },
+  { href: '/warranty-fine-print/applecare/', title: 'AppleCare+ Terms' },
+];
+
+const recentAdditions = [
+  { href: '#', title: 'Coming soon', date: '' },
+];
+---
+
+<BaseLayout title="We read the fine print so you don't have to">
+
+  <!-- Hero -->
+  <section class="hero">
+    <div class="container">
+      <h1>We read the fine print so you don't have to.</h1>
+      <p>Plain-English summaries of the policies, terms, and agreements that companies hope you'll never actually read.</p>
+
+      <div class="search-bar">
+        <input type="search" placeholder="Search for a company or policy type..." aria-label="Search policies" />
+      </div>
+    </div>
+  </section>
+
+  <div class="container">
+
+    <!-- Popular Summaries -->
+    <section>
+      <h2 class="section-heading">Popular Summaries</h2>
+      <div class="card-grid">
+        {popularSummaries.map(item => (
+          <a href={item.href} class="card">
+            <h3>{item.title}</h3>
+            <p class="placeholder-text">Summary coming soon.</p>
+          </a>
+        ))}
+      </div>
+    </section>
+
+    <!-- Browse by Category -->
+    <section>
+      <h2 class="section-heading">Browse by Category</h2>
+      <div class="card-grid">
+        {categories.map(cat => (
+          <a href={cat.href} class="card card--category">
+            <h3>{cat.title}</h3>
+            <p>{cat.description}</p>
+          </a>
+        ))}
+      </div>
+    </section>
+
+    <!-- Recent Additions -->
+    <section>
+      <h2 class="section-heading">Recently Added</h2>
+      <div class="placeholder-notice">
+        Policy summaries will appear here as they are published.
+      </div>
+    </section>
+
+    <!-- CTA -->
+    <section class="cta-section">
+      <p>Can't find a policy? Tell us what to decode next.</p>
+      <a href="/contact/">Request a Decode &rarr;</a>
+    </section>
+
+  </div>
+</BaseLayout>
