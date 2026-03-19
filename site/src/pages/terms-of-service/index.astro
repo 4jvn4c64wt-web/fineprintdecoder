@@ -1,0 +1,28 @@
+---
+import BaseLayout from '../../layouts/BaseLayout.astro';
+
+const services = [
+  { slug: 'openai', name: 'OpenAI' },
+  { slug: 'uber', name: 'Uber' },
+  { slug: 'airbnb', name: 'Airbnb' },
+  { slug: 'venmo', name: 'Venmo' },
+];
+---
+
+<BaseLayout title="Terms of Service" description="The rights you're giving up by clicking 'I agree' — key clauses decoded.">
+  <div class="container">
+    <div class="category-header">
+      <h1>Terms of Service</h1>
+      <p>The rights you're giving up by clicking "I agree."</p>
+    </div>
+
+    <div class="card-grid">
+      {services.map(item => (
+        <a href={`/terms-of-service/${item.slug}/`} class="card">
+          <h3>{item.name} Terms of Service</h3>
+          <p>Summary coming soon.</p>
+        </a>
+      ))}
+    </div>
+  </div>
+</BaseLayout>

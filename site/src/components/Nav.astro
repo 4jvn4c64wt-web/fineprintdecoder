@@ -1,0 +1,40 @@
+---
+const currentPath = Astro.url.pathname;
+const navLinks = [
+  { href: '/return-policies/', label: 'Return Policies' },
+  { href: '/cancellation-policies/', label: 'Cancellation Policies' },
+  { href: '/credit-card-agreements/', label: 'Credit Cards' },
+  { href: '/warranty-fine-print/', label: 'Warranties' },
+  { href: '/terms-of-service/', label: 'Terms of Service' },
+];
+---
+
+<nav class="site-nav">
+  <div class="container">
+    <a href="/" class="site-nav__logo">FinePrintDecoder</a>
+    <button class="nav-toggle" aria-label="Toggle navigation" aria-expanded="false">&#9776;</button>
+    <ul class="site-nav__links" id="nav-links">
+      {navLinks.map(link => (
+        <li>
+          <a
+            href={link.href}
+            aria-current={currentPath.startsWith(link.href) ? 'page' : undefined}
+          >
+            {link.label}
+          </a>
+        </li>
+      ))}
+    </ul>
+  </div>
+</nav>
+
+<script>
+  const toggle = document.querySelector('.nav-toggle');
+  const links = document.getElementById('nav-links');
+  if (toggle && links) {
+    toggle.addEventListener('click', () => {
+      const open = links.classList.toggle('open');
+      toggle.setAttribute('aria-expanded', String(open));
+    });
+  }
+</script>
