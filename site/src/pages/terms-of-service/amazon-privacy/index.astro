@@ -1,0 +1,188 @@
+---
+import BaseLayout from '../../../layouts/BaseLayout.astro';
+
+const meta = {
+  title: "Amazon Privacy Notice — Decoded",
+  company: "Amazon",
+  policyType: "Privacy Notice",
+  category: "terms-of-service",
+  sourceUrl: "https://www.amazon.com/gp/help/customer/display.html?nodeId=468496",
+  lastVerified: "2026-03-19",
+  lastUpdated: "2026-03-19",
+  status: "current",
+  summary: "Amazon collects data from what you give them, what their systems observe automatically, and what they get from third parties. They use it for orders, recommendations, advertising, fraud prevention, and Alexa services. They share with third-party sellers, service providers, and advertisers — but say they don't sell personal information.",
+};
+---
+
+<BaseLayout title={meta.title} description={meta.summary}>
+  <div class="container page-content policy-summary">
+
+    <nav class="breadcrumb" aria-label="Breadcrumb">
+      <a href="/">Home</a> &rsaquo;
+      <a href="/terms-of-service/">Terms of Service</a> &rsaquo;
+      <span>Amazon Privacy Notice</span>
+    </nav>
+
+    <h1>Amazon Privacy Notice &mdash; Decoded</h1>
+
+    <div class="policy-meta">
+      Last verified: March 19, 2026 &middot; Source: <a href={meta.sourceUrl} target="_blank" rel="noopener">Official policy &rarr;</a>
+    </div>
+
+    <hr />
+
+    <section class="policy-section">
+      <h2>&#9889; The Bottom Line</h2>
+      <p>
+        Amazon collects a lot of data about you — from three directions. What you tell them (name, payment info, addresses). What their systems record automatically (browsing history, device info, in-store camera footage). And what they get from other sources (carriers, credit bureaus, merchants they partner with). They use all of it for recommendations, advertising, fraud prevention, and running Alexa. Amazon says they don't sell your personal information, but they share it with third-party sellers, service providers, and ad companies using anonymized identifiers.
+      </p>
+    </section>
+
+    <hr />
+
+    <section class="policy-section">
+      <h2>&#128273; Key Facts</h2>
+      <ul class="key-facts">
+        <li><strong>Data collected:</strong> Name, address, payment info, browsing behavior, purchase history, voice recordings (Alexa), images/video, location, device data, in-store camera footage</li>
+        <li><strong>Third-party sharing:</strong> Yes — with sellers involved in your transactions, service providers performing functions for Amazon, and ad companies (via anonymized identifiers)</li>
+        <li><strong>Selling your data:</strong> Amazon says no — "we are not in the business of selling our customers' personal information to others"</li>
+        <li><strong>Advertising:</strong> Interest-based ads using anonymized identifiers, not your name. You can opt out via "Your Ads Privacy Choices"</li>
+        <li><strong>Encryption:</strong> Uses encryption during data transmission. Follows PCI DSS for credit card data</li>
+        <li><strong>Children:</strong> Does not knowingly collect data from children under 13 without parental consent</li>
+        <li><strong>Data access:</strong> You can view and manage your info at "Your Account." Data deletion requests go through Data Privacy Queries</li>
+        <li><strong>Last updated by Amazon:</strong> December 31, 2025</li>
+      </ul>
+    </section>
+
+    <hr />
+
+    <section class="policy-section">
+      <h2>&#9888;&#65039; Watch Out For</h2>
+      <ul class="watch-out">
+        <li>
+          <strong>In-store cameras and sensors are collecting data.</strong> Amazon's physical stores "may use cameras, computer vision, sensors, and other technology to gather information about your activity in the store, such as the products and services you interact with." If you've been in an Amazon Go or Whole Foods, this applies to you.
+        </li>
+        <li>
+          <strong>Alexa voice recordings are stored.</strong> When you talk to Alexa, Amazon stores voice recordings "associated with your account." They use these to "respond to your requests, provide the requested service to you, and improve our services." That last part means your voice data trains their systems.
+        </li>
+        <li>
+          <strong>Credit bureaus feed them data.</strong> Amazon receives "credit history information from credit bureaus" — used for fraud prevention and to offer financial services. This is separate from anything you've volunteered.
+        </li>
+        <li>
+          <strong>"Not selling" isn't the same as "not sharing."</strong> Amazon shares data with third-party sellers for transactions you're involved in, with service providers performing functions on their behalf, and with ad companies via anonymized identifiers. The line between "sharing" and "selling" is a legal distinction, not a privacy one.
+        </li>
+        <li>
+          <strong>Deleting cookies breaks core features.</strong> Amazon warns that blocking cookies means you "will not be able to add items to your Shopping Cart, proceed to Checkout, or use any Services that require you to Sign in." They've built dependency into the cookie structure.
+        </li>
+        <li>
+          <strong>Business transfers include your data.</strong> If Amazon sells or acquires businesses, "customer information generally is one of the transferred business assets." Your data travels with the deal.
+        </li>
+      </ul>
+    </section>
+
+    <hr />
+
+    <section class="policy-section">
+      <h2>&#128203; Full Breakdown</h2>
+
+      <h3>What Amazon collects — from you</h3>
+      <p>
+        Every action you take on Amazon generates data they store: searches, purchases, streaming history, Alexa voice commands, uploaded photos, wish lists, reviews, payment info, addresses, and account settings. If you're a seller or developer, your business and financial information goes into the same system.
+      </p>
+
+      <h3>What Amazon collects — automatically</h3>
+      <p>
+        Your IP address, login info, device metrics, content interaction data (what you streamed, for how long, at what quality), clickstream data through the site, page response times, and download errors. In physical stores: camera footage and sensor data tracking what you interact with. On devices: application usage, connectivity data, error logs.
+      </p>
+
+      <h3>What Amazon gets from others</h3>
+      <p>
+        Updated delivery addresses from carriers. Purchase and account info from co-branded partners. Search results from paid listings. Data from internet-connected devices linked with Alexa. Credit history from credit bureaus. That last one is worth pausing on — Amazon pulls credit bureau data to prevent fraud and to decide which financial products to offer you.
+      </p>
+
+      <h3>How they use your data</h3>
+      <p>
+        Eight stated purposes: processing orders and payments, providing and improving services, personalizing recommendations, running voice/image/camera services, legal compliance, communicating with you, advertising, and fraud prevention. The advertising use is interest-based but supposedly doesn't use personally identifying information. The fraud prevention use includes "scoring methods to assess and manage credit risks."
+      </p>
+
+      <h3>Who gets your data</h3>
+      <p>
+        <strong>Third-party sellers:</strong> When you buy from a marketplace seller, Amazon shares personal info related to that transaction with the seller.
+      </p>
+      <p>
+        <strong>Service providers:</strong> Companies that fulfill orders, deliver packages, send emails, process payments, analyze data, and provide marketing assistance. They "have access to personal information needed to perform their functions, but may not use it for other purposes."
+      </p>
+      <p>
+        <strong>Business transfers:</strong> If Amazon buys or sells a business, customer data goes with it.
+      </p>
+      <p>
+        <strong>Law enforcement and others:</strong> Amazon releases personal info "when we believe release is appropriate to comply with the law; enforce or apply our Conditions of Use; or protect the rights, property, or safety of Amazon, our users, or others." That's a wide lane.
+      </p>
+
+      <h3>Advertising</h3>
+      <p>
+        Amazon uses anonymized identifiers — cookies, device IDs, hashed email addresses — to serve you interest-based ads and to measure ad effectiveness. They share these identifiers with ad companies but say they never share your name. They do share "an estimate of the value of the ads they show you" with advertisers. You can opt out of personalized advertising through "Your Ads Privacy Choices."
+      </p>
+
+      <h3>Security</h3>
+      <p>
+        Amazon says they use encryption in transit, follow PCI DSS for credit cards, and maintain physical, electronic, and procedural safeguards. They may ask to verify your identity before disclosing personal info. The notice recommends using unique passwords and signing out on shared computers. Standard stuff — no specifics beyond PCI compliance.
+      </p>
+
+      <h3>Your choices</h3>
+      <p>
+        You can update your info in "Your Account." You can adjust email preferences, notification settings, and ad personalization. You can manage Alexa voice recordings. You can edit your browsing history and recommendation preferences. For data deletion, Amazon points you to "Data Privacy Queries" — it's not a one-click process.
+      </p>
+      <p>
+        The notice also mentions state-specific privacy rights and points to "Additional State-Specific Privacy Disclosures" for details on rights under state laws like the CCPA.
+      </p>
+
+      <h3>Children</h3>
+      <p>
+        Amazon says it doesn't sell products for purchase by children and doesn't knowingly collect personal information from children under 13 without parental consent. Under 18 can use Amazon only with a parent or guardian involved.
+      </p>
+
+      <h3>International data transfers</h3>
+      <p>
+        Amazon participates in the EU-US Data Privacy Framework, the UK Extension, and the Swiss-US Data Privacy Framework. If you're outside the US, your data crosses borders under these frameworks.
+      </p>
+
+      <h3>Changes to this notice</h3>
+      <p>
+        Amazon says the notice "will change" and you should "check our websites frequently." They won't retroactively make the policy less protective of previously collected data without your consent. That's one of the more reader-friendly commitments here.
+      </p>
+    </section>
+
+    <hr />
+
+    <section class="policy-section">
+      <h2>&#128260; What Changed</h2>
+      <ul>
+        <li><strong>December 2025:</strong> Amazon updated the privacy notice (specific changes not detailed in the notice itself — they offer a link to the "prior version").</li>
+        <li><strong>March 2026:</strong> Initial FinePrintDecoder summary published.</li>
+      </ul>
+    </section>
+
+    <hr />
+
+    <section class="policy-section">
+      <h2>&#128206; Original Document</h2>
+      <p>
+        <a href={meta.sourceUrl} target="_blank" rel="noopener">Amazon.com Privacy Notice</a> — last updated December 31, 2025.
+      </p>
+    </section>
+
+    <hr />
+
+    <div class="disclaimer-box">
+      <p>
+        FinePrintDecoder provides plain-English summaries of publicly available policies and agreements for informational purposes only. This is not legal advice. Summaries may not reflect the most recent policy changes. Always refer to the <a href={meta.sourceUrl} target="_blank" rel="noopener">company's official terms</a> for the authoritative and current version.
+      </p>
+    </div>
+
+    <div class="feedback-cta">
+      <p>Is something out of date? <a href="/contact/">Let us know &rarr;</a></p>
+    </div>
+
+  </div>
+</BaseLayout>

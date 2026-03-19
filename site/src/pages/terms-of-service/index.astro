@@ -2,10 +2,12 @@
 import BaseLayout from '../../layouts/BaseLayout.astro';
 
 const services = [
-  { slug: 'openai', name: 'OpenAI' },
-  { slug: 'uber', name: 'Uber' },
-  { slug: 'airbnb', name: 'Airbnb' },
-  { slug: 'venmo', name: 'Venmo' },
+  { slug: 'amazon', name: 'Amazon', subtitle: 'Conditions of Use', ready: true },
+  { slug: 'amazon-privacy', name: 'Amazon', subtitle: 'Privacy Notice', ready: true },
+  { slug: 'openai', name: 'OpenAI', subtitle: 'Terms of Service', ready: false },
+  { slug: 'uber', name: 'Uber', subtitle: 'Terms of Service', ready: false },
+  { slug: 'airbnb', name: 'Airbnb', subtitle: 'Terms of Service', ready: false },
+  { slug: 'venmo', name: 'Venmo', subtitle: 'User Agreement', ready: false },
 ];
 ---
 
@@ -19,8 +21,8 @@ const services = [
     <div class="card-grid">
       {services.map(item => (
         <a href={`/terms-of-service/${item.slug}/`} class="card">
-          <h3>{item.name} Terms of Service</h3>
-          <p>Summary coming soon.</p>
+          <h3>{item.name} {item.subtitle}</h3>
+          <p>{item.ready ? 'Decoded — read the plain-English summary.' : 'Summary coming soon.'}</p>
         </a>
       ))}
     </div>

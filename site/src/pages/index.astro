@@ -41,7 +41,8 @@ const popularSummaries = [
 ];
 
 const recentAdditions = [
-  { href: '#', title: 'Coming soon', date: '' },
+  { href: '/terms-of-service/amazon/', title: 'Amazon Conditions of Use', date: 'March 19, 2026' },
+  { href: '/terms-of-service/amazon-privacy/', title: 'Amazon Privacy Notice', date: 'March 19, 2026' },
 ];
 ---
 
@@ -90,9 +91,14 @@ const recentAdditions = [
     <!-- Recent Additions -->
     <section>
       <h2 class="section-heading">Recently Added</h2>
-      <div class="placeholder-notice">
-        Policy summaries will appear here as they are published.
-      </div>
+      <ul class="recent-list">
+        {recentAdditions.map(item => (
+          <li>
+            <a href={item.href}>{item.title}</a>
+            <span class="recent-date">{item.date}</span>
+          </li>
+        ))}
+      </ul>
     </section>
 
     <!-- CTA -->
