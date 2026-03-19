@@ -523,6 +523,17 @@ main {
   color: var(--color-primary);
 }
 
+/* Placeholder card (not yet live) */
+.card--placeholder {
+  opacity: 0.55;
+  cursor: default;
+}
+
+.card--placeholder:hover {
+  border-color: var(--color-border);
+  box-shadow: none;
+}
+
 /* Placeholder / coming soon */
 .placeholder-notice {
   background: var(--color-surface);
