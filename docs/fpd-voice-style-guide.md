@@ -81,6 +81,7 @@ People come to FinePrintDecoder to do something practical: return an item, cance
 - **Cut filler words.** "Very," "really," "actually," "basically," "essentially," "simply" — these almost never earn their place.
 - **Don't use adverbs as emphasis.** "Significantly longer" → just say how much longer. "Notably strict" → say what makes it strict.
 - **Write numbers as digits.** "30 days" not "thirty days." "3 items" not "three items." Faster to scan.
+- **Em dashes are reserved for genuine setoffs, not casual flow.** Default to commas, periods, parentheses, or semicolons. An em dash earns its place when it sets off a sharp aside, an emphatic clause, or a definitional restatement that a comma would muddle. Strung-together em dashes are the single most reliable AI tell in long-form text — more than any individual word. If a sentence has more than one em dash, rewrite. If a paragraph has more than two, you're using them as a crutch.
 
 ### Structure-level rules
 
@@ -171,6 +172,7 @@ Before publishing any content, run through this checklist:
 - **Length check:** If the visible (non-collapsed) summary scrolls more than ~1.5 screens on mobile, you're including too much. Move detail into Full Breakdown or Legal Fine Print.
 - **Emoji check:** Are there zero emojis? Good. (If any slipped in: rewrite.)
 - **Neutrality check:** Does any sentence frame the company as adversarial — "trying to," "hopes you won't," "buries on purpose," "what they don't want"? If yes, rewrite. State the policy fact; let the reader judge.
+- **Em-dash count.** Skim for em dashes (—). Each one should be doing real work setting off an aside or definitional clause. If two appear in a single sentence, or em dashes are doing the work of commas/semicolons, rewrite.
 
 ---
 
@@ -178,11 +180,4 @@ Before publishing any content, run through this checklist:
 
 Emojis are out, but a wall of plain prose is also wrong. The rendered site creates visual interest through layout, not icons. As the writer of the markdown source, you don't draw the boxes — but knowing how the page will render helps you write content that fits each section's role.
 
-The Astro template renders summaries with these treatments:
-
-- **The Bottom Line** — slightly larger type, set off with a colored left border (primary blue). The first thing the eye lands on.
-- **Key Facts** — rendered as a tight definition list / data table, not bullets. Labels in bold, values right-aligned where they're numbers/dates. Scans like a spec sheet.
-- **How To** (when present) — numbered steps, generous line height, visible step numerals.
-- **Watch Out For** — colored left border (amber). Each item gets its own row with the gotcha sentence in bold and the explanation below. Not a bullet list.
-- **Full Breakdown** — collapsed by default. Renders inside a `<details>` block with a clear "Read the full breakdown" trigger.
-- **Legal 
+The Astro template renders summaries with th

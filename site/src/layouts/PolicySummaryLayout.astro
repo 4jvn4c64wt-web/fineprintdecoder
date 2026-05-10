@@ -1,13 +1,13 @@
 ---
 import BaseLayout from './BaseLayout.astro';
-import type { CollectionEntry } from 'astro:content';
+import { render, type CollectionEntry } from 'astro:content';
 
 interface Props {
   entry: CollectionEntry<'policies'>;
 }
 
 const { entry } = Astro.props;
-const { Content } = await entry.render();
+const { Content } = await render(entry);
 const data = entry.data;
 
 // Map category slug → human-readable category label (used in breadcrumb)
@@ -67,11 +67,12 @@ const description = data.summary;
       <!-- Title + meta -->
       <header class="summary__header">
         <h1>{data.title}</h1>
-        <p class="summary__meta">
-          <span class="summary__verified">Last verified: <strong>{verifiedFmt}</strong></span>
-          <span class="summary__divider" aria-hidden="true">·</span>
-          <a href={data.sourceUrl} target="_blank" rel="noopener">Official policy →</a>
-        </p>
+        <div class="summary__meta">
+          <span class="summary__verified">Last verified <strong>{verifiedFmt}</strong></span>
+          <a class="summary__source-link" href={data.sourceUrl} target="_blank" rel="noopener">
+            Read the official policy →
+          </a>
+        </div>
         {isStale && (
           <div class="staleness-banner" role="status">
             This summary hasn't been re-verified in over a year. The company may have changed its policy. Always check the
@@ -93,7 +94,7 @@ const description = data.summary;
           {data.keyFacts.map((kf) => (
             <div class="key-facts__row">
               <dt>{kf.label}</dt>
-              <dd>{kf.value}</dd>
+              <dd set:html={kf.value} />
             </div>
           ))}
         </dl>
@@ -170,31 +171,24 @@ const description = data.summary;
         </details>
       )}
 
-      <!-- Source link block -->
-      <section class="summary__source">
-        <h2 class="section-label">Original Document</h2>
-        <p>
-          <a href={data.sourceUrl} target="_blank" rel="noopener">
-            {data.company} {data.policyType}
-          </a>
-        </p>
-        {data.sourceUrlsAdditional.length > 0 && (
-          <ul class="source-additional">
-            {data.sourceUrlsAdditional.map((url) => (
-              <li><a href={url} target="_blank" rel="noopener">{url}</a></li>
-            ))}
-          </ul>
-        )}
-      </section>
-
-      <!-- Disclaimer -->
+      <!-- Disclaimer (includes the source link inline; no separate Original Document section) -->
       <aside class="summary__disclaimer">
         <p>
           This is a plain-English summary of {data.company}'s {data.policyType.toLowerCase()},
           compiled from the publicly available document. It is not legal advice. Companies change
           their terms; this summary may not reflect the latest version. Always refer to the
           <a href={data.sourceUrl} target="_blank" rel="noopener">original document</a>
-          for the authoritative and current terms. This summary was produced with AI assistance
+          {data.sourceUrlsAdditional.length > 0 && (
+            <Fragment>
+              {' '}(and {data.sourceUrlsAdditional.map((url, i) => (
+                <Fragment>
+                  {i > 0 && ', '}
+                  <a href={url} target="_blank" rel="noopener">related source {i + 1}</a>
+                </Fragment>
+              ))})
+            </Fragment>
+          )}
+          {' '}for the authoritative and current terms. This summary was produced with AI assistance
           and reviewed before publication. If you find an error or notice a change,
           <a href="/contact/">let us know</a>.
         </p>

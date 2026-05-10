@@ -208,20 +208,21 @@ Condition:            Items must be unused, in original packaging
 
 ---
 
-**Original document:** [Amazon.com Return Policy](source URL) — last updated [date from the source itself, when available]
+(No separate "Original Document" section. The source URL is exposed automatically in two places by the layout: a button at the top of the page ("Read the official policy →") and an inline link inside the disclaimer paragraph at the very bottom. A third source-link block is repetition; don't add one in the body.)
 
-[Disclaimer text — same on every page]
+[Disclaimer text — same on every page, includes the inline "original document" link]
 
 [Footer: "Is something out of date? Let us know →"]
 ```
 
 **Section rules:**
+- **Title format:** Just `[Vendor] [Policy Type]`. No "— Decoded" suffix. The breadcrumb at the top makes the framing clear; appending "Decoded" is filler.
 - The Bottom Line is always 2–3 sentences max. Never longer.
-- Key Facts is rendered as a data table by the layout component — write it as a list of label/value pairs in the markdown and let the template style it.
-- How To is required for return policies, cancellation policies, and warranty claims. Optional for credit card agreements (no single "how to" — replace with "What This Card Actually Costs" and "What's Conditional"). Skip for TOS pages — they're not action-oriented documents.
+- Key Facts is rendered as a data table by the layout component. Write it as a list of label/value pairs and let the template style it. Values may contain HTML when scannability calls for it (e.g., a refund-timing fact that lists each payment method on its own line with the method bolded).
+- How To is required for return policies, cancellation policies, and warranty claims. Optional for credit card agreements (no single "how to"; replace with "What This Card Actually Costs" and "What's Conditional"). Skip for TOS pages — they're not action-oriented documents.
 - Watch Out For: 2–4 items, max. Each is a real, actionable gotcha for a normal user. If you have more than 4, you're including things that aren't actionable — move them to Full Breakdown or cut.
 - Full Breakdown and Legal Fine Print are always inside `<details>` blocks. They are collapsed by default. Do not put core practical info in them.
-- The "Legal fine print" section is structured as named topics (governing law, venue, etc.), not as a wall of prose. Each topic is one or two sentences.
+- **`legalFinePrint` is only for TOS-style summaries.** The fields (governingLaw, disputeVenue, juryTrial, arbitration, accountTermination, liabilityCap, privacyHighLevel) come from the legal/dispute machinery in a Terms of Service or Conditions of Use document. Return policies, cancellation policies, and warranty pages typically don't carry that material — those documents have their own procedural details (return abuse rules, ID requirements, claim deadlines), which belong in Watch Out For or the Full Breakdown, not in `legalFinePrint`. If a return policy summary has nothing to put in `legalFinePrint`, omit the field entirely; the layout will skip the collapsible. When the related TOS page is published, the return summary's Full Breakdown can link to it for the deeper legal procedure.
 
 ### 2.4 About Page
 
@@ -370,23 +371,4 @@ Priority order based on estimated search volume:
 
 ### Source archival convention
 
-Every summary references one or more local archived copies of source documents via the `sourceFiles` frontmatter array. This is Chris's record-keeping requirement: we keep a permanent dated copy of every policy we've decoded, so future re-verifications can compare apples to apples and we can prove what a policy said on the date we published.
-
-**Archive is organized by vendor, not by category:**
-
-```
-sources/
-├── amazon/
-│   ├── return-policy_2026-05-10.txt
-│   ├── conditions-of-use_2026-05-10.txt
-│   ├── prime_terms-of-service_2026-05-10.txt
-│   └── prime-video_terms-of-service_2026-05-10.txt
-├── chase-sapphire-preferred/
-│   ├── cardmember-agreement_2026-04-15.pdf
-│   └── rewards-program_2026-04-15.pdf
-├── netflix/
-│   └── terms-of-use_2026-05-12.html
-└── README.md
-```
-
-**Why vendor-folder, not category-folder:** A single source document often covers multiple reader intents — Amazon Prime's T&C document contains the cancellation flow, auto-renewal terms, dispute jurisdiction, and liability cap, all in one. Filing by category forces a choice that doesn't fit. Filing by vendor lets the publishing layer (one summary p
+Every summary references one or more loca

@@ -5,10 +5,11 @@ import PolicySummaryLayout from '../../layouts/PolicySummaryLayout.astro';
 export async function getStaticPaths() {
   const policies = await getCollection('policies');
   return policies.map((entry) => {
-    // entry.id looks like "return-policies/amazon.md" because of the glob loader's base path.
-    // We split it into category + slug and use those as the route params.
-    const [category, slugWithExt] = entry.id.split('/');
-    const slug = slugWithExt.replace(/\.md$/, '');
+    // Astro 5's glob loader sets entry.id to the path relative to the loader's base,
+    // typically without the .md extension. Strip it defensively in case behavior shifts.
+    const cleanId = entry.id.replace(/\.md$/, '');
+    const [category, ...rest] = cleanId.split('/');
+    const slug = rest.join('/');
     return {
       params: { category, slug },
       props: { entry },
