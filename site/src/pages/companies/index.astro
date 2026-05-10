@@ -1,0 +1,114 @@
+---
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import { getCollection } from 'astro:content';
+
+const vendors = await getCollection('vendors');
+
+// Featured first (manually curated via the `featured: true` flag in each vendor entry).
+const featured = vendors.filter((v) => v.data.featured);
+featured.sort((a, b) => a.data.displayName.localeCompare(b.data.displayName));
+
+// All vendors, alphabetical, for the searchable list below the featured grid.
+const all = [...vendors].sort((a, b) => a.data.displayName.localeCompare(b.data.displayName));
+
+// Serialize the minimal data the client needs for the on-page search.
+const allData = all.map((v) => ({
+  slug: v.data.vendorSlug,
+  name: v.data.displayName,
+  intro: v.data.oneSentenceWhat,
+}));
+---
+
+<BaseLayout
+  title="Browse Companies"
+  description="Every company we've decoded. Each company page links to the snapshot of their legal terms and the specific policies we've covered."
+>
+  <div class="container companies-page">
+    <header class="companies-page__header">
+      <h1>Browse Companies</h1>
+      <p>Every company we've decoded. Each company has an overview with the snapshot of their legal terms and links to the specific policies we've covered. Start with a featured one or search the full list below.</p>
+    </header>
+
+    {featured.length > 0 && (
+      <section class="companies-page__featured">
+        <h2 class="section-label">Featured</h2>
+        <div class="card-grid">
+          {featured.map((v) => (
+            <a href={`/${v.data.vendorSlug}/`} class="card">
+              <h3>{v.data.displayName}</h3>
+              <p>{v.data.oneSentenceWhat}</p>
+            </a>
+          ))}
+        </div>
+      </section>
+    )}
+
+    <section class="companies-page__all">
+      <h2 class="section-label">All companies</h2>
+      <div class="company-search">
+        <label class="searchbar__field">
+          <span class="searchbar__icon" aria-hidden="true">⌕</span>
+          <input
+            type="search"
+            id="company-filter"
+            class="searchbar__input"
+            placeholder="Filter companies…"
+            autocomplete="off"
+            spellcheck="false"
+            aria-label="Filter companies"
+          />
+        </label>
+        <p class="company-search__count" data-target="count">{all.length} {all.length === 1 ? 'company' : 'companies'}</p>
+      </div>
+
+      <ul class="company-list" data-target="list">
+        {all.map((v) => (
+          <li class="company-list__item" data-name={v.data.displayName.toLowerCase()} data-slug={v.data.vendorSlug.toLowerCase()}>
+            <a href={`/${v.data.vendorSlug}/`}>
+              <span class="company-list__name">{v.data.displayName}</span>
+              <span class="company-list__intro">{v.data.oneSentenceWhat}</span>
+            </a>
+          </li>
+        ))}
+      </ul>
+
+      <p class="company-search__empty" data-target="empty" hidden>
+        No companies match. <a href="/contact/">Request one →</a>
+      </p>
+    </section>
+  </div>
+</BaseLayout>
+
+<script define:vars={{ allData }}>
+  const input = document.getElementById('company-filter');
+  const list = document.querySelector('[data-target="list"]');
+  const empty = document.querySelector('[data-target="empty"]');
+  const countEl = document.querySelector('[data-target="count"]');
+
+  if (input && list && empty && countEl) {
+    const items = Array.from(list.querySelectorAll('.company-list__item'));
+    const total = items.length;
+
+    function update() {
+      const q = input.value.toLowerCase().trim();
+      if (!q) {
+        items.forEach((el) => (el.hidden = false));
+        empty.hidden = true;
+        countEl.textContent = total + (total === 1 ? ' company' : ' companies');
+        return;
+      }
+      let visible = 0;
+      items.forEach((el) => {
+        const name = el.dataset.name || '';
+        const slug = el.dataset.slug || '';
+        const match = name.includes(q) || slug.includes(q);
+        el.hidden = !match;
+        if (match) visible++;
+      });
+      empty.hidden = visible > 0;
+      countEl.textContent = visible + (visible === 1 ? ' company' : ' companies');
+    }
+
+    input.addEventListener('input', update);
+  }
+</script>

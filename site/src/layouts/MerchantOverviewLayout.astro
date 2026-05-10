@@ -1,0 +1,264 @@
+---
+import BaseLayout from './BaseLayout.astro';
+import { getCollection, type CollectionEntry } from 'astro:content';
+
+interface Props {
+  entry: CollectionEntry<'vendors'>;
+}
+
+const { entry } = Astro.props;
+const data = entry.data;
+
+// Map category slug → human label for the policy cards
+const categoryLabel: Record<string, string> = {
+  'return-policies': 'Return Policy',
+  'cancellation-policies': 'Cancellation Policy',
+  'credit-card-agreements': 'Credit Card Agreement',
+  'warranty-fine-print': 'Warranty',
+  'terms-of-service': 'Terms of Service',
+};
+
+// Pull every policy summary that shares this vendor's slug.
+const allPolicies = await getCollection('policies', ({ data: d }) => d.vendorSlug === data.vendorSlug);
+
+// Split into Creator Terms (rendered separately) vs. everything else.
+const creatorPolicies = allPolicies.filter((p) => p.data.policyType === 'Creator Terms');
+const regularPolicies = allPolicies.filter((p) => p.data.policyType !== 'Creator Terms');
+
+// Sort regular policies by category in the same order as the site nav.
+const categoryOrder = [
+  'return-policies',
+  'cancellation-policies',
+  'credit-card-agreements',
+  'warranty-fine-print',
+  'terms-of-service',
+];
+regularPolicies.sort((a, b) => {
+  const ai = categoryOrder.indexOf(a.data.category);
+  const bi = categoryOrder.indexOf(b.data.category);
+  return ai - bi;
+});
+
+function policyHref(p: CollectionEntry<'policies'>): string {
+  const cleanId = p.id.replace(/\.md$/, '');
+  const [category, ...rest] = cleanId.split('/');
+  return `/${category}/${rest.join('/')}/`;
+}
+
+// Stale-content banner — see business-plan §5.4
+const daysSinceVerified = Math.floor(
+  (Date.now() - new Date(data.lastVerified).getTime()) / (1000 * 60 * 60 * 24)
+);
+const isStale = daysSinceVerified > 365;
+
+const verifiedFmt = new Intl.DateTimeFormat('en-US', {
+  year: 'numeric',
+  month: 'long',
+  day: 'numeric',
+}).format(new Date(data.lastVerified));
+
+// The 8 standardized snapshot rows, in fixed order. Each row has a plain-English
+// explanation of what the field means in context, shown via a click-to-expand "?"
+// button next to the label. Explanations are universal across vendors (they describe
+// the field, not the value), so they live here in the layout.
+const snapshotRows: { label: string; value: string; explanation: string }[] = [
+  {
+    label: 'Governing law',
+    value: data.governingLaw,
+    explanation:
+      "Which state or country's law is used to interpret the agreement. Different jurisdictions have different consumer protections; this row tells you which set applies if there's a dispute.",
+  },
+  {
+    label: 'Dispute venue',
+    value: data.disputeVenue,
+    explanation:
+      "Where you'd have to file if you ever needed to take the company to court. Filing in a state you don't live in usually means traveling or hiring a lawyer there, which can make small disputes impractical to pursue.",
+  },
+  {
+    label: 'Jury trial',
+    value: data.juryTrial,
+    explanation:
+      "Whether you can ask a jury (rather than a single judge) to decide a case against the company. Waiving the right means a judge decides alone. Companies generally prefer judge-only trials because judges follow contracts more strictly than juries do.",
+  },
+  {
+    label: 'Arbitration / class action',
+    value: data.arbitration,
+    explanation:
+      "Arbitration is a private dispute process outside the courts, decided by a paid arbitrator whose ruling is binding and hard to appeal. Class actions let many people with the same complaint file one lawsuit together. Waiving class actions means each person has to file individually, which usually isn't worth the cost for small dollar amounts.",
+  },
+  {
+    label: 'Liability cap',
+    value: data.liabilityCap,
+    explanation:
+      "The maximum amount the company will pay you if they're found at fault. \"As is, as available\" is contract language meaning the company makes no promises about whether the product or service will work as expected, which makes recovering anything from them very hard in practice.",
+  },
+  {
+    label: 'Account termination',
+    value: data.accountTermination,
+    explanation:
+      "The conditions under which the company can end your account or service. What varies between companies: whether they need a reason to terminate, whether they have to give you notice, and whether you get any money back.",
+  },
+  {
+    label: 'Privacy & data use',
+    value: data.privacyHighLevel,
+    explanation:
+      "What personal information the company collects, what they use it for, and whether they share or sell it. This is a high-level summary; the company's full privacy policy has the legal details.",
+  },
+  {
+    label: 'Term modification',
+    value: data.termModification,
+    explanation:
+      "How the company can change the agreement on you over time. \"Continued use means acceptance\" is the standard pattern: the company posts a new version, and if you keep using the service, you've legally agreed to the new terms whether you read them or not.",
+  },
+];
+
+const description = data.oneSentenceWhat;
+---
+
+<BaseLayout title={data.displayName} description={description}>
+  <article class="merchant">
+    <div class="container merchant__container">
+
+      <!-- Header -->
+      <header class="merchant__header">
+        <p class="merchant__crumb"><a href="/companies/">← All companies</a></p>
+        <h1>{data.displayName}</h1>
+        <p class="merchant__intro">{data.oneSentenceWhat}</p>
+        <p class="merchant__meta">
+          <span>Last verified <strong>{verifiedFmt}</strong></span>
+        </p>
+        {isStale && (
+          <div class="staleness-banner" role="status">
+            This overview hasn't been re-verified in over a year. Always check the linked source documents for current terms.
+          </div>
+        )}
+      </header>
+
+      <!-- Quick links to decoded policies for this vendor -->
+      {regularPolicies.length > 0 && (
+        <section class="merchant__policies">
+          <h2 class="section-label">Policies decoded for {data.displayName}</h2>
+          <div class="merchant__policy-grid">
+            {regularPolicies.map((p) => (
+              <a class="merchant__policy-card" href={policyHref(p)}>
+                <div class="merchant__policy-card-label">{categoryLabel[p.data.category] ?? p.data.category}</div>
+                <div class="merchant__policy-card-title">{p.data.company} {p.data.policyType}</div>
+                <p class="merchant__policy-card-summary">{p.data.summary}</p>
+              </a>
+            ))}
+          </div>
+        </section>
+      )}
+
+      {regularPolicies.length === 0 && (
+        <section class="merchant__policies">
+          <p class="placeholder-notice">
+            No policy summaries decoded yet for {data.displayName}. The snapshot below covers the vendor-wide legal terms.
+          </p>
+        </section>
+      )}
+
+      <!-- For Content Creators (conditional) -->
+      {creatorPolicies.length > 0 && (
+        <section class="merchant__creators">
+          <h2 class="section-label">For Content Creators</h2>
+          <div class="merchant__creators-body">
+            {creatorPolicies.map((p) => (
+              <div class="merchant__creator-block">
+                <p class="merchant__creator-summary">{p.data.summary}</p>
+                <p>
+                  <a class="merchant__creator-link" href={policyHref(p)}>
+                    Read the full {data.displayName} creator terms →
+                  </a>
+                </p>
+              </div>
+            ))}
+          </div>
+        </section>
+      )}
+
+      <!-- Legal & Contractual Snapshot — the 8-row standard table -->
+      <section class="merchant__snapshot" aria-labelledby="snapshot-heading">
+        <h2 id="snapshot-heading" class="section-label">Legal &amp; Contractual Snapshot</h2>
+        <p class="merchant__snapshot-intro">
+          The same eight rows are filled in for every company on this site, so you can compare across vendors. "Not specified" means the source documents are silent on that topic.
+        </p>
+        <dl class="snapshot-list">
+          {snapshotRows.map((row, i) => {
+            const panelId = `snapshot-help-${i}`;
+            return (
+              <div class="snapshot-list__row" data-snapshot-row>
+                <dt class="snapshot-list__label">
+                  <span>{row.label}</span>
+                  <button
+                    type="button"
+                    class="snapshot-help"
+                    aria-expanded="false"
+                    aria-controls={panelId}
+                    data-snapshot-help
+                  >
+                    <span aria-hidden="true">?</span>
+                    <span class="sr-only">What does "{row.label}" mean?</span>
+                  </button>
+                </dt>
+                <dd>
+                  <div class="snapshot-list__value">{row.value}</div>
+                  <div class="snapshot-list__help" id={panelId} hidden>
+                    <strong>What this means:</strong> {row.explanation}
+                  </div>
+                </dd>
+              </div>
+            );
+          })}
+        </dl>
+
+        <script>
+          document.querySelectorAll<HTMLButtonElement>('[data-snapshot-help]').forEach((btn) => {
+            btn.addEventListener('click', () => {
+              const id = btn.getAttribute('aria-controls');
+              if (!id) return;
+              const panel = document.getElementById(id);
+              if (!panel) return;
+              const isOpen = btn.getAttribute('aria-expanded') === 'true';
+              btn.setAttribute('aria-expanded', isOpen ? 'false' : 'true');
+              panel.hidden = isOpen;
+            });
+          });
+        </script>
+      </section>
+
+      <!-- Vendor-wide Watch Out For — rare; usually empty -->
+      {data.watchOutFor.length > 0 && (
+        <section class="callout callout--watch-out merchant__watch-out" aria-label="Vendor-wide things to watch out for">
+          <h2 class="callout__label">Watch Out For</h2>
+          <ul class="watch-out__list">
+            {data.watchOutFor.map((item) => (
+              <li>
+                <strong class="watch-out__headline">{item.headline}</strong>
+                <span class="watch-out__detail"> {item.detail}</span>
+              </li>
+            ))}
+          </ul>
+        </section>
+      )}
+
+      <!-- Source documents -->
+      <section class="merchant__sources">
+        <h2 class="section-label">Source documents</h2>
+        <ul class="merchant__source-list">
+          {data.sourceUrls.map((url) => (
+            <li><a href={url} target="_blank" rel="noopener">{url}</a></li>
+          ))}
+        </ul>
+      </section>
+
+      <!-- Disclaimer -->
+      <aside class="summary__disclaimer">
+        <p>
+          This is a plain-English overview of {data.displayName}'s publicly available legal terms, compiled from the documents linked above. It is not legal advice. Companies change their terms; this overview may not reflect the latest version. If you find an error or notice a change, <a href="/contact/">let us know</a>.
+        </p>
+      </aside>
+
+    </div>
+  </article>
+</BaseLayout>

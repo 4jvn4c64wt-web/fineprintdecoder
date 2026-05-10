@@ -1,7 +1,11 @@
 ---
 import BaseLayout from '../layouts/BaseLayout.astro';
 import SearchBar from '../components/SearchBar.astro';
+import MerchantCarousel from '../components/MerchantCarousel.astro';
+import { getCollection } from 'astro:content';
 
+// Browse-by-category cards. "Terms of Service" intentionally not included — vendor-level
+// legal content lives on merchant overviews (/[vendorSlug]/), not on a TOS category page.
 const categories = [
   {
     href: '/return-policies/',
@@ -23,27 +27,32 @@ const categories = [
     title: 'Warranty Fine Print',
     description: 'What is covered, what is excluded, and how to file a claim.',
   },
-  {
-    href: '/terms-of-service/',
-    title: 'Terms of Service',
-    description: 'The clauses that matter: arbitration, account termination, content rights.',
-  },
 ];
 
-const popularSummaries = [
-  { href: '/return-policies/amazon/', title: 'Amazon Return Policy' },
-  { href: '/return-policies/costco/', title: 'Costco Return Policy' },
-  { href: '/cancellation-policies/planet-fitness/', title: 'Planet Fitness Cancellation' },
-  { href: '/return-policies/target/', title: 'Target Return Policy' },
-  { href: '/credit-card-agreements/chase-sapphire-preferred/', title: 'Chase Sapphire Preferred Agreement' },
-  { href: '/cancellation-policies/netflix/', title: 'Netflix Cancellation Policy' },
-  { href: '/return-policies/best-buy/', title: 'Best Buy Return Policy' },
-  { href: '/warranty-fine-print/applecare/', title: 'AppleCare+ Terms' },
+// Popular Summaries — manually curated short list of high-value policy summaries.
+// As the published count grows, swap to traffic-driven selection. For now, show whatever
+// is published from this curated set; skip the ones we haven't decoded yet.
+const popularList = [
+  { vendorSlug: 'amazon', category: 'return-policies' },
+  { vendorSlug: 'amazon', category: 'cancellation-policies' },        // Amazon Prime cancellation
+  { vendorSlug: 'amazon', category: 'terms-of-service' },             // Prime Video TOS
 ];
 
-const recentAdditions = [
-  { href: '#', title: 'Coming soon', date: '' },
-];
+const allPolicies = await getCollection('policies');
+const popularSummaries = popularList
+  .map(({ vendorSlug, category }) => {
+    return allPolicies.find((p) => p.data.vendorSlug === vendorSlug && p.data.category === category);
+  })
+  .filter((p): p is NonNullable<typeof p> => Boolean(p))
+  .map((p) => {
+    const cleanId = p.id.replace(/\.md$/, '');
+    const [cat, ...rest] = cleanId.split('/');
+    return {
+      href: `/${cat}/${rest.join('/')}/`,
+      title: `${p.data.company} ${p.data.policyType}`,
+      summary: p.data.summary,
+    };
+  });
 ---
 
 <BaseLayout title="We read the fine print so you don't have to">
@@ -56,6 +65,7 @@ const recentAdditions = [
 
       <div class="hero__search">
         <SearchBar variant="hero" placeholder="Search a company or policy — try &quot;Amazon&quot; or &quot;cancel&quot;" />
+        <p class="hero__browse-link"><a href="/companies/">Or browse by company →</a></p>
       </div>
     </div>
   </section>
@@ -63,17 +73,22 @@ const recentAdditions = [
   <div class="container">
 
     <!-- Popular Summaries -->
-    <section>
-      <h2 class="section-heading">Popular Summaries</h2>
-      <div class="card-grid">
-        {popularSummaries.map(item => (
-          <a href={item.href} class="card">
-            <h3>{item.title}</h3>
-            <p class="placeholder-text">Summary coming soon.</p>
-          </a>
-        ))}
-      </div>
-    </section>
+    {popularSummaries.length > 0 && (
+      <section>
+        <h2 class="section-heading">Popular Summaries</h2>
+        <div class="card-grid">
+          {popularSummaries.map((item) => (
+            <a href={item.href} class="card">
+              <h3>{item.title}</h3>
+              <p>{item.summary}</p>
+            </a>
+          ))}
+        </div>
+      </section>
+    )}
+
+    <!-- Popular Companies carousel -->
+    <MerchantCarousel />
 
     <!-- Browse by Category -->
     <section>
@@ -85,14 +100,6 @@ const recentAdditions = [
             <p>{cat.description}</p>
           </a>
         ))}
-      </div>
-    </section>
-
-    <!-- Recent Additions -->
-    <section>
-      <h2 class="section-heading">Recently Added</h2>
-      <div class="placeholder-notice">
-        Policy summaries will appear here as they are published.
       </div>
     </section>
 

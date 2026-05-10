@@ -44,6 +44,7 @@ const widgetClass = `searchbar searchbar--${variant}`;
 <script>
   // ------- Search logic (vanilla TS, scoped per widget) -------
   type IndexEntry = {
+    kind: 'policy' | 'vendor';
     url: string;
     title: string;
     company: string;
@@ -96,6 +97,10 @@ const widgetClass = `searchbar searchbar--${variant}`;
     if (fields.title.includes(fullQuery)) score += 60;
     if (fields.company.includes(fullQuery)) score += 50;
     if (fields.keywords.some((k) => k === fullQuery)) score += 50;
+
+    // Vendor entries get a small bump when the query exactly matches the vendor name.
+    // Rationale: typing "amazon" should surface the Amazon overview before specific Amazon policies.
+    if (entry.kind === 'vendor' && fields.company === fullQuery) score += 40;
 
     // Per-token matches
     for (const tok of tokens) {
@@ -173,6 +178,7 @@ const widgetClass = `searchbar searchbar--${variant}`;
         'credit-card-agreements': 'Credit card',
         'warranty-fine-print': 'Warranty',
         'terms-of-service': 'Terms of service',
+        'overview': 'Company overview',
       };
       return labels[slug] ?? slug;
     }

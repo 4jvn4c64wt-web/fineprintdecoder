@@ -1,0 +1,41 @@
+---
+import { getCollection } from 'astro:content';
+import MerchantOverviewLayout from '../../layouts/MerchantOverviewLayout.astro';
+
+export async function getStaticPaths() {
+  const vendors = await getCollection('vendors');
+
+  // Reserved top-level path segments that must never collide with a vendor slug.
+  // If a vendor's slug matches a reserved path (e.g., "companies"), refuse to emit.
+  const reserved = new Set([
+    'about',
+    'companies',
+    'contact',
+    'disclaimer',
+    'how-we-work',
+    'return-policies',
+    'cancellation-policies',
+    'credit-card-agreements',
+    'warranty-fine-print',
+    'terms-of-service',
+    'search.json',
+  ]);
+
+  return vendors
+    .filter((v) => {
+      if (reserved.has(v.data.vendorSlug)) {
+        console.warn(`Vendor slug "${v.data.vendorSlug}" collides with a reserved path; skipping.`);
+        return false;
+      }
+      return true;
+    })
+    .map((entry) => ({
+      params: { vendor: entry.data.vendorSlug },
+      props: { entry },
+    }));
+}
+
+const { entry } = Astro.props;
+---
+
+<MerchantOverviewLayout entry={entry} />

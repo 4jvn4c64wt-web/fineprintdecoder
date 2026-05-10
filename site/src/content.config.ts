@@ -1,24 +1,17 @@
 import { defineCollection, z } from 'astro:content';
 import { glob } from 'astro/loaders';
 
+// =================================================================
+// policies collection — one entry per (vendor, reader intent)
 // Each policy summary is a markdown file under src/content/policies/<category>/<slug>.md
-// Schema enforces the structure laid out in docs/fpd-site-skeleton.md §2.3.
-//
-// Above-the-fold sections (bottomLine, keyFacts, howTo, watchOutFor) are structured
-// frontmatter so the layout component can render them with consistent visual treatment.
-// The markdown body itself is rendered inside the collapsible "Read the full breakdown"
-// section. Legal Fine Print and What Changed are also frontmatter, rendered in
-// collapsibles by the layout.
-//
-// The 4-item cap on watchOutFor is enforced at the schema level — see voice-style-guide
-// §3 (Practical-First) and §7 (Quality Check).
+// =================================================================
 
 const policies = defineCollection({
   loader: glob({ pattern: '**/*.md', base: './src/content/policies' }),
   schema: z.object({
     // Identification
     title: z.string(),
-    company: z.string(),
+    company: z.string(),                       // Specific product (e.g., "Amazon Prime")
     policyType: z.string(),
     category: z.enum([
       'return-policies',
@@ -28,19 +21,11 @@ const policies = defineCollection({
       'terms-of-service',
     ]),
 
-    // vendorSlug groups every summary that belongs to the same real-world parent vendor
-    // (Amazon, Amazon Prime, and Amazon Prime Video all have vendorSlug: "amazon").
-    // It matches the source folder name under sources/. This is the join key used by
-    // the layout to find sibling summaries for the "Other Amazon policies" UI.
-    // Lowercase, hyphenated. No spaces.
+    // vendorSlug groups summaries that share a parent vendor (matches sources/[vendorSlug]/
+    // and the corresponding entry in the vendors collection).
     vendorSlug: z.string().regex(/^[a-z0-9][a-z0-9-]*$/, 'vendorSlug must be lowercase, hyphenated, no spaces'),
 
-    // Source provenance — the local archived copies are authoritative for what we summarized.
-    // sourceFiles is an array because (a) one summary may cite multiple source documents
-    // (e.g., a Chase card summary citing both the cardmember agreement and the rewards
-    // program agreement), and (b) one source document may also produce multiple summaries
-    // (each cites the same file). Paths are relative to the project workspace, e.g.
-    // "sources/amazon/prime_terms-of-service_2026-05-10.txt".
+    // Source provenance
     sourceUrl: z.string().url(),
     sourceUrlsAdditional: z.array(z.string().url()).default([]),
     sourceFiles: z.array(z.string()).default([]),
@@ -54,12 +39,7 @@ const policies = defineCollection({
     // Meta description / search snippet
     summary: z.string().min(20).max(280),
 
-    // Search keywords — additional terms that should match this summary when typed into the
-    // global search bar, beyond the auto-extracted matches on title / company / policyType.
-    // Each summary has its own keywords. Cross-summary "type a sub-product, also see siblings"
-    // is handled by vendorSlug grouping at search time, not by duplicating keywords here.
-    // Keep entries short (single words or short phrases), lowercased by convention.
-    // Example for Amazon Prime Cancellation: ["prime", "membership", "cancel", "subscription"]
+    // Search keywords (per-policy; vendor-level matching is automatic via vendorSlug)
     searchKeywords: z.array(z.string()).default([]),
 
     // Above-the-fold structured content
@@ -72,7 +52,7 @@ const policies = defineCollection({
         })
       )
       .min(1),
-    howTo: z.array(z.string()).optional(), // numbered steps; omit for TOS / credit card
+    howTo: z.array(z.string()).optional(),
     watchOutFor: z
       .array(
         z.object({
@@ -82,18 +62,10 @@ const policies = defineCollection({
       )
       .max(4, 'Watch Out For caps at 4 items per the style guide'),
 
-    // Collapsed by default
-    legalFinePrint: z
-      .object({
-        governingLaw: z.string().optional(),
-        disputeVenue: z.string().optional(),
-        juryTrial: z.string().optional(),
-        arbitration: z.string().optional(),
-        accountTermination: z.string().optional(),
-        liabilityCap: z.string().optional(),
-        privacyHighLevel: z.string().optional(),
-      })
-      .optional(),
+    // NOTE: legalFinePrint is intentionally NOT on policy summaries anymore.
+    // Legal-procedural facts (governing law, dispute venue, arbitration, liability cap,
+    // account termination, privacy, term modification) live on the vendor entry,
+    // surfaced via the merchant overview page at /[vendorSlug]/.
 
     whatChanged: z
       .array(
@@ -106,4 +78,57 @@ const policies = defineCollection({
   }),
 });
 
-export const collections = { policies };
+// =================================================================
+// vendors collection — one entry per parent vendor
+// Each vendor entry is a markdown file under src/content/vendors/<vendorSlug>.md
+// Used to generate merchant overview pages at /[vendorSlug]/
+// =================================================================
+
+const vendors = defineCollection({
+  loader: glob({ pattern: '*.md', base: './src/content/vendors' }),
+  schema: z.object({
+    // Identification — vendorSlug MUST match the filename and the policies' vendorSlug field
+    vendorSlug: z.string().regex(/^[a-z0-9][a-z0-9-]*$/, 'vendorSlug must be lowercase, hyphenated'),
+    displayName: z.string(),                   // h1 on the merchant page
+    oneSentenceWhat: z.string().min(20).max(280),  // one-sentence intro under the h1
+
+    // Freshness
+    lastVerified: z.coerce.date(),
+    lastUpdated: z.coerce.date(),
+    status: z.enum(['current', 'stale', 'needs-review']).default('current'),
+
+    // Whether this vendor appears in the Popular Merchants carousel on the homepage
+    featured: z.boolean().default(false),
+
+    // === Legal & Contractual Snapshot — the 8 universal fields ===
+    // Per site-skeleton §2.8.1. Every field filled; "Not specified" if silent.
+    governingLaw: z.string(),
+    disputeVenue: z.string(),
+    juryTrial: z.string(),
+    arbitration: z.string(),                   // covers arbitration + class action
+    liabilityCap: z.string(),
+    accountTermination: z.string(),
+    privacyHighLevel: z.string(),              // high-level paragraph only
+    termModification: z.string(),
+
+    // Source provenance — typically multiple documents feed a vendor entry
+    sourceUrls: z.array(z.string().url()),
+    sourceFiles: z.array(z.string()).default([]),
+
+    // Vendor-wide Watch Out For (rare; usually empty)
+    watchOutFor: z
+      .array(
+        z.object({
+          headline: z.string(),
+          detail: z.string(),
+        })
+      )
+      .max(3)
+      .default([]),
+
+    // Search keywords for the search bar
+    searchKeywords: z.array(z.string()).default([]),
+  }),
+});
+
+export const collections = { policies, vendors };

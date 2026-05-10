@@ -13,64 +13,43 @@ fineprintdecoder.com/
 ├── /about
 ├── /how-we-work
 │
-├── /return-policies/
-│   ├── /return-policies/ (category index)
-│   ├── /amazon/return-policy
-│   ├── /walmart/return-policy
-│   ├── /target/return-policy
-│   ├── /costco/return-policy
-│   ├── /best-buy/return-policy
-│   ├── /apple/return-policy
-│   ├── /nike/return-policy
-│   ├── /home-depot/return-policy
-│   ├── /nordstrom/return-policy
-│   ├── /ikea/return-policy
-│   └── ... (expand over time)
+├── /merchants/                                  ← new directory page
+│   ├── /amazon/                                 ← merchant home page
+│   ├── /costco/
+│   ├── /chase-sapphire-preferred/
+│   └── ... (one per vendorSlug, expanding over time)
+│
+├── /return-policies/                            ← category index (still exists)
+│   ├── /return-policies/amazon/                 ← per-policy summary
+│   ├── /return-policies/walmart/
+│   └── ...
 │
 ├── /cancellation-policies/
-│   ├── /cancellation-policies/ (category index)
-│   ├── /planet-fitness/cancellation-policy
-│   ├── /netflix/cancellation-policy
-│   ├── /spotify/cancellation-policy
-│   ├── /adobe-creative-cloud/cancellation-policy
-│   ├── /amazon-prime/cancellation-policy
-│   ├── /xfinity/cancellation-policy
-│   ├── /att/cancellation-policy
-│   ├── /youtube-premium/cancellation-policy
-│   ├── /equinox/cancellation-policy
-│   └── ... (expand over time)
+│   ├── /cancellation-policies/amazon-prime/
+│   ├── /cancellation-policies/planet-fitness/
+│   └── ...
 │
 ├── /credit-card-agreements/
-│   ├── /credit-card-agreements/ (category index)
-│   ├── /chase-sapphire-preferred/card-agreement
-│   ├── /chase-sapphire-reserve/card-agreement
-│   ├── /amex-platinum/card-agreement
-│   ├── /amex-gold/card-agreement
-│   ├── /capital-one-venture-x/card-agreement
-│   ├── /citi-double-cash/card-agreement
-│   ├── /discover-it/card-agreement
-│   └── ... (expand over time)
+│   ├── /credit-card-agreements/chase-sapphire-preferred/
+│   └── ...
 │
 ├── /warranty-fine-print/
-│   ├── /warranty-fine-print/ (category index)
-│   ├── /apple/applecare-terms
-│   ├── /samsung/warranty-terms
-│   ├── /best-buy/geek-squad-protection
-│   ├── /home-depot/protection-plan
-│   └── ... (expand over time)
+│   └── ...
 │
-├── /terms-of-service/
-│   ├── /terms-of-service/ (category index)
-│   ├── /openai/terms-of-service
-│   ├── /uber/terms-of-service
-│   ├── /airbnb/terms-of-service
-│   ├── /venmo/user-agreement
-│   └── ... (expand over time)
+├── /terms-of-service/                           ← still exists, no longer in top nav
+│   ├── /terms-of-service/amazon-prime-video/
+│   └── ...
 │
-├── /search (client-side search via Pagefind)
+├── /search.json                                 (client-side search index)
 ├── /contact
 └── /disclaimer
 ```
+
+**Two URL shapes for vendor-related content:**
+- `/[vendorSlug]/` is the **merchant home page** — the legal snapshot, all decoded policies for that vendor, Content Creator section if applicable.
+- `/[category]/[slug]/` is a **specific policy summary** — operational content for one reader intent (returning something, cancelling something, etc.).
+
+A user searching "amazon" probably wants `/amazon/` (the merchant home). A user searching "amazon return policy" wants `/return-policies/amazon/` (the specific summary). Search ranking should reflect that.
 
 ---
 
@@ -80,19 +59,21 @@ fineprintdecoder.com/
 
 **Purpose:** Explain what the site does in 5 seconds. Direct people to what they're looking for.
 
-**Sections:**
-1. Hero / headline. One sentence: what this site does. No fluff.
-2. Search bar. Prominent. "Search for a company or policy type."
-3. Most popular summaries. 6–8 cards linking to highest-traffic pages.
-4. Category navigation. Cards or links to the 5 main categories.
-5. Recent additions. Last 5 published summaries.
-6. Footer CTA. "Can't find a policy? Tell us what to decode next." (links to contact/request form)
+**Sections (top to bottom):**
 
-**What is NOT on the homepage:**
+1. **Hero with headline + search bar.** One sentence on what the site does. The search bar is the primary action — typed query autocompletes to merchants and specific summaries.
+2. **Popular Summaries.** Curated grid of 6–8 cards linking to the highest-value individual policy summaries (returns, cancellations, etc.). Manually curated for now; as analytics come online, traffic-driven later. Each card shows: vendor + policy type, one-line excerpt.
+3. **Popular Merchants (carousel).** Single horizontal row of merchant cards. Left/right arrow buttons cycle through. Each card is a vendor (Amazon, Costco, Chase, etc.) linking to that merchant's home page. Curated list; as we publish merchant pages, they enter the carousel pool.
+4. **Browse by Category.** Cards for the 4 nav categories (Return Policies, Cancellation Policies, Credit Cards, Warranties). No card for Terms of Service — it's not in the top nav anymore.
+5. **Footer CTA.** "Can't find a policy? Tell us what to decode next." (links to contact)
+
+**Explicitly removed:** the "Recently Added" section. Reasoning: users don't browse for new — they search for what they need. Recency is engagement bait that doesn't serve the practical-first principle.
+
+**What else is NOT on the homepage:**
 - A long "about us" section
 - A mission statement
 - Stock photos
-- Anything that delays the reader from getting to a policy summary
+- Anything that delays the reader from getting to what they want
 
 ### 2.2 Category Index Page (e.g., /return-policies/)
 
@@ -277,46 +258,6 @@ Condition:            Items must be unused, in original packaging
 
 ---
 
-## 3. Launch Content Plan (First 50 Pages)
+### 2.8 Merchant Home Page (the vendor hub)
 
-### Batch 1 — Return Policies (20 pages)
-
-Priority order based on estimated search volume:
-
-1. Amazon
-2. Walmart
-3. Target
-4. Costco
-5. Best Buy
-6. Apple
-7. Home Depot
-8. Nike
-9. Nordstrom
-10. IKEA
-11. Lowe's
-12. Macy's
-13. Sephora
-14. REI
-15. Kohl's
-16. Wayfair
-17. Zara
-18. H&M
-19. Chewy
-20. Etsy (marketplace policy)
-
-### Batch 2 — Cancellation Policies (15 pages)
-
-1. Planet Fitness
-2. Netflix
-3. Amazon Prime
-4. Spotify
-5. Adobe Creative Cloud
-6. YouTube Premium / YouTube TV
-7. Xfinity / Comcast
-8. AT&T
-9. Equinox
-10. LA Fitness
-11. Hulu
-12. Peloton
-13. HelloFresh
-14. NYT Digital Subscripti
+**Purpose:** A single entry point per vendor that surfaces every decoded policy for that vendor and provides a standardized comparable snapshot of the vendor's legal-procedural terms (governing law, arbitration, liability, etc.). This is the most important page-type after individ

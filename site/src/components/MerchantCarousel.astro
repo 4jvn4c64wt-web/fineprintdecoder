@@ -1,0 +1,140 @@
+---
+import { getCollection } from 'astro:content';
+
+// Popular Merchants carousel for the homepage. Pulls every vendor with featured: true,
+// alphabetical. The track scrolls horizontally; arrows + dot indicators + native swipe.
+
+const allVendors = await getCollection('vendors');
+const featured = allVendors.filter((v) => v.data.featured);
+featured.sort((a, b) => a.data.displayName.localeCompare(b.data.displayName));
+
+const items = featured.map((v) => ({
+  slug: v.data.vendorSlug,
+  name: v.data.displayName,
+  intro: v.data.oneSentenceWhat,
+}));
+---
+
+{items.length > 0 && (
+  <div class="carousel" data-carousel>
+    <div class="carousel__head">
+      <h2 class="section-heading carousel__heading">Popular Companies</h2>
+      <div class="carousel__controls" aria-label="Carousel controls">
+        <button type="button" class="carousel__btn" data-action="prev" aria-label="Previous">‹</button>
+        <button type="button" class="carousel__btn" data-action="next" aria-label="Next">›</button>
+      </div>
+    </div>
+
+    <div class="carousel__track" data-track tabindex="0" aria-label="Featured companies">
+      {items.map((it) => (
+        <a class="carousel__card" href={`/${it.slug}/`}>
+          <h3 class="carousel__card-title">{it.name}</h3>
+          <p class="carousel__card-intro">{it.intro}</p>
+          <span class="carousel__card-cta">Read the overview →</span>
+        </a>
+      ))}
+    </div>
+
+    <div class="carousel__dots" role="tablist" aria-label="Carousel pages" data-dots></div>
+
+    <p class="carousel__browse-link">
+      <a href="/companies/">Or browse all companies →</a>
+    </p>
+  </div>
+)}
+
+<script>
+  document.querySelectorAll<HTMLElement>('[data-carousel]').forEach((root) => {
+    const track = root.querySelector<HTMLElement>('[data-track]')!;
+    const dotsContainer = root.querySelector<HTMLElement>('[data-dots]')!;
+    const prevBtn = root.querySelector<HTMLButtonElement>('[data-action="prev"]')!;
+    const nextBtn = root.querySelector<HTMLButtonElement>('[data-action="next"]')!;
+    const cards = Array.from(track.querySelectorAll<HTMLElement>('.carousel__card'));
+
+    if (cards.length === 0) return;
+
+    // Figure out how many cards are visible at once (based on container width vs. card width).
+    function cardsPerView(): number {
+      const trackWidth = track.clientWidth;
+      const cardWidth = cards[0].offsetWidth;
+      const gap = parseFloat(getComputedStyle(track).columnGap || '0') || 16;
+      return Math.max(1, Math.floor((trackWidth + gap) / (cardWidth + gap)));
+    }
+
+    function pageCount(): number {
+      return Math.max(1, Math.ceil(cards.length / cardsPerView()));
+    }
+
+    function currentPage(): number {
+      const per = cardsPerView();
+      const cardWidth = cards[0].offsetWidth + (parseFloat(getComputedStyle(track).columnGap || '0') || 16);
+      return Math.round(track.scrollLeft / (cardWidth * per));
+    }
+
+    function renderDots() {
+      const n = pageCount();
+      dotsContainer.innerHTML = '';
+      for (let i = 0; i < n; i++) {
+        const dot = document.createElement('button');
+        dot.type = 'button';
+        dot.className = 'carousel__dot';
+        dot.setAttribute('role', 'tab');
+        dot.setAttribute('aria-label', `Page ${i + 1} of ${n}`);
+        dot.dataset.idx = String(i);
+        dot.addEventListener('click', () => goToPage(i));
+        dotsContainer.appendChild(dot);
+      }
+      updateActiveDot();
+      // Hide dots and arrow controls when only one page
+      const controls = root.querySelector<HTMLElement>('.carousel__controls');
+      if (n <= 1) {
+        dotsContainer.hidden = true;
+        if (controls) controls.hidden = true;
+      } else {
+        dotsContainer.hidden = false;
+        if (controls) controls.hidden = false;
+      }
+    }
+
+    function updateActiveDot() {
+      const idx = currentPage();
+      dotsContainer.querySelectorAll<HTMLElement>('.carousel__dot').forEach((d, i) => {
+        d.classList.toggle('is-active', i === idx);
+        d.setAttribute('aria-selected', i === idx ? 'true' : 'false');
+      });
+      prevBtn.disabled = idx <= 0;
+      nextBtn.disabled = idx >= pageCount() - 1;
+    }
+
+    function goToPage(i: number) {
+      const per = cardsPerView();
+      const cardWidth = cards[0].offsetWidth + (parseFloat(getComputedStyle(track).columnGap || '0') || 16);
+      track.scrollTo({ left: i * cardWidth * per, behavior: 'smooth' });
+    }
+
+    prevBtn.addEventListener('click', () => goToPage(Math.max(0, currentPage() - 1)));
+    nextBtn.addEventListener('click', () => goToPage(Math.min(pageCount() - 1, currentPage() + 1)));
+
+    // Update active dot on scroll (debounced via rAF)
+    let raf: number | null = null;
+    track.addEventListener('scroll', () => {
+      if (raf !== null) return;
+      raf = requestAnimationFrame(() => {
+        updateActiveDot();
+        raf = null;
+      });
+    });
+
+    // Recompute on resize
+    let resizeRaf: number | null = null;
+    window.addEventListener('resize', () => {
+      if (resizeRaf !== null) return;
+      resizeRaf = requestAnimationFrame(() => {
+        renderDots();
+        resizeRaf = null;
+      });
+    });
+
+    renderDots();
+  });
+</script>

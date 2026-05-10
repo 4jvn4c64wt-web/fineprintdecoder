@@ -1,6 +1,6 @@
 ---
 import BaseLayout from './BaseLayout.astro';
-import { render, type CollectionEntry } from 'astro:content';
+import { render, getEntry, type CollectionEntry } from 'astro:content';
 
 interface Props {
   entry: CollectionEntry<'policies'>;
@@ -9,6 +9,10 @@ interface Props {
 const { entry } = Astro.props;
 const { Content } = await render(entry);
 const data = entry.data;
+
+// Look up the parent vendor entry so we can link to the merchant overview.
+// Returns undefined if there's no vendor entry yet for this slug (rare; will warn).
+const vendor = await getEntry('vendors', data.vendorSlug);
 
 // Map category slug → human-readable category label (used in breadcrumb)
 const categoryLabel: Record<string, string> = {
@@ -72,6 +76,11 @@ const description = data.summary;
           <a class="summary__source-link" href={data.sourceUrl} target="_blank" rel="noopener">
             Read the official policy →
           </a>
+          {vendor && (
+            <a class="summary__source-link summary__source-link--overview" href={`/${vendor.data.vendorSlug}/`}>
+              Read the {vendor.data.displayName} overview →
+            </a>
+          )}
         </div>
         {isStale && (
           <div class="staleness-banner" role="status">
