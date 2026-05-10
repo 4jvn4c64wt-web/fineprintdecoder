@@ -1,37 +1,15 @@
 ---
 import BaseLayout from '../../layouts/BaseLayout.astro';
-import CompareWidget from '../../components/CompareWidget.astro';
-
-const cards = [
-  { slug: 'chase-sapphire-preferred', name: 'Chase Sapphire Preferred' },
-  { slug: 'chase-sapphire-reserve', name: 'Chase Sapphire Reserve' },
-  { slug: 'amex-platinum', name: 'Amex Platinum' },
-  { slug: 'amex-gold', name: 'Amex Gold' },
-  { slug: 'capital-one-venture-x', name: 'Capital One Venture X' },
-  { slug: 'citi-double-cash', name: 'Citi Double Cash' },
-  { slug: 'chase-freedom-unlimited', name: 'Chase Freedom Unlimited' },
-  { slug: 'discover-it', name: 'Discover it Cash Back' },
-  { slug: 'capital-one-savorone', name: 'Capital One SavorOne' },
-  { slug: 'apple-card', name: 'Apple Card' },
-];
+import CategoryIndex from '../../components/CategoryIndex.astro';
 ---
 
-<BaseLayout title="Credit Card Agreements" description="Fees, rates, and the clauses buried on page 12 — decoded from actual cardholder agreements.">
-  <div class="container">
-    <div class="category-header">
-      <h1>Credit Card Agreements</h1>
-      <p>Annual fees, APRs, foreign transaction fees, and the conditions attached to the rewards and benefits.</p>
-    </div>
-
-    <CompareWidget category="credit-card-agreements" categoryLabel="Credit Card Agreements" />
-
-    <div class="card-grid">
-      {cards.map(item => (
-        <a href={`/credit-card-agreements/${item.slug}/`} class="card">
-          <h3>{item.name}</h3>
-          <p>Agreement summary coming soon.</p>
-        </a>
-      ))}
-    </div>
-  </div>
+<BaseLayout
+  title="Credit Card Agreements"
+  description="Annual fees, APRs, foreign transaction fees, and the conditions attached to the rewards and benefits."
+>
+  <CategoryIndex
+    category="credit-card-agreements"
+    categoryLabel="Credit Card Agreements"
+    description="Annual fees, APRs, foreign transaction fees, and the conditions attached to the rewards and benefits."
+  />
 </BaseLayout>

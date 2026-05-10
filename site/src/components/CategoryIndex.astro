@@ -1,0 +1,60 @@
+---
+import { getCollection } from 'astro:content';
+import CompareWidget from './CompareWidget.astro';
+
+interface Props {
+  category: 'return-policies' | 'cancellation-policies' | 'credit-card-agreements' | 'warranty-fine-print' | 'terms-of-service';
+  categoryLabel: string;
+  description: string;
+}
+
+const { category, categoryLabel, description } = Astro.props;
+
+// Pull published summaries for this category, sorted alphabetically by company name.
+const entries = await getCollection('policies', ({ data }) => data.category === category);
+entries.sort((a, b) => a.data.company.localeCompare(b.data.company));
+
+const cards = entries.map((e) => {
+  const cleanId = e.id.replace(/\.md$/, '');
+  const [, ...rest] = cleanId.split('/');
+  const slug = rest.join('/');
+  return {
+    href: `/${category}/${slug}/`,
+    title: `${e.data.company} ${e.data.policyType}`,
+    summary: e.data.summary,
+    company: e.data.company,
+  };
+});
+
+const empty = cards.length === 0;
+---
+
+<div class="container">
+  <div class="category-header">
+    <h1>{categoryLabel}</h1>
+    <p>{description}</p>
+  </div>
+
+  <CompareWidget category={category} categoryLabel={categoryLabel} />
+
+  {empty ? (
+    <div class="placeholder-notice">
+      We're working on summaries for this category. None published yet. Want a specific company decoded next? <a href="/contact/">Request one →</a>
+    </div>
+  ) : (
+    <div class="card-grid">
+      {cards.map((c) => (
+        <a href={c.href} class="card">
+          <h3>{c.title}</h3>
+          <p>{c.summary}</p>
+        </a>
+      ))}
+    </div>
+  )}
+
+  {!empty && (
+    <p class="category-footer-cta">
+      Don't see a company you need? <a href="/contact/">Tell us what to decode next →</a>
+    </p>
+  )}
+</div>

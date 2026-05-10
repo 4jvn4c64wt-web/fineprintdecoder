@@ -1,5 +1,8 @@
 ---
+import SearchBar from './SearchBar.astro';
+
 const currentPath = Astro.url.pathname;
+const isHomepage = currentPath === '/';
 const navLinks = [
   { href: '/return-policies/', label: 'Return Policies' },
   { href: '/cancellation-policies/', label: 'Cancellation Policies' },
@@ -9,24 +12,34 @@ const navLinks = [
 ];
 ---
 
-<nav class="site-nav">
-  <div class="container">
-    <a href="/" class="site-nav__logo">FinePrintDecoder</a>
-    <button class="nav-toggle" aria-label="Toggle navigation" aria-expanded="false">&#9776;</button>
-    <ul class="site-nav__links" id="nav-links">
-      {navLinks.map(link => (
-        <li>
-          <a
-            href={link.href}
-            aria-current={currentPath.startsWith(link.href) ? 'page' : undefined}
-          >
-            {link.label}
-          </a>
-        </li>
-      ))}
-    </ul>
-  </div>
-</nav>
+<header class="site-header">
+  <nav class="site-nav">
+    <div class="container">
+      <a href="/" class="site-nav__logo">FinePrintDecoder</a>
+      <button class="nav-toggle" aria-label="Toggle navigation" aria-expanded="false">&#9776;</button>
+      <ul class="site-nav__links" id="nav-links">
+        {navLinks.map(link => (
+          <li>
+            <a
+              href={link.href}
+              aria-current={currentPath.startsWith(link.href) ? 'page' : undefined}
+            >
+              {link.label}
+            </a>
+          </li>
+        ))}
+      </ul>
+    </div>
+  </nav>
+
+  {!isHomepage && (
+    <div class="site-search">
+      <div class="container">
+        <SearchBar variant="nav" />
+      </div>
+    </div>
+  )}
+</header>
 
 <script>
   const toggle = document.querySelector('.nav-toggle');

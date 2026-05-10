@@ -1,0 +1,265 @@
+---
+// Global search bar. Renders in the Nav so it's available on every page.
+//
+// Tiered ranking (see decisions-log 2026-05-10 "Search architecture"):
+//   Tier 1: direct match — the query appears in title, company, policyType, or keywords
+//   Tier 2: vendor sibling — the query doesn't match this entry directly, but a Tier 1 hit
+//           shares the same vendorSlug. So typing "prime" surfaces Amazon Prime Cancellation
+//           and Prime Video TOS (Tier 1), then Amazon Return Policy (Tier 2 — same vendor).
+//
+// The index is fetched lazily on the first focus to avoid blocking the initial page render.
+
+interface Props {
+  placeholder?: string;
+  variant?: 'nav' | 'hero';
+}
+
+const { placeholder = 'Search for a company or policy…', variant = 'nav' } = Astro.props;
+const widgetClass = `searchbar searchbar--${variant}`;
+---
+
+<div class={widgetClass} data-searchbar>
+  <label class="searchbar__field">
+    <span class="searchbar__icon" aria-hidden="true">⌕</span>
+    <input
+      type="search"
+      class="searchbar__input"
+      placeholder={placeholder}
+      autocomplete="off"
+      spellcheck="false"
+      aria-label="Search policies"
+      aria-controls="searchbar-results"
+      aria-autocomplete="list"
+    />
+  </label>
+
+  <div class="searchbar__results" id="searchbar-results" role="listbox" hidden>
+    <ul class="searchbar__list" data-result-list></ul>
+    <div class="searchbar__empty" data-empty hidden>
+      No matches. Try a vendor name like "Amazon" or a policy type like "return."
+    </div>
+  </div>
+</div>
+
+<script>
+  // ------- Search logic (vanilla TS, scoped per widget) -------
+  type IndexEntry = {
+    url: string;
+    title: string;
+    company: string;
+    vendorSlug: string;
+    policyType: string;
+    category: string;
+    keywords: string[];
+    summary: string;
+  };
+
+  let cachedIndex: IndexEntry[] | null = null;
+  let indexFetchPromise: Promise<IndexEntry[]> | null = null;
+
+  async function loadIndex(): Promise<IndexEntry[]> {
+    if (cachedIndex) return cachedIndex;
+    if (indexFetchPromise) return indexFetchPromise;
+    indexFetchPromise = fetch('/search.json')
+      .then((r) => r.json())
+      .then((data: IndexEntry[]) => {
+        cachedIndex = data;
+        return data;
+      });
+    return indexFetchPromise;
+  }
+
+  function normalize(s: string): string {
+    return s.toLowerCase().trim();
+  }
+
+  function tokenize(q: string): string[] {
+    return normalize(q).split(/\s+/).filter(Boolean);
+  }
+
+  function scoreEntry(entry: IndexEntry, tokens: string[]): number {
+    if (tokens.length === 0) return 0;
+    const fields = {
+      title: normalize(entry.title),
+      company: normalize(entry.company),
+      policyType: normalize(entry.policyType),
+      category: normalize(entry.category),
+      keywords: entry.keywords.map(normalize),
+      summary: normalize(entry.summary),
+    };
+    let score = 0;
+    const fullQuery = tokens.join(' ');
+
+    // Whole-query exact match in title / company is the strongest signal
+    if (fields.title === fullQuery) score += 200;
+    if (fields.company === fullQuery) score += 180;
+    if (fields.title.includes(fullQuery)) score += 60;
+    if (fields.company.includes(fullQuery)) score += 50;
+    if (fields.keywords.some((k) => k === fullQuery)) score += 50;
+
+    // Per-token matches
+    for (const tok of tokens) {
+      if (fields.title.includes(tok)) score += 25;
+      if (fields.company.includes(tok)) score += 22;
+      if (fields.policyType.includes(tok)) score += 18;
+      if (fields.keywords.some((k) => k.includes(tok))) score += 16;
+      if (fields.summary.includes(tok)) score += 6;
+      if (fields.category.includes(tok)) score += 4;
+    }
+    return score;
+  }
+
+  type RankedResult = { entry: IndexEntry; score: number; tier: 1 | 2 };
+
+  function rank(query: string, index: IndexEntry[]): RankedResult[] {
+    const tokens = tokenize(query);
+    if (tokens.length === 0) return [];
+
+    // Tier 1: direct matches.
+    const direct: RankedResult[] = [];
+    for (const entry of index) {
+      const score = scoreEntry(entry, tokens);
+      if (score > 0) direct.push({ entry, score, tier: 1 });
+    }
+    direct.sort((a, b) => b.score - a.score);
+
+    // Tier 2: vendor siblings. Anything sharing a vendorSlug with a Tier 1 hit, but not
+    // itself a Tier 1 hit. Ranked lower than every Tier 1 result.
+    const directIds = new Set(direct.map((r) => r.entry.url));
+    const matchedVendors = new Set(direct.map((r) => r.entry.vendorSlug));
+    const siblings: RankedResult[] = [];
+    for (const entry of index) {
+      if (directIds.has(entry.url)) continue;
+      if (matchedVendors.has(entry.vendorSlug)) {
+        siblings.push({ entry, score: 0, tier: 2 });
+      }
+    }
+
+    return [...direct, ...siblings].slice(0, 8);
+  }
+
+  // ------- DOM wiring -------
+  const widgets = document.querySelectorAll<HTMLElement>('[data-searchbar]');
+
+  widgets.forEach((widget) => {
+    const input = widget.querySelector<HTMLInputElement>('.searchbar__input')!;
+    const resultsPanel = widget.querySelector<HTMLElement>('.searchbar__results')!;
+    const listEl = widget.querySelector<HTMLUListElement>('[data-result-list]')!;
+    const emptyEl = widget.querySelector<HTMLElement>('[data-empty]')!;
+    let activeIdx = -1;
+    let currentResults: RankedResult[] = [];
+
+    async function ensureIndex() {
+      try {
+        await loadIndex();
+      } catch (err) {
+        console.error('Search index failed to load', err);
+      }
+    }
+
+    function escapeHtml(s: string): string {
+      return s
+        .replace(/&/g, '&amp;')
+        .replace(/</g, '&lt;')
+        .replace(/>/g, '&gt;')
+        .replace(/"/g, '&quot;')
+        .replace(/'/g, '&#39;');
+    }
+
+    function categoryLabel(slug: string): string {
+      const labels: Record<string, string> = {
+        'return-policies': 'Returns',
+        'cancellation-policies': 'Cancellation',
+        'credit-card-agreements': 'Credit card',
+        'warranty-fine-print': 'Warranty',
+        'terms-of-service': 'Terms of service',
+      };
+      return labels[slug] ?? slug;
+    }
+
+    function renderResults(results: RankedResult[]) {
+      currentResults = results;
+      activeIdx = -1;
+      if (results.length === 0) {
+        listEl.innerHTML = '';
+        emptyEl.hidden = false;
+        resultsPanel.hidden = false;
+        return;
+      }
+      emptyEl.hidden = true;
+      const html = results
+        .map(({ entry }, i) => {
+          return `
+            <li role="option" data-idx="${i}" aria-selected="false">
+              <a href="${escapeHtml(entry.url)}">
+                <div class="searchbar__result-title">${escapeHtml(entry.title)}</div>
+                <div class="searchbar__result-meta">${escapeHtml(categoryLabel(entry.category))}</div>
+              </a>
+            </li>`;
+        })
+        .join('');
+      listEl.innerHTML = html;
+      resultsPanel.hidden = false;
+    }
+
+    function clearResults() {
+      currentResults = [];
+      activeIdx = -1;
+      listEl.innerHTML = '';
+      emptyEl.hidden = true;
+      resultsPanel.hidden = true;
+    }
+
+    function setActive(idx: number) {
+      const items = listEl.querySelectorAll<HTMLLIElement>('li[role="option"]');
+      items.forEach((el, i) => {
+        const on = i === idx;
+        el.setAttribute('aria-selected', on ? 'true' : 'false');
+        el.classList.toggle('is-active', on);
+        if (on) el.scrollIntoView({ block: 'nearest' });
+      });
+      activeIdx = idx;
+    }
+
+    input.addEventListener('focus', () => {
+      ensureIndex();
+    });
+
+    input.addEventListener('input', async () => {
+      const q = input.value;
+      if (q.trim().length < 1) {
+        clearResults();
+        return;
+      }
+      const index = await loadIndex();
+      const ranked = rank(q, index);
+      renderResults(ranked);
+    });
+
+    input.addEventListener('keydown', (e) => {
+      if (resultsPanel.hidden || currentResults.length === 0) return;
+      if (e.key === 'ArrowDown') {
+        e.preventDefault();
+        setActive(Math.min(currentResults.length - 1, activeIdx + 1));
+      } else if (e.key === 'ArrowUp') {
+        e.preventDefault();
+        setActive(Math.max(0, activeIdx - 1));
+      } else if (e.key === 'Enter') {
+        if (activeIdx >= 0) {
+          e.preventDefault();
+          window.location.href = currentResults[activeIdx].entry.url;
+        }
+      } else if (e.key === 'Escape') {
+        clearResults();
+        input.blur();
+      }
+    });
+
+    // Close dropdown when clicking outside
+    document.addEventListener('click', (e) => {
+      if (!widget.contains(e.target as Node)) {
+        clearResults();
+      }
+    });
+  });
+</script>

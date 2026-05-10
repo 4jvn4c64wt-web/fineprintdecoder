@@ -114,20 +114,27 @@ fineprintdecoder.com/
 
 ```yaml
 ---
-title: "Amazon Return Policy — Decoded"
-company: "Amazon"
+title: "Amazon Return Policy"
+company: "Amazon"                # Specific product/sub-product
+vendorSlug: "amazon"             # Parent-vendor grouping key — matches sources/ folder
 policyType: "Return Policy"
 category: "return-policies"
 sourceUrl: "https://www.amazon.com/gp/help/customer/display.html?nodeId=GKM69DUUYKQWKBER"
-sourceUrlsAdditional: []   # secondary URLs if the policy spans multiple pages
-sourceFile: "sources/return-policies/amazon_return-policy_2026-03-15.pdf"   # local archive — the file Claude actually read
+sourceUrlsAdditional: []         # secondary URLs if the policy spans multiple pages
+sourceFiles:
+  - "sources/amazon/return-policy_2026-03-15.pdf"
 lastVerified: "2026-03-15"
 lastUpdated: "2026-03-15"
-status: "current"          # current | stale | needs-review
-tier: 1                    # 1=quarterly review, 2=semi-annual, 3=annual
+status: "current"                # current | stale | needs-review
+tier: 1                          # 1=quarterly review, 2=semi-annual, 3=annual
 summary: "Most items can be returned within 30 days of delivery for a full refund. Some categories have shorter or longer windows."
+searchKeywords: ["return", "returns", "refund", "amazon return"]   # optional; defaults to []
 ---
 ```
+
+**The `searchKeywords` field feeds the global search bar.** It's optional. The search engine already auto-matches on title, company, policyType, and category, so most summaries don't need many keywords. Use it for plausible user phrasings the auto-matcher would miss: synonyms ("send back" for return), informal verbs ("unsubscribe" for cancel), or sub-product names. Cross-summary "sibling" matching is automatic via vendorSlug — if a user types "prime" and the Prime cancellation summary hits, the Amazon return policy and Prime Video TOS will surface below it because they share `vendorSlug: amazon`. So you don't need to redundantly list "amazon" in every keyword array.
+
+**The `vendorSlug` field is the join key for vendor-grouped UI.** Every summary that belongs to the same parent vendor uses the same slug, regardless of how `company` differs. Amazon's main return policy, Amazon Prime's cancellation policy, and Amazon Prime Video's TOS all share `vendorSlug: amazon` because they're all under the Amazon corporate umbrella. The sidebar showing "Other Amazon policies" queries the content collection by `vendorSlug` to find siblings. The slug also matches the `sources/[vendorSlug]/` folder, which is intentional — the source archive's grouping and the live site's grouping use the same key.
 
 **Page layout (above the fold — always visible):**
 
@@ -312,63 +319,4 @@ Priority order based on estimated search volume:
 11. Hulu
 12. Peloton
 13. HelloFresh
-14. NYT Digital Subscription
-15. Audible
-
-### Batch 3 — Credit Card Agreements (10 pages)
-
-1. Chase Sapphire Preferred
-2. Chase Sapphire Reserve
-3. Amex Platinum
-4. Amex Gold
-5. Capital One Venture X
-6. Citi Double Cash
-7. Chase Freedom Unlimited
-8. Discover it Cash Back
-9. Capital One SavorOne
-10. Apple Card
-
-### Batch 4 — Warranty / Protection Plans (5 pages)
-
-1. AppleCare+
-2. Best Buy / Geek Squad Protection
-3. Samsung Care+
-4. Home Depot Protection Plan
-5. Costco Warranty (Costco's extended warranty on electronics)
-
----
-
-## 4. Navigation Structure
-
-**Top nav:**
-- Home
-- Return Policies
-- Cancellation Policies
-- Credit Cards
-- Warranties
-- Terms of Service
-- Search (icon)
-
-**Footer:**
-- About
-- How We Work
-- Contact / Request a Decode
-- Disclaimer
-- [Social links when applicable]
-
----
-
-## 5. Technical Notes
-
-- Every policy summary is a single markdown file with YAML frontmatter
-- Category index pages are auto-generated from frontmatter metadata
-- Search is client-side (Pagefind) — no server dependency
-- "Last verified" date drives the stale-content warning banner logic: if > 12 months old, show warning
-- Sitemap.xml auto-generated for SEO
-- RSS feed for new additions (useful for newsletter later)
-- Open Graph / social meta tags on every page (for link previews when shared)
-- Collapsible sections use native `<details><summary>` HTML — no JavaScript required, accessible by default, works without JS
-
-### Source archival convention
-
-Every summary references one or more loca
+14. NYT Digital Subscripti

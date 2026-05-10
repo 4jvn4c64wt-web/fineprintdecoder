@@ -1,47 +1,15 @@
 ---
 import BaseLayout from '../../layouts/BaseLayout.astro';
-import CompareWidget from '../../components/CompareWidget.astro';
-
-const policies = [
-  { slug: 'amazon', company: 'Amazon' },
-  { slug: 'walmart', company: 'Walmart' },
-  { slug: 'target', company: 'Target' },
-  { slug: 'costco', company: 'Costco' },
-  { slug: 'best-buy', company: 'Best Buy' },
-  { slug: 'apple', company: 'Apple' },
-  { slug: 'home-depot', company: 'Home Depot' },
-  { slug: 'nike', company: 'Nike' },
-  { slug: 'nordstrom', company: 'Nordstrom' },
-  { slug: 'ikea', company: 'IKEA' },
-  { slug: 'lowes', company: "Lowe's" },
-  { slug: 'macys', company: "Macy's" },
-  { slug: 'sephora', company: 'Sephora' },
-  { slug: 'rei', company: 'REI' },
-  { slug: 'kohls', company: "Kohl's" },
-  { slug: 'wayfair', company: 'Wayfair' },
-  { slug: 'zara', company: 'Zara' },
-  { slug: 'h-and-m', company: 'H&M' },
-  { slug: 'chewy', company: 'Chewy' },
-  { slug: 'etsy', company: 'Etsy' },
-];
+import CategoryIndex from '../../components/CategoryIndex.astro';
 ---
 
-<BaseLayout title="Return Policies" description="Plain-English summaries of return policies from major retailers, decoded from the actual documents.">
-  <div class="container">
-    <div class="category-header">
-      <h1>Return Policies</h1>
-      <p>Plain-English summaries of return policies from major retailers. How long you have, what condition the item needs to be in, and what gets refunded.</p>
-    </div>
-
-    <CompareWidget category="return-policies" categoryLabel="Return Policies" />
-
-    <div class="card-grid">
-      {policies.map(item => (
-        <a href={`/return-policies/${item.slug}/`} class="card">
-          <h3>{item.company} Return Policy</h3>
-          <p>Summary coming soon.</p>
-        </a>
-      ))}
-    </div>
-  </div>
+<BaseLayout
+  title="Return Policies"
+  description="Plain-English summaries of return policies from major retailers. How long you have, what condition the item needs to be in, and what gets refunded."
+>
+  <CategoryIndex
+    category="return-policies"
+    categoryLabel="Return Policies"
+    description="Plain-English summaries of return policies from major retailers. How long you have, what condition the item needs to be in, and what gets refunded."
+  />
 </BaseLayout>

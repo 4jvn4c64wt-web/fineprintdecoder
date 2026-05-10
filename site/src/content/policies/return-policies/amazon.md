@@ -1,6 +1,7 @@
 ---
 title: "Amazon Return Policy"
 company: "Amazon"
+vendorSlug: "amazon"
 policyType: "Return Policy"
 category: "return-policies"
 
@@ -15,6 +16,13 @@ status: "current"
 tier: 1
 
 summary: "Most items can be returned within 30 days of delivery, with free drop-offs at 8,000+ locations. Refunds hit credit cards in 3 to 5 business days. Some categories have different windows; certain items can't be returned at all."
+
+searchKeywords:
+  - "return"
+  - "returns"
+  - "refund"
+  - "amazon return"
+  - "send back"
 
 bottomLine: |
   Most items can be returned within 30 days of delivery for a full refund. Returns are free at over 8,000 drop-off locations, and most items don't need to be boxed or labeled. A handful of categories have different windows, and some items can't be returned at all. The most common non-returnable items are Final Sale products, perishables, and customized goods.

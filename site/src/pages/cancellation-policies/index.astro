@@ -1,42 +1,15 @@
 ---
 import BaseLayout from '../../layouts/BaseLayout.astro';
-import CompareWidget from '../../components/CompareWidget.astro';
-
-const policies = [
-  { slug: 'planet-fitness', company: 'Planet Fitness' },
-  { slug: 'netflix', company: 'Netflix' },
-  { slug: 'amazon-prime', company: 'Amazon Prime' },
-  { slug: 'spotify', company: 'Spotify' },
-  { slug: 'adobe-creative-cloud', company: 'Adobe Creative Cloud' },
-  { slug: 'youtube-premium', company: 'YouTube Premium' },
-  { slug: 'xfinity', company: 'Xfinity / Comcast' },
-  { slug: 'att', company: 'AT&T' },
-  { slug: 'equinox', company: 'Equinox' },
-  { slug: 'la-fitness', company: 'LA Fitness' },
-  { slug: 'hulu', company: 'Hulu' },
-  { slug: 'peloton', company: 'Peloton' },
-  { slug: 'hellofresh', company: 'HelloFresh' },
-  { slug: 'nyt', company: 'NYT Digital' },
-  { slug: 'audible', company: 'Audible' },
-];
+import CategoryIndex from '../../components/CategoryIndex.astro';
 ---
 
-<BaseLayout title="Cancellation Policies" description="How to actually cancel subscriptions and memberships — decoded from the actual terms.">
-  <div class="container">
-    <div class="category-header">
-      <h1>Cancellation Policies</h1>
-      <p>How to cancel a subscription or membership, what notice the company requires, and any fees that apply.</p>
-    </div>
-
-    <CompareWidget category="cancellation-policies" categoryLabel="Cancellation Policies" />
-
-    <div class="card-grid">
-      {policies.map(item => (
-        <a href={`/cancellation-policies/${item.slug}/`} class="card">
-          <h3>{item.company} Cancellation Policy</h3>
-          <p>Summary coming soon.</p>
-        </a>
-      ))}
-    </div>
-  </div>
+<BaseLayout
+  title="Cancellation Policies"
+  description="How to cancel a subscription or membership, what notice the company requires, and any fees that apply."
+>
+  <CategoryIndex
+    category="cancellation-policies"
+    categoryLabel="Cancellation Policies"
+    description="How to cancel a subscription or membership, what notice the company requires, and any fees that apply."
+  />
 </BaseLayout>

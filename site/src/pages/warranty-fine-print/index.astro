@@ -1,32 +1,15 @@
 ---
 import BaseLayout from '../../layouts/BaseLayout.astro';
-import CompareWidget from '../../components/CompareWidget.astro';
-
-const warranties = [
-  { slug: 'applecare', name: 'AppleCare+' },
-  { slug: 'geek-squad-protection', name: 'Best Buy / Geek Squad Protection' },
-  { slug: 'samsung-care', name: 'Samsung Care+' },
-  { slug: 'home-depot-protection', name: 'Home Depot Protection Plan' },
-  { slug: 'costco-warranty', name: 'Costco Extended Warranty' },
-];
+import CategoryIndex from '../../components/CategoryIndex.astro';
 ---
 
-<BaseLayout title="Warranty Fine Print" description="What's really covered by warranties and protection plans — and what voids them.">
-  <div class="container">
-    <div class="category-header">
-      <h1>Warranty Fine Print</h1>
-      <p>What a warranty or protection plan actually covers, what's excluded, and how to file a claim.</p>
-    </div>
-
-    <CompareWidget category="warranty-fine-print" categoryLabel="Warranty Plans" />
-
-    <div class="card-grid">
-      {warranties.map(item => (
-        <a href={`/warranty-fine-print/${item.slug}/`} class="card">
-          <h3>{item.name}</h3>
-          <p>Warranty summary coming soon.</p>
-        </a>
-      ))}
-    </div>
-  </div>
+<BaseLayout
+  title="Warranty Fine Print"
+  description="What a warranty or protection plan actually covers, what's excluded, and how to file a claim."
+>
+  <CategoryIndex
+    category="warranty-fine-print"
+    categoryLabel="Warranty Fine Print"
+    description="What a warranty or protection plan actually covers, what's excluded, and how to file a claim."
+  />
 </BaseLayout>

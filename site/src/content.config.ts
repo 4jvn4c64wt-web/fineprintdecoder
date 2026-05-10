@@ -28,6 +28,13 @@ const policies = defineCollection({
       'terms-of-service',
     ]),
 
+    // vendorSlug groups every summary that belongs to the same real-world parent vendor
+    // (Amazon, Amazon Prime, and Amazon Prime Video all have vendorSlug: "amazon").
+    // It matches the source folder name under sources/. This is the join key used by
+    // the layout to find sibling summaries for the "Other Amazon policies" UI.
+    // Lowercase, hyphenated. No spaces.
+    vendorSlug: z.string().regex(/^[a-z0-9][a-z0-9-]*$/, 'vendorSlug must be lowercase, hyphenated, no spaces'),
+
     // Source provenance — the local archived copies are authoritative for what we summarized.
     // sourceFiles is an array because (a) one summary may cite multiple source documents
     // (e.g., a Chase card summary citing both the cardmember agreement and the rewards
@@ -46,6 +53,14 @@ const policies = defineCollection({
 
     // Meta description / search snippet
     summary: z.string().min(20).max(280),
+
+    // Search keywords — additional terms that should match this summary when typed into the
+    // global search bar, beyond the auto-extracted matches on title / company / policyType.
+    // Each summary has its own keywords. Cross-summary "type a sub-product, also see siblings"
+    // is handled by vendorSlug grouping at search time, not by duplicating keywords here.
+    // Keep entries short (single words or short phrases), lowercased by convention.
+    // Example for Amazon Prime Cancellation: ["prime", "membership", "cancel", "subscription"]
+    searchKeywords: z.array(z.string()).default([]),
 
     // Above-the-fold structured content
     bottomLine: z.string(),
