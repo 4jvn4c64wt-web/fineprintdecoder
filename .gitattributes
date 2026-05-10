@@ -1,0 +1,17 @@
+# Normalize line endings on checkin; check out with LF on all platforms.
+# Fixes the spurious "every file modified" issue when the working tree is
+# accessed via a bind mount that re-presents CRLF/LF line endings.
+* text=auto eol=lf
+
+# Binary file types — never normalize
+*.png binary
+*.jpg binary
+*.jpeg binary
+*.gif binary
+*.ico binary
+*.pdf binary
+*.woff binary
+*.woff2 binary
+*.ttf binary
+*.otf binary
+*.zip binary

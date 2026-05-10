@@ -1,6 +1,6 @@
 # FinePrintDecoder — Site Skeleton
 
-**All pages, sections, and content structure for the website.**
+*All pages, sections, and content structure for the website.*
 
 ---
 
@@ -81,12 +81,12 @@ fineprintdecoder.com/
 **Purpose:** Explain what the site does in 5 seconds. Direct people to what they're looking for.
 
 **Sections:**
-1. **Hero / headline.** One sentence: what this site does. No fluff.
-2. **Search bar.** Prominent. "Search for a company or policy type."
-3. **Most popular summaries.** 6–8 cards linking to highest-traffic pages.
-4. **Category navigation.** Cards or links to the 5 main categories.
-5. **Recent additions.** Last 5 published summaries.
-6. **Footer CTA.** "Can't find a policy? Tell us what to decode next." (links to contact/request form)
+1. Hero / headline. One sentence: what this site does. No fluff.
+2. Search bar. Prominent. "Search for a company or policy type."
+3. Most popular summaries. 6–8 cards linking to highest-traffic pages.
+4. Category navigation. Cards or links to the 5 main categories.
+5. Recent additions. Last 5 published summaries.
+6. Footer CTA. "Can't find a policy? Tell us what to decode next." (links to contact/request form)
 
 **What is NOT on the homepage:**
 - A long "about us" section
@@ -99,18 +99,19 @@ fineprintdecoder.com/
 **Purpose:** Browsable list of all summaries in a category.
 
 **Sections:**
-1. **Category title and one-line description.** "Return Policies — decoded from the actual documents."
-2. **Search/filter.** Filter by company name or sort alphabetically.
-3. **Summary cards.** Each card shows: Company name, policy type, bottom-line excerpt (first 100 chars), last verified date.
-4. **Pagination** if needed.
+1. Category title and one-line description. "Return Policies — decoded from the actual documents."
+2. Search/filter. Filter by company name or sort alphabetically.
+3. Summary cards. Each card shows: Company name, policy type, bottom-line excerpt (first 100 chars), last verified date.
+4. Pagination if needed.
 
 ### 2.3 Policy Summary Page (the core product)
 
-**Purpose:** The actual decoded policy. This is what people come for.
+**Purpose:** The actual decoded policy. This is what people come for. The page is structured so the practical answer is above the fold and the comprehensive read is one click away.
 
 **URL pattern:** `/[company-slug]/[policy-type]`
 
 **Frontmatter (in markdown file):**
+
 ```yaml
 ---
 title: "Amazon Return Policy — Decoded"
@@ -118,50 +119,55 @@ company: "Amazon"
 policyType: "Return Policy"
 category: "return-policies"
 sourceUrl: "https://www.amazon.com/gp/help/customer/display.html?nodeId=GKM69DUUYKQWKBER"
+sourceUrlsAdditional: []   # secondary URLs if the policy spans multiple pages
+sourceFile: "sources/return-policies/amazon_return-policy_2026-03-15.pdf"   # local archive — the file Claude actually read
 lastVerified: "2026-03-15"
 lastUpdated: "2026-03-15"
-status: "current" # current | stale | needs-review
-summary: "Most items can be returned within 30 days of delivery for a full refund. Some categories have shorter windows or are non-returnable."
+status: "current"          # current | stale | needs-review
+tier: 1                    # 1=quarterly review, 2=semi-annual, 3=annual
+summary: "Most items can be returned within 30 days of delivery for a full refund. Some categories have shorter or longer windows."
 ---
 ```
 
-**Page layout:**
+**Page layout (above the fold — always visible):**
 
 ```
 [Breadcrumb: Home > Return Policies > Amazon]
 
 # Amazon Return Policy — Decoded
 
-Last verified: March 15, 2026 | Source: [Official policy →]
+Last verified: March 15, 2026 · Source: [Official policy →]
 
----
+[ THE BOTTOM LINE — colored sidebar callout ]
+2–3 sentences. The answer to why someone googled this. Lead with the practical fact.
 
-⚡ THE BOTTOM LINE
-[2–3 sentences. The answer to why someone googled this.]
+[ KEY FACTS — data-table treatment, not bullets ]
+Return window:        30 days from delivery
+Refund method:        Original payment method
+Restocking fee:       None (most items)
+Return shipping:      Free for most items
+Receipt required:     No (order history serves as receipt)
+Condition:            Items must be unused, in original packaging
 
----
+[ HOW TO RETURN AN ITEM — numbered steps ]
+1. Go to Your Orders → find the item → "Return or replace items."
+2. Pick a reason and a return method. Most options are free.
+3. Print the label, drop it at any UPS/Kohl's/Whole Foods location, or schedule a pickup.
+4. Refund hits your original payment method within 3–5 business days after the return is received.
 
-🔑 KEY FACTS
-[Structured list of the essential data points. Scannable.]
-- Return window: 30 days from delivery
-- Refund method: Original payment method
-- Restocking fee: None (most items)
-- Return shipping: Free for most items
-- Receipt required: No (order history serves as receipt)
-- Condition: Items must be unused, in original packaging
+[ WATCH OUT FOR — amber sidebar callout ]
+- Holiday returns extended to January 31 only for items shipped Oct 1–Dec 31. Outside that window, the standard 30 days applies.
+- Items marked "Final Sale" or sold by some third-party sellers can't be returned. Check the listing.
+- Some categories — opened software, hazmat, custom — are non-returnable even within 30 days.
+```
 
----
+**Below the fold (collapsed by default):**
 
-⚠️ WATCH OUT FOR
-[Gotchas, non-obvious restrictions, things people get tripped up by.]
-- [Specific clause or condition, in plain English]
-- [Another one]
+```
+<details>
+<summary>Read the full breakdown</summary>
 
----
-
-📋 FULL BREAKDOWN
-[Section-by-section walkthrough. This is the long-form content.]
-[Organized by logical topic, not by the order of the source document.]
+[Section-by-section walkthrough in plain English. Organized by logical topic, not by the order of the source document. Quote the policy directly when wording matters; cite the section so the reader can verify.]
 
 ### Standard returns
 [Content]
@@ -175,23 +181,47 @@ Last verified: March 15, 2026 | Source: [Official policy →]
 ### Refund timing
 [Content]
 
+</details>
+
+<details>
+<summary>Legal fine print (venue, arbitration, liability)</summary>
+
+[FAQ-style. Each topic is one row. Most readers ignore this section, and that's fine — it's here for the people who care.]
+
+**Governing law:** [Plain answer in 1–2 sentences.]
+**Dispute venue:** [Plain answer.]
+**Jury trial:** [Waived / preserved / silent — and what that means.]
+**Arbitration / class action:** [Required? Opt-out window? Carve-outs?]
+**Account termination:** [Conditions under which the company can end your account.]
+**Liability cap:** [The dollar number, if there is one. The standard "as-is, no warranty" boilerplate gets one sentence here, not a paragraph.]
+**Privacy & data use (high level):** [One paragraph. What's collected, what's shared, where their full privacy policy lives. Not the place to lecture readers about tracking.]
+
+</details>
+
+<details>
+<summary>What changed</summary>
+
+- 2026-03-15: Initial FinePrintDecoder summary published.
+- [Future entries appear here as the policy is re-verified.]
+
+</details>
+
 ---
 
-🔄 WHAT CHANGED
-[Changelog. Empty for new summaries. Updated when policy changes are detected.]
-- March 2026: Initial summary published.
-
----
-
-📎 ORIGINAL DOCUMENT
-[Full name of the policy document with link to source.]
-
----
+**Original document:** [Amazon.com Return Policy](source URL) — last updated [date from the source itself, when available]
 
 [Disclaimer text — same on every page]
 
-[Sidebar or footer: "Was this helpful? Is something out of date? Let us know →"]
+[Footer: "Is something out of date? Let us know →"]
 ```
+
+**Section rules:**
+- The Bottom Line is always 2–3 sentences max. Never longer.
+- Key Facts is rendered as a data table by the layout component — write it as a list of label/value pairs in the markdown and let the template style it.
+- How To is required for return policies, cancellation policies, and warranty claims. Optional for credit card agreements (no single "how to" — replace with "What This Card Actually Costs" and "What's Conditional"). Skip for TOS pages — they're not action-oriented documents.
+- Watch Out For: 2–4 items, max. Each is a real, actionable gotcha for a normal user. If you have more than 4, you're including things that aren't actionable — move them to Full Breakdown or cut.
+- Full Breakdown and Legal Fine Print are always inside `<details>` blocks. They are collapsed by default. Do not put core practical info in them.
+- The "Legal fine print" section is structured as named topics (governing law, venue, etc.), not as a wall of prose. Each topic is one or two sentences.
 
 ### 2.4 About Page
 
@@ -229,8 +259,7 @@ Last verified: March 15, 2026 | Source: [Official policy →]
 
 **Purpose:** Legal protection.
 
-**Content:**
-Full disclaimer text covering:
+**Content:** Full disclaimer text covering:
 - This is not legal advice
 - No attorney-client relationship
 - Summaries are for informational purposes
@@ -243,7 +272,9 @@ Full disclaimer text covering:
 ## 3. Launch Content Plan (First 50 Pages)
 
 ### Batch 1 — Return Policies (20 pages)
+
 Priority order based on estimated search volume:
+
 1. Amazon
 2. Walmart
 3. Target
@@ -266,6 +297,7 @@ Priority order based on estimated search volume:
 20. Etsy (marketplace policy)
 
 ### Batch 2 — Cancellation Policies (15 pages)
+
 1. Planet Fitness
 2. Netflix
 3. Amazon Prime
@@ -283,6 +315,7 @@ Priority order based on estimated search volume:
 15. Audible
 
 ### Batch 3 — Credit Card Agreements (10 pages)
+
 1. Chase Sapphire Preferred
 2. Chase Sapphire Reserve
 3. Amex Platinum
@@ -295,6 +328,7 @@ Priority order based on estimated search volume:
 10. Apple Card
 
 ### Batch 4 — Warranty / Protection Plans (5 pages)
+
 1. AppleCare+
 2. Best Buy / Geek Squad Protection
 3. Samsung Care+
@@ -332,6 +366,30 @@ Priority order based on estimated search volume:
 - Sitemap.xml auto-generated for SEO
 - RSS feed for new additions (useful for newsletter later)
 - Open Graph / social meta tags on every page (for link previews when shared)
+- Collapsible sections use native `<details><summary>` HTML — no JavaScript required, accessible by default, works without JS
+
+### Source archival convention
+
+Every summary references a local archived copy of the source document via the `sourceFile` frontmatter field. This is Chris's record-keeping requirement: we keep a permanent dated copy of every policy we've decoded, so future re-verifications can compare apples to apples and we can prove what the policy said on the date we published.
+
+Archive structure:
+
+```
+sources/
+  return-policies/
+    amazon_return-policy_2026-03-15.pdf
+    walmart_return-policy_2026-03-18.html
+  cancellation-policies/
+    planet-fitness_cancellation-policy_2026-04-02.pdf
+  credit-card-agreements/
+    chase-sapphire-preferred_card-agreement_2026-04-10.pdf
+  warranty-fine-print/
+  terms-of-service/
+```
+
+**Naming convention:** `[company-slug]_[policy-type]_[YYYY-MM-DD].[ext]` where the date is the date of the source file (not the date Chris downloaded it, if known). PDF preferred for stability; HTML acceptable when only HTML is available.
+
+Source files are **not** served on the live site (they're not in `/public/` and the Astro build doesn't copy them into `dist/`). They live in the repo for record-keeping only.
 
 ---
 

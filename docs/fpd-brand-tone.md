@@ -1,12 +1,12 @@
 # FinePrintDecoder — Brand Tone & Personality
 
-**What the site feels like to a visitor. Separate from (but aligned with) the writing style guide.**
+*What the site feels like to a visitor. Separate from (but aligned with) the writing style guide.*
 
 ---
 
 ## 1. The One-Sentence Brand
 
-FinePrintDecoder is the friend who actually reads the contract before you sign it.
+**FinePrintDecoder is the friend who actually reads the contract before you sign it.**
 
 ---
 
@@ -26,7 +26,24 @@ If FinePrintDecoder were a person at a party, here's how they'd come across:
 
 ---
 
-## 3. How the Tone Shifts by Page Type
+## 3. The Triage Philosophy
+
+Every page is built around a question: *what did this reader come here to do?*
+
+A person searching "Amazon return policy" is trying to return something. They are not trying to audit Amazon's contractual relationship with humanity. The page should:
+
+- Answer the practical question first, in seconds.
+- Then offer the practical mechanics (the "how to").
+- Then flag what could trip them up while doing the practical thing.
+- Then — and only then, behind a click — offer the deeper read for people who actually want it.
+
+This means most pages will have a visible portion that is short and an expandable portion that is comprehensive. The voice is the same in both, but the visible portion is ruthlessly triaged for actionability and the expandable portion can be more thorough.
+
+Why this matters: the alternative — dumping everything we found into one long page — is what every other site does. It makes us feel diligent ("we read the whole thing!") but it makes the reader's job harder. A reference site that wastes reader attention isn't a reference site. It's a content farm with better intentions.
+
+---
+
+## 4. How the Tone Shifts by Page Type
 
 ### Policy summary pages (the core product)
 - **Most neutral.** Informational. Factual. Occasional raised eyebrow.
@@ -52,7 +69,7 @@ If FinePrintDecoder were a person at a party, here's how they'd come across:
 
 ---
 
-## 4. What We Sound Like vs. What We Don't
+## 5. What We Sound Like vs. What We Don't
 
 | We sound like | We don't sound like |
 |---|---|
@@ -64,14 +81,15 @@ If FinePrintDecoder were a person at a party, here's how they'd come across:
 
 ---
 
-## 5. Design Tone (for when we build the actual site)
+## 6. Design Tone (for when we build the actual site)
 
 The visual design should match the verbal tone:
 
 - **Clean, not minimal-chic.** We're not a design portfolio. We're a reference tool. The design should get out of the way of the content. Think Wirecutter, not Apple.
 - **Readable above all.** Big enough type. Enough whitespace. High contrast. People come here to read, fast.
 - **Professional but not corporate.** No stock photos. No gradients. No hero images of smiling people. If we use color, it's functional (status indicators, category coding).
-- **The template IS the brand.** The consistent structure of every policy summary — Bottom Line, Key Facts, Watch Out For, Full Breakdown — is the most distinctive thing about the site. Nail the template, and the brand follows.
+- **The template IS the brand.** The consistent structure of every policy summary — Bottom Line, Key Facts, How To, Watch Out For, with Full Breakdown and Legal Fine Print collapsed by default — is the most distinctive thing about the site. Nail the template, and the brand follows.
+- **No emojis.** Visual hierarchy comes from typography, color, and layout — not icon characters. Emojis are an AI tell and they cheapen a reference site. The only acceptable use of unicode-icon-like marks is functional UI affordances (a `+` to indicate a collapsible expanding, a back arrow in breadcrumbs).
 
 ### Color associations (suggested, not final)
 - Primary: a deep blue or dark teal. Trustworthy. Not flashy.
@@ -86,7 +104,7 @@ The visual design should match the verbal tone:
 
 ---
 
-## 6. What Distinguishes Our Tone from the Competition
+## 7. What Distinguishes Our Tone from the Competition
 
 **vs. TOS;DR:** They rate policies with shields/grades. Their tone is community-wiki — functional but flat. We have a voice. We explain *why* something matters, not just that it exists.
 
@@ -98,19 +116,21 @@ The visual design should match the verbal tone:
 
 ---
 
-## 7. Tone Guardrails
+## 8. Tone Guardrails
 
 Things that would break the brand if they appeared on the site:
 
 - Exclamation points in policy summaries (the homepage gets one, maybe)
 - The word "amazing" or "incredible" or "game-changing" describing anything
-- Emoji used for decoration (our section markers ⚡🔑⚠️📋🔄📎 are functional, not decorative)
+- **Any emoji, anywhere.** Section headers, inline, footers, error pages — none of it. They're an AI tell. The site's visual hierarchy is typographic, not iconographic.
 - A pop-up asking for an email address before the reader has seen any content
 - Autoplaying anything
 - Any sentence that starts with "In today's"
 - Any comparison to other companies' policies unless directly relevant and factual
 - Affiliate links without disclosure
 - Content that reads like it was written to rank for a keyword rather than to inform a reader
+- **Kitchen-sinking the Watch Out For section.** Listing every clause in the document that sounds bad. The point of the summary is to tell the reader what they actually need to know — not to prove we read everything. (We did. They don't need the receipt.)
+- **Lecturing readers about privacy.** Most users know they're trading some privacy for the service. Privacy details belong in a collapsible, not above the fold.
 
 ---
 

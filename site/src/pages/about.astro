@@ -2,9 +2,55 @@
 import BaseLayout from '../layouts/BaseLayout.astro';
 ---
 
-<BaseLayout title="About" description="What FinePrintDecoder is, why it exists, and who's behind it.">
-  <div class="container page-content">
+<BaseLayout
+  title="About"
+  description="What FinePrintDecoder is, why it exists, and who's behind it."
+>
+  <div class="container page-content prose">
     <h1>About FinePrintDecoder</h1>
-    <div class="placeholder-notice">Content coming soon.</div>
+
+    <p>
+      FinePrintDecoder reads the agreements you sign and tells you what they say. Return
+      policies, cancellation terms, credit card agreements, warranties, terms of service —
+      the documents nobody actually reads, summarized in plain English.
+    </p>
+
+    <p>
+      The premise: most people googling "Amazon return policy" or "Planet Fitness
+      cancellation" don't want a 4,000-word legal document or a content farm's keyword-stuffed
+      rewrite. They want to know if they can get their money back, how, and what could go
+      wrong. That's what we publish.
+    </p>
+
+    <h2>How we produce summaries</h2>
+    <p>
+      Every summary is built the same way: read the entire source document, extract the
+      practical facts (windows, fees, conditions), flag the few clauses that could trip up a
+      normal reader, and put the long-form walkthrough behind a click for people who want it.
+      Each page links to the original policy and shows when we last verified it.
+    </p>
+    <p>
+      We use AI to read carefully and write structurally — but a human reviews every summary
+      before it goes live. Where AI tends to be vague or alarmist, we cut. Where it gets a
+      legal term wrong, we fix it.
+    </p>
+
+    <h2>Who's behind it</h2>
+    <p>
+      FinePrintDecoder is a project by an attorney trained in contract litigation. The site
+      is informational — it is not legal advice and does not create an attorney-client
+      relationship. For specifics about your situation, talk to a lawyer.
+    </p>
+
+    <h2>Editorial policy</h2>
+    <p>
+      We don't take payment from any company we cover. We don't run sponsored summaries. If we
+      use affiliate links anywhere on the site, we disclose them clearly. Our judgments about a
+      policy aren't influenced by anyone's advertising budget.
+    </p>
+    <p>
+      If a summary is wrong or out of date, <a href="/contact/">tell us</a>. We jump corrections to the
+      front of the queue.
+    </p>
   </div>
 </BaseLayout>

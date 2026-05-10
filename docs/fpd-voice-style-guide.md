@@ -1,6 +1,6 @@
 # FinePrintDecoder — Voice & Style Guide
 
-**For use by Claude in all content production sessions.**
+*For use by Claude in all content production sessions.*
 
 ---
 
@@ -33,7 +33,37 @@ Our tone lives here on these spectrums:
 
 ---
 
-## 3. Writing Rules
+## 3. The Practical-First Principle
+
+*This is the most important rule on the page. Every other rule serves it.*
+
+People come to FinePrintDecoder to do something practical: return an item, cancel a subscription, understand a fee, decide whether to sign up. They do not come for an audit of every clause in the document. Lead with what they came for. Triage everything else.
+
+**Above the fold (always visible):**
+- The Bottom Line — the answer to the question they searched for
+- Key Facts — the practical data points (dates, dollar amounts, conditions)
+- How to [do the thing] — when applicable (returns, cancellations, claims)
+- Watch Out For — gotchas that could trip up a normal user doing a normal thing
+
+**Collapsed by default (one click to expand):**
+- Full Breakdown — section-by-section walkthrough for people who want to read the whole thing
+- Legal Fine Print — venue, jury trial waiver, arbitration, liability caps, governing law, account termination rights
+- Privacy & Data Use — high-level only; most readers know they trade some privacy for the service
+- What Changed — historical changelog
+
+**What does NOT belong in a summary at all (cut it):**
+- Anything irrelevant to a normal user (e.g., AI agent rules, scraper restrictions, age-of-majority disclaimers)
+- Detailed re-narration of the company's business
+- Every "as is, no warranty" disclaimer — they're standard; mention once in Legal Fine Print
+- Speculation about what the policy "really means"
+
+**The Watch Out For test:** Could this clause actually trip up a real person doing the thing they came here to do? If yes, include it. If it's a clause that exists in every consumer agreement and isn't unusually consumer-hostile, leave it out. Watch Out For is not a kitchen-sink list of "everything in the document that sounds bad if you read it cold." It is a short, specific list of "here's what could bite you."
+
+**The "would I tell my friend this?" test:** If your friend asked "what do I need to know about Amazon's return policy" — you wouldn't open with "they reserve the right to change the terms at any time." You'd say "you have 30 days, returns are free, here's how." The summary should match that.
+
+---
+
+## 4. Writing Rules
 
 ### Sentence-level rules
 
@@ -61,7 +91,7 @@ Our tone lives here on these spectrums:
 
 ---
 
-## 4. Anti-AI Writing Rules
+## 5. Anti-AI Writing Rules
 
 These rules exist because this content will be produced by an AI (me) and must not read like AI output. This is not about deception — it's about quality. AI writing patterns are bad writing patterns. Avoiding them makes the content better regardless of who wrote it.
 
@@ -69,8 +99,7 @@ These rules exist because this content will be produced by an AI (me) and must n
 
 Never use these. They are AI vocabulary tells. Find a plainer or more specific alternative every time.
 
-**High-signal AI words (never use):**
-delve, tapestry, multifaceted, nuanced (as an adjective praising something), underscore, pivotal, paramount, meticulous, holistic, robust, leverage (as a verb), foster, landscape (metaphorical), realm, beacon, cornerstone, testament, embark, spearhead, harness, unleash, nestled, vibrant, bustling, labyrinthine, myriad (as an adjective), esteemed, unwavering, resonate, cultivate, poised, commendable, intricate, notably, furthermore, moreover, consequently, thus, subsequently, accordingly, advent, bolster, comprehensive, crucial (use "important" or say why it matters), enhance, facilitate, groundbreaking, innovative, paradigm, seamless, streamline, synergy, transform (use "change"), utilize (use "use")
+**High-signal AI words (never use):** delve, tapestry, multifaceted, nuanced (as an adjective praising something), underscore, pivotal, paramount, meticulous, holistic, robust, leverage (as a verb), foster, landscape (metaphorical), realm, beacon, cornerstone, testament, embark, spearhead, harness, unleash, nestled, vibrant, bustling, labyrinthine, myriad (as an adjective), esteemed, unwavering, resonate, cultivate, poised, commendable, intricate, notably, furthermore, moreover, consequently, thus, subsequently, accordingly, advent, bolster, comprehensive, crucial (use "important" or say why it matters), enhance, facilitate, groundbreaking, innovative, paradigm, seamless, streamline, synergy, transform (use "change"), utilize (use "use")
 
 **Banned phrases (never use):**
 - "It's worth noting that" — just state the thing
@@ -84,7 +113,7 @@ delve, tapestry, multifaceted, nuanced (as an adjective praising something), und
 - "The bottom line is" — we have a literal section called The Bottom Line; don't also use it as a phrase
 - "This is where it gets interesting"
 - "Whether you're a [X] or a [Y]"
-- "In an era where..."
+- "In an era where…"
 - "[X] is a game-changer"
 - "Only time will tell"
 - "The future looks bright"
@@ -100,7 +129,7 @@ delve, tapestry, multifaceted, nuanced (as an adjective praising something), und
 - **The mirror opening.** Don't start a summary by restating what the reader already knows they're looking for. If someone clicked "Amazon Return Policy — Decoded," don't open with "Amazon's return policy governs how customers can return items purchased from the platform." They know. Start with the thing they came to learn.
 - **Balanced hedging.** AI covers all angles equally to avoid taking a position. We don't. If a policy has a terrible clause, we call it out. If a policy is surprisingly generous, we say so. Having a perspective is human.
 - **The empty conclusion.** Don't end with a bland wrap-up ("Overall, this is a standard return policy with a few things to watch for"). Either end with the most important remaining detail or just stop. Not every piece needs a bow on it.
-- **Emoji as structure.** We use the emoji markers in our template sections (⚡🔑⚠️📋🔄📎) because they aid scanning. We never use emoji inline as decoration or emphasis.
+- **No emojis. Anywhere. Ever.** Not as section markers, not inline, not decorative. Emojis are an AI tell. Visual hierarchy comes from typography, color, spacing, and the rendered site's CSS — not from icon characters in the markdown source. (See §8 for the visual-hierarchy approach the site uses instead.)
 
 ### Positive patterns to adopt
 
@@ -109,33 +138,55 @@ delve, tapestry, multifaceted, nuanced (as an adjective praising something), und
 - **Occasional incomplete sentences.** "Restocking fee? None." This is a human rhythm. Use it when it fits.
 - **Parenthetical asides.** "(Yes, they actually put that in writing.)" — sparingly, but this is a human tell that machines rarely produce.
 - **Vary your openings.** Don't start consecutive paragraphs the same way. If two paragraphs in a row start with "The" or "You," rewrite one.
-- **Let some tension sit.** If a policy is ambiguous, say so. "The policy doesn't specify what happens if..." — this is honest and human. AI tends to resolve ambiguity; humans sometimes just name it.
+- **Let some tension sit.** If a policy is ambiguous, say so. "The policy doesn't specify what happens if…" — this is honest and human. AI tends to resolve ambiguity; humans sometimes just name it.
 
 ---
 
-## 5. Things We Never Do
+## 6. Things We Never Do
 
 - Give legal advice. We summarize. We inform. We flag. We do not advise.
 - Recommend or discourage purchasing from any company based on their policies. We present the terms.
 - Use a preachy or activist tone. If a policy is bad, the facts speak for themselves.
 - Write filler to hit a word count. Say what needs saying, then stop.
 - Pad a summary with background about the company. Nobody came here for a company bio.
-- Use the word "we" to mean "this article." ("As we discussed above...") "We" means the FinePrintDecoder team, or it doesn't appear.
+- Use the word "we" to mean "this article." ("As we discussed above…") "We" means the FinePrintDecoder team, or it doesn't appear.
 
 ---
 
-## 6. Quality Check
+## 7. Quality Check
 
 Before publishing any content, run through this checklist:
 
-- [ ] Does the Bottom Line actually answer the question someone googled?
-- [ ] Could a reader get what they need in under 60 seconds from the Key Facts?
-- [ ] Is the source linked and the verification date current?
-- [ ] Read the first sentence of every paragraph in sequence — do they vary in structure?
-- [ ] Are there any words from the banned list?
-- [ ] Is there any sentence that explains something the reader obviously already knows?
-- [ ] Does any paragraph feel like it's there to fill space rather than inform?
-- [ ] Read it out loud. Does any sentence feel like it came from a textbook?
+- Does the Bottom Line actually answer the question someone googled?
+- Could a reader get what they need in under 60 seconds from the Key Facts?
+- Is the source linked and the verification date current?
+- Read the first sentence of every paragraph in sequence — do they vary in structure?
+- Are there any words from the banned list?
+- Is there any sentence that explains something the reader obviously already knows?
+- Does any paragraph feel like it's there to fill space rather than inform?
+- Read it out loud. Does any sentence feel like it came from a textbook?
+- **Triage check:** Is anything above the fold not actionable for a normal user? If yes, move it to a collapsible section or cut it.
+- **Watch Out For length check:** More than 4 items? You're probably kitchen-sinking. Cut to the items that could actually bite a normal reader doing a normal thing.
+- **Length check:** If the visible (non-collapsed) summary scrolls more than ~1.5 screens on mobile, you're including too much. Move detail into Full Breakdown or Legal Fine Print.
+- **Emoji check:** Are there zero emojis? Good. (If any slipped in: rewrite.)
+
+---
+
+## 8. Visual Hierarchy (no emojis)
+
+Emojis are out, but a wall of plain prose is also wrong. The rendered site creates visual interest through layout, not icons. As the writer of the markdown source, you don't draw the boxes — but knowing how the page will render helps you write content that fits each section's role.
+
+The Astro template renders summaries with these treatments:
+
+- **The Bottom Line** — slightly larger type, set off with a colored left border (primary blue). The first thing the eye lands on.
+- **Key Facts** — rendered as a tight definition list / data table, not bullets. Labels in bold, values right-aligned where they're numbers/dates. Scans like a spec sheet.
+- **How To** (when present) — numbered steps, generous line height, visible step numerals.
+- **Watch Out For** — colored left border (amber). Each item gets its own row with the gotcha sentence in bold and the explanation below. Not a bullet list.
+- **Full Breakdown** — collapsed by default. Renders inside a `<details>` block with a clear "Read the full breakdown" trigger.
+- **Legal Fine Print** — collapsed by default. FAQ-style: each topic (venue, jury trial, account termination, etc.) is its own collapsible row inside the parent.
+- **What Changed** — small type, dated entries, set off in a sidebar or footer block.
+
+In the markdown source, you write plain `## Section Heading` and the layout component handles the rest. Don't insert HTML for the colored borders or the data-table treatment — that's the template's job. **You DO** use `<details><summary>` for the collapsibles (Full Breakdown, Legal Fine Print sub-rows) — those need to be in the markdown so the structure is preserved.
 
 ---
 

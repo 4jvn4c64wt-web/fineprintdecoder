@@ -2,9 +2,60 @@
 import BaseLayout from '../layouts/BaseLayout.astro';
 ---
 
-<BaseLayout title="How We Work" description="Our process for reading, summarizing, and verifying consumer policies.">
-  <div class="container page-content">
+<BaseLayout
+  title="How We Work"
+  description="Our process for reading, summarizing, and verifying consumer policies."
+>
+  <div class="container page-content prose">
     <h1>How We Work</h1>
-    <div class="placeholder-notice">Content coming soon.</div>
+
+    <p>
+      Every summary on this site goes through the same process. The point is consistency: if
+      you've read one of our summaries, you know how to read any of them.
+    </p>
+
+    <h2>1. We read the entire source document</h2>
+    <p>
+      Not the first paragraph. Not the highlighted excerpts. The full agreement. We keep a
+      dated copy of every document we summarize, so we can show what the policy said when we
+      decoded it — and so we can compare future versions to see what changed.
+    </p>
+
+    <h2>2. We use a consistent template</h2>
+    <p>
+      Every summary opens with the same four sections: a Bottom Line, Key Facts, How To
+      (when there's something to do), and Watch Out For. The full section-by-section
+      walkthrough is one click below, in a collapsible block, for readers who want it.
+      Procedural legal details — venue, arbitration, liability caps — live in a separate
+      collapsible because most readers don't need them.
+    </p>
+
+    <h2>3. We link to the source. Every time.</h2>
+    <p>
+      Our summary is a useful shortcut. The company's actual document is the authority. Every
+      page on this site has a direct link to the original policy at the company's website.
+    </p>
+
+    <h2>4. We date-stamp everything and re-verify on a schedule</h2>
+    <p>
+      Every summary shows when it was last verified against the source. High-traffic policies
+      get re-checked every quarter; mid-tier every six months; long-tail annually. If a
+      summary hasn't been re-verified in over a year, the page shows a warning banner.
+    </p>
+
+    <h2>5. We rely on readers to flag changes</h2>
+    <p>
+      Companies change their terms without notifying anyone. If you spot a discrepancy
+      between our summary and the current policy, <a href="/contact/">tell us</a>. We move
+      reader-flagged items to the front of the review queue.
+    </p>
+
+    <h2>6. We are not lawyers, and this is not legal advice</h2>
+    <p>
+      The site provides plain-English summaries for informational purposes. Nothing here is
+      legal advice, and reading the site does not create an attorney-client relationship. If
+      you need to know how a specific clause applies to a specific situation, consult a
+      lawyer.
+    </p>
   </div>
 </BaseLayout>

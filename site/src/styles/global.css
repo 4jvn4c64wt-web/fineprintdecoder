@@ -410,3 +410,468 @@ main {
   font-size: 0.95rem;
   margin: 1.5rem 0;
 }
+
+.placeholder-text {
+  color: var(--color-text-muted);
+  font-style: italic;
+}
+
+/* ============================================================
+   Policy Summary Page
+   See voice-style-guide §8 (Visual Hierarchy) for the rationale.
+   ============================================================ */
+
+.summary {
+  padding: 1rem 0 4rem;
+}
+
+.summary__container {
+  max-width: 760px;  /* slightly narrower than .container for line length */
+}
+
+/* Breadcrumb */
+.breadcrumb {
+  font-size: 0.85rem;
+  color: var(--color-text-muted);
+  padding: 1rem 0 0.5rem;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.4rem;
+  align-items: center;
+}
+
+.breadcrumb a {
+  color: var(--color-text-muted);
+}
+
+.breadcrumb a:hover {
+  color: var(--color-primary);
+}
+
+.breadcrumb span[aria-hidden="true"] {
+  color: var(--color-border);
+}
+
+/* Title + meta */
+.summary__header {
+  margin: 0.5rem 0 2rem;
+  padding-bottom: 1.25rem;
+  border-bottom: 1px solid var(--color-border);
+}
+
+.summary__header h1 {
+  font-size: 2rem;
+  font-weight: 800;
+  letter-spacing: -0.025em;
+  line-height: 1.15;
+  margin-bottom: 0.5rem;
+}
+
+.summary__meta {
+  font-size: 0.88rem;
+  color: var(--color-text-muted);
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.4rem;
+  align-items: baseline;
+}
+
+.summary__meta strong {
+  color: var(--color-text);
+  font-weight: 600;
+}
+
+.summary__divider {
+  opacity: 0.5;
+}
+
+/* Stale-content warning banner */
+.staleness-banner {
+  margin-top: 1rem;
+  padding: 0.85rem 1rem;
+  background: #fff8eb;
+  border-left: 4px solid var(--color-accent);
+  border-radius: 4px;
+  font-size: 0.92rem;
+  color: var(--color-text);
+}
+
+/* Section labels (small caps style above section content) */
+.section-label {
+  font-size: 0.78rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  color: var(--color-text-muted);
+  margin: 0 0 0.75rem;
+}
+
+/* Callouts (Bottom Line, Watch Out For) */
+.callout {
+  margin: 1.75rem 0;
+  padding: 1.25rem 1.5rem;
+  border-radius: 6px;
+  border-left: 4px solid;
+  background: var(--color-surface);
+}
+
+.callout__label {
+  font-size: 0.78rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  margin-bottom: 0.6rem;
+}
+
+.callout__body {
+  font-size: 1.08rem;
+  line-height: 1.55;
+  color: var(--color-text);
+}
+
+.callout--bottom-line {
+  border-left-color: var(--color-primary);
+  background: #f4f8f9;
+}
+
+.callout--bottom-line .callout__label {
+  color: var(--color-primary-dark);
+}
+
+.callout--watch-out {
+  border-left-color: var(--color-accent);
+  background: #fdf6eb;
+}
+
+.callout--watch-out .callout__label {
+  color: #8c5a16;
+}
+
+.watch-out__list {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+}
+
+.watch-out__list li {
+  padding: 0.5rem 0;
+  border-bottom: 1px solid rgba(0, 0, 0, 0.05);
+  line-height: 1.55;
+}
+
+.watch-out__list li:last-child {
+  border-bottom: none;
+}
+
+.watch-out__headline {
+  font-weight: 600;
+  color: var(--color-text);
+}
+
+.watch-out__detail {
+  color: var(--color-text);
+}
+
+/* Key Facts — data-table treatment */
+.key-facts {
+  margin: 1.75rem 0;
+}
+
+.key-facts__list {
+  background: var(--color-surface);
+  border: 1px solid var(--color-border);
+  border-radius: 6px;
+  overflow: hidden;
+}
+
+.key-facts__row {
+  display: grid;
+  grid-template-columns: minmax(140px, 30%) 1fr;
+  gap: 1rem;
+  padding: 0.7rem 1rem;
+  border-bottom: 1px solid var(--color-border);
+  font-size: 0.95rem;
+}
+
+.key-facts__row:last-child {
+  border-bottom: none;
+}
+
+.key-facts__row dt {
+  color: var(--color-text-muted);
+  font-weight: 500;
+}
+
+.key-facts__row dd {
+  color: var(--color-text);
+  font-weight: 500;
+}
+
+@media (max-width: 540px) {
+  .key-facts__row {
+    grid-template-columns: 1fr;
+    gap: 0.15rem;
+  }
+}
+
+/* How To — numbered steps */
+.how-to {
+  margin: 1.75rem 0;
+}
+
+.how-to__steps {
+  list-style: none;
+  counter-reset: how-to;
+  padding: 0;
+}
+
+.how-to__steps li {
+  counter-increment: how-to;
+  position: relative;
+  padding: 0.65rem 0 0.65rem 2.5rem;
+  font-size: 0.98rem;
+  line-height: 1.55;
+  border-bottom: 1px solid var(--color-border);
+}
+
+.how-to__steps li:last-child {
+  border-bottom: none;
+}
+
+.how-to__steps li::before {
+  content: counter(how-to);
+  position: absolute;
+  left: 0;
+  top: 0.6rem;
+  width: 1.6rem;
+  height: 1.6rem;
+  background: var(--color-primary);
+  color: #fff;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 0.8rem;
+  font-weight: 600;
+}
+
+/* Collapsibles (<details>) */
+.collapsible {
+  margin: 1.5rem 0;
+  background: var(--color-surface);
+  border: 1px solid var(--color-border);
+  border-radius: 6px;
+  overflow: hidden;
+}
+
+.collapsible > summary {
+  padding: 0.85rem 1.25rem;
+  font-weight: 600;
+  font-size: 0.95rem;
+  cursor: pointer;
+  list-style: none;  /* hide default marker */
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  color: var(--color-text);
+  transition: background 0.15s;
+}
+
+.collapsible > summary::-webkit-details-marker {
+  display: none;
+}
+
+.collapsible > summary::after {
+  content: '+';
+  font-size: 1.4rem;
+  font-weight: 400;
+  color: var(--color-text-muted);
+  margin-left: 1rem;
+  transition: transform 0.15s;
+  line-height: 1;
+}
+
+.collapsible[open] > summary::after {
+  content: '−';
+}
+
+.collapsible > summary:hover {
+  background: #f5f4f1;
+}
+
+.collapsible__content {
+  padding: 1rem 1.25rem 1.25rem;
+  border-top: 1px solid var(--color-border);
+  font-size: 0.96rem;
+  line-height: 1.65;
+}
+
+.collapsible__content p {
+  margin-bottom: 0.85rem;
+}
+
+.collapsible__content p:last-child {
+  margin-bottom: 0;
+}
+
+.collapsible__content h3 {
+  font-size: 1.05rem;
+  font-weight: 700;
+  margin: 1.25rem 0 0.5rem;
+}
+
+.collapsible__content h3:first-child {
+  margin-top: 0;
+}
+
+.collapsible__content ul,
+.collapsible__content ol {
+  margin: 0 0 0.85rem 1.25rem;
+}
+
+.collapsible__content li {
+  margin-bottom: 0.3rem;
+}
+
+.collapsible__content blockquote {
+  margin: 1rem 0;
+  padding: 0.5rem 1rem;
+  border-left: 3px solid var(--color-border);
+  color: var(--color-text-muted);
+  font-style: italic;
+}
+
+/* Legal fine print list */
+.legal-list {
+  margin: 0;
+}
+
+.legal-list__row {
+  padding: 0.6rem 0;
+  border-bottom: 1px solid var(--color-border);
+}
+
+.legal-list__row:last-child {
+  border-bottom: none;
+}
+
+.legal-list__row dt {
+  font-weight: 600;
+  font-size: 0.85rem;
+  color: var(--color-text-muted);
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+  margin-bottom: 0.2rem;
+}
+
+.legal-list__row dd {
+  color: var(--color-text);
+  font-size: 0.96rem;
+  line-height: 1.55;
+}
+
+/* What changed — changelog list */
+.changelog {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+}
+
+.changelog li {
+  display: grid;
+  grid-template-columns: 110px 1fr;
+  gap: 1rem;
+  padding: 0.5rem 0;
+  border-bottom: 1px dashed var(--color-border);
+  font-size: 0.93rem;
+}
+
+.changelog li:last-child {
+  border-bottom: none;
+}
+
+.changelog time {
+  color: var(--color-text-muted);
+  font-variant-numeric: tabular-nums;
+}
+
+/* Source link block */
+.summary__source {
+  margin: 2rem 0 1.5rem;
+}
+
+.summary__source a {
+  font-weight: 600;
+}
+
+.source-additional {
+  list-style: disc;
+  padding-left: 1.25rem;
+  margin-top: 0.5rem;
+  font-size: 0.9rem;
+}
+
+.source-additional a {
+  font-weight: 400;
+  word-break: break-all;
+}
+
+/* Disclaimer */
+.summary__disclaimer {
+  margin: 1.5rem 0 0;
+  padding: 1rem 1.25rem;
+  border-top: 1px solid var(--color-border);
+  font-size: 0.85rem;
+  color: var(--color-text-muted);
+  line-height: 1.6;
+}
+
+.summary__disclaimer p {
+  margin: 0;
+}
+
+.summary__disclaimer a {
+  color: var(--color-text-muted);
+  text-decoration: underline;
+}
+
+.summary__disclaimer a:hover {
+  color: var(--color-primary);
+}
+
+/* ============================================================
+   Prose (for the body markdown rendered inside collapsibles
+   and on long-form pages like How We Work)
+   ============================================================ */
+.prose h2 {
+  font-size: 1.15rem;
+  font-weight: 700;
+  margin: 1.5rem 0 0.5rem;
+}
+
+.prose h3 {
+  font-size: 1.02rem;
+  font-weight: 700;
+  margin: 1.2rem 0 0.4rem;
+}
+
+.prose p {
+  margin-bottom: 0.85rem;
+}
+
+.prose ul,
+.prose ol {
+  margin: 0 0 0.85rem 1.25rem;
+}
+
+.prose li {
+  margin-bottom: 0.3rem;
+}
+
+.prose blockquote {
+  margin: 1rem 0;
+  padding: 0.5rem 1rem;
+  border-left: 3px solid var(--color-border);
+  color: var(--color-text-muted);
+  font-style: italic;
+}

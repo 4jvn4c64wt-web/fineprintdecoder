@@ -1,0 +1,22 @@
+---
+import { getCollection } from 'astro:content';
+import PolicySummaryLayout from '../../layouts/PolicySummaryLayout.astro';
+
+export async function getStaticPaths() {
+  const policies = await getCollection('policies');
+  return policies.map((entry) => {
+    // entry.id looks like "return-policies/amazon.md" because of the glob loader's base path.
+    // We split it into category + slug and use those as the route params.
+    const [category, slugWithExt] = entry.id.split('/');
+    const slug = slugWithExt.replace(/\.md$/, '');
+    return {
+      params: { category, slug },
+      props: { entry },
+    };
+  });
+}
+
+const { entry } = Astro.props;
+---
+
+<PolicySummaryLayout entry={entry} />

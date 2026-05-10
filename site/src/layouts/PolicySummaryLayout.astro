@@ -1,0 +1,205 @@
+---
+import BaseLayout from './BaseLayout.astro';
+import type { CollectionEntry } from 'astro:content';
+
+interface Props {
+  entry: CollectionEntry<'policies'>;
+}
+
+const { entry } = Astro.props;
+const { Content } = await entry.render();
+const data = entry.data;
+
+// Map category slug → human-readable category label (used in breadcrumb)
+const categoryLabel: Record<string, string> = {
+  'return-policies': 'Return Policies',
+  'cancellation-policies': 'Cancellation Policies',
+  'credit-card-agreements': 'Credit Card Agreements',
+  'warranty-fine-print': 'Warranty Fine Print',
+  'terms-of-service': 'Terms of Service',
+};
+
+const category = categoryLabel[data.category] ?? data.category;
+
+// Stale-content banner — see business-plan §5.4
+const stalenessThresholdDays = 365;
+const daysSinceVerified = Math.floor(
+  (Date.now() - new Date(data.lastVerified).getTime()) / (1000 * 60 * 60 * 24)
+);
+const isStale = daysSinceVerified > stalenessThresholdDays;
+
+// Format the verified date as "Month DD, YYYY"
+const verifiedFmt = new Intl.DateTimeFormat('en-US', {
+  year: 'numeric',
+  month: 'long',
+  day: 'numeric',
+}).format(new Date(data.lastVerified));
+
+// Legal fine print rows (skip undefined entries)
+const legalRows: { label: string; value: string }[] = [];
+if (data.legalFinePrint) {
+  const lp = data.legalFinePrint;
+  if (lp.governingLaw) legalRows.push({ label: 'Governing law', value: lp.governingLaw });
+  if (lp.disputeVenue) legalRows.push({ label: 'Dispute venue', value: lp.disputeVenue });
+  if (lp.juryTrial) legalRows.push({ label: 'Jury trial', value: lp.juryTrial });
+  if (lp.arbitration) legalRows.push({ label: 'Arbitration / class action', value: lp.arbitration });
+  if (lp.accountTermination) legalRows.push({ label: 'Account termination', value: lp.accountTermination });
+  if (lp.liabilityCap) legalRows.push({ label: 'Liability cap', value: lp.liabilityCap });
+  if (lp.privacyHighLevel) legalRows.push({ label: 'Privacy & data use', value: lp.privacyHighLevel });
+}
+
+const description = data.summary;
+---
+
+<BaseLayout title={data.title} description={description}>
+  <article class="summary">
+    <div class="container summary__container">
+
+      <!-- Breadcrumb -->
+      <nav class="breadcrumb" aria-label="Breadcrumb">
+        <a href="/">Home</a>
+        <span aria-hidden="true">›</span>
+        <a href={`/${data.category}/`}>{category}</a>
+        <span aria-hidden="true">›</span>
+        <span>{data.company}</span>
+      </nav>
+
+      <!-- Title + meta -->
+      <header class="summary__header">
+        <h1>{data.title}</h1>
+        <p class="summary__meta">
+          <span class="summary__verified">Last verified: <strong>{verifiedFmt}</strong></span>
+          <span class="summary__divider" aria-hidden="true">·</span>
+          <a href={data.sourceUrl} target="_blank" rel="noopener">Official policy →</a>
+        </p>
+        {isStale && (
+          <div class="staleness-banner" role="status">
+            This summary hasn't been re-verified in over a year. The company may have changed its policy. Always check the
+            <a href={data.sourceUrl} target="_blank" rel="noopener"> original document</a> for the current terms.
+          </div>
+        )}
+      </header>
+
+      <!-- Bottom Line -->
+      <section class="callout callout--bottom-line" aria-label="The bottom line">
+        <h2 class="callout__label">The Bottom Line</h2>
+        <p class="callout__body">{data.bottomLine}</p>
+      </section>
+
+      <!-- Key Facts -->
+      <section class="key-facts" aria-label="Key facts">
+        <h2 class="section-label">Key Facts</h2>
+        <dl class="key-facts__list">
+          {data.keyFacts.map((kf) => (
+            <div class="key-facts__row">
+              <dt>{kf.label}</dt>
+              <dd>{kf.value}</dd>
+            </div>
+          ))}
+        </dl>
+      </section>
+
+      <!-- How To (optional) -->
+      {data.howTo && data.howTo.length > 0 && (
+        <section class="how-to" aria-label={`How to ${data.policyType.toLowerCase().includes('cancel') ? 'cancel' : data.policyType.toLowerCase().includes('return') ? 'return' : 'use this policy'}`}>
+          <h2 class="section-label">How To</h2>
+          <ol class="how-to__steps">
+            {data.howTo.map((step) => (
+              <li>{step}</li>
+            ))}
+          </ol>
+        </section>
+      )}
+
+      <!-- Watch Out For -->
+      {data.watchOutFor.length > 0 && (
+        <section class="callout callout--watch-out" aria-label="Things to watch out for">
+          <h2 class="callout__label">Watch Out For</h2>
+          <ul class="watch-out__list">
+            {data.watchOutFor.map((item) => (
+              <li>
+                <strong class="watch-out__headline">{item.headline}</strong>
+                <span class="watch-out__detail"> {item.detail}</span>
+              </li>
+            ))}
+          </ul>
+        </section>
+      )}
+
+      <!-- Full Breakdown (collapsed by default) -->
+      <details class="collapsible">
+        <summary>Read the full breakdown</summary>
+        <div class="collapsible__content prose">
+          <Content />
+        </div>
+      </details>
+
+      <!-- Legal Fine Print (collapsed by default) -->
+      {legalRows.length > 0 && (
+        <details class="collapsible">
+          <summary>Legal fine print (venue, arbitration, liability)</summary>
+          <div class="collapsible__content">
+            <dl class="legal-list">
+              {legalRows.map((row) => (
+                <div class="legal-list__row">
+                  <dt>{row.label}</dt>
+                  <dd>{row.value}</dd>
+                </div>
+              ))}
+            </dl>
+          </div>
+        </details>
+      )}
+
+      <!-- What Changed (collapsed) -->
+      {data.whatChanged.length > 0 && (
+        <details class="collapsible">
+          <summary>What changed</summary>
+          <div class="collapsible__content">
+            <ul class="changelog">
+              {data.whatChanged.map((entry) => (
+                <li>
+                  <time datetime={new Date(entry.date).toISOString()}>
+                    {new Intl.DateTimeFormat('en-US', { year: 'numeric', month: 'short', day: 'numeric' }).format(new Date(entry.date))}
+                  </time>
+                  <span>{entry.note}</span>
+                </li>
+              ))}
+            </ul>
+          </div>
+        </details>
+      )}
+
+      <!-- Source link block -->
+      <section class="summary__source">
+        <h2 class="section-label">Original Document</h2>
+        <p>
+          <a href={data.sourceUrl} target="_blank" rel="noopener">
+            {data.company} {data.policyType}
+          </a>
+        </p>
+        {data.sourceUrlsAdditional.length > 0 && (
+          <ul class="source-additional">
+            {data.sourceUrlsAdditional.map((url) => (
+              <li><a href={url} target="_blank" rel="noopener">{url}</a></li>
+            ))}
+          </ul>
+        )}
+      </section>
+
+      <!-- Disclaimer -->
+      <aside class="summary__disclaimer">
+        <p>
+          This is a plain-English summary of {data.company}'s {data.policyType.toLowerCase()},
+          compiled from the publicly available document. It is not legal advice. Companies change
+          their terms; this summary may not reflect the latest version. Always refer to the
+          <a href={data.sourceUrl} target="_blank" rel="noopener">original document</a>
+          for the authoritative and current terms. This summary was produced with AI assistance
+          and reviewed before publication. If you find an error or notice a change,
+          <a href="/contact/">let us know</a>.
+        </p>
+      </aside>
+
+    </div>
+  </article>
+</BaseLayout>
