@@ -1,5 +1,6 @@
 ---
 import BaseLayout from '../../layouts/BaseLayout.astro';
+import CompareWidget from '../../components/CompareWidget.astro';
 
 const services = [
   { slug: 'openai', name: 'OpenAI' },
@@ -9,12 +10,14 @@ const services = [
 ];
 ---
 
-<BaseLayout title="Terms of Service" description="The rights you're giving up by clicking 'I agree' — key clauses decoded.">
+<BaseLayout title="Terms of Service" description="Plain-English summaries of the clauses in major terms of service that affect everyday users — arbitration, account termination, content rights, and similar.">
   <div class="container">
     <div class="category-header">
       <h1>Terms of Service</h1>
-      <p>The rights you're giving up by clicking "I agree."</p>
+      <p>The clauses in a terms of service that actually affect you: arbitration, account termination, content licenses, and dispute venue.</p>
     </div>
+
+    <CompareWidget category="terms-of-service" categoryLabel="Terms of Service" />
 
     <div class="card-grid">
       {services.map(item => (

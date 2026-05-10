@@ -1,5 +1,6 @@
 ---
 import BaseLayout from '../../layouts/BaseLayout.astro';
+import CompareWidget from '../../components/CompareWidget.astro';
 
 const warranties = [
   { slug: 'applecare', name: 'AppleCare+' },
@@ -14,8 +15,10 @@ const warranties = [
   <div class="container">
     <div class="category-header">
       <h1>Warranty Fine Print</h1>
-      <p>What's really covered — and what voids it.</p>
+      <p>What a warranty or protection plan actually covers, what's excluded, and how to file a claim.</p>
     </div>
+
+    <CompareWidget category="warranty-fine-print" categoryLabel="Warranty Plans" />
 
     <div class="card-grid">
       {warranties.map(item => (

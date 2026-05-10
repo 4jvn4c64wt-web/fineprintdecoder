@@ -20,7 +20,7 @@ If FinePrintDecoder were a person at a party, here's how they'd come across:
 
 **Helpful, not eager.** They answer your question directly. They don't ask if there's anything else they can help with. They don't sign off with a smiley face.
 
-**Skeptical, not cynical.** They notice when companies bury bad terms in fine print, and they point it out. But they're not on a crusade. Sometimes a policy is fair, and they say so.
+**Neutral, not adversarial.** They tell you what the policy says — the dollar amount, the deadline, the condition — and let you decide whether you like it. They don't say "the company hopes you won't notice" or "they bury this on purpose." That kind of framing reads like a consumer-advocacy blog with an axe to grind, and it makes the reader trust the summary less, not more. The facts of an unfavorable clause are persuasive on their own. Editorializing on top is noise. If a policy is fair, we say so. If a clause is unusual, we describe what makes it unusual without speculating about why the company wrote it that way.
 
 **Precise, not pedantic.** They care about accuracy. "14 calendar days" and "14 business days" are different things, and they'll make sure you know which one applies. But they won't lecture you about why the distinction matters.
 
@@ -65,7 +65,7 @@ Why this matters: the alternative — dumping everything we found into one long 
 - Not outrage bait. Not clickbait. Just: "Here's a real clause from a real agreement."
 
 ### Error pages / empty states / footer
-- **Brief and human.** A 404 page can say "This page doesn't exist. Maybe the company changed their terms and forgot to tell us too." One line. Done.
+- **Brief and human.** A 404 page can say "This page doesn't exist. The policy you're looking for may not be on the site yet." One line. Done.
 
 ---
 
@@ -110,7 +110,7 @@ The visual design should match the verbal tone:
 
 **vs. SEO content farms ("What is Amazon's return policy?"):** They pad 200 words of actual information with 1,800 words of filler to hit a word count. We lead with the answer and stop when we've said what needs saying.
 
-**vs. Consumer advocacy blogs:** They often have an angry or activist tone — "Company X is SCREWING you." We flag the same issues but our tone is calm and factual. The reader draws their own conclusion. This makes us more trustworthy.
+**vs. Consumer advocacy blogs:** They often have an angry or activist tone — "Company X is SCREWING you." We don't. We don't even use phrases like "companies hope you won't read this" or "buried in fine print to trap you." We flag the same restrictive clauses but our tone is calm and factual. The reader draws their own conclusion. The neutrality is a deliberate trust signal: a calm description of an unfavorable clause is more credible than an outraged one.
 
 **vs. The company's own policy page:** They bury the important stuff in legal language and structure the document to protect themselves, not to inform you. We restructure around what the reader actually needs to know.
 
@@ -128,10 +128,4 @@ Things that would break the brand if they appeared on the site:
 - Any sentence that starts with "In today's"
 - Any comparison to other companies' policies unless directly relevant and factual
 - Affiliate links without disclosure
-- Content that reads like it was written to rank for a keyword rather than to inform a reader
-- **Kitchen-sinking the Watch Out For section.** Listing every clause in the document that sounds bad. The point of the summary is to tell the reader what they actually need to know — not to prove we read everything. (We did. They don't need the receipt.)
-- **Lecturing readers about privacy.** Most users know they're trading some privacy for the service. Privacy details belong in a collapsible, not above the fold.
-
----
-
-*The tone is the brand. If the writing feels right, the brand works. Everything else — design, structure, distribution — exists to carry the writing to the reader.*
+- Content that reads like

@@ -1,5 +1,6 @@
 ---
 import BaseLayout from '../../layouts/BaseLayout.astro';
+import CompareWidget from '../../components/CompareWidget.astro';
 
 const policies = [
   { slug: 'planet-fitness', company: 'Planet Fitness' },
@@ -24,8 +25,10 @@ const policies = [
   <div class="container">
     <div class="category-header">
       <h1>Cancellation Policies</h1>
-      <p>How to actually cancel — and what it costs when they make it hard.</p>
+      <p>How to cancel a subscription or membership, what notice the company requires, and any fees that apply.</p>
     </div>
+
+    <CompareWidget category="cancellation-policies" categoryLabel="Cancellation Policies" />
 
     <div class="card-grid">
       {policies.map(item => (

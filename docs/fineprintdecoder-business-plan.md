@@ -319,7 +319,7 @@ Every page carries a disclaimer:
 | Competitor | What they do | Our advantage |
 |---|---|---|
 | TOS;DR (tosdr.org) | Crowdsourced TOS ratings | We go deeper per-policy; they rate, we decode. Different use case. |
-| Company's own page | The source document | We make it readable and flag the gotchas they bury. |
+| Company's own page | The source document | We make it readable and surface the clauses that aren't obvious from a quick read. |
 | SEO content farms | Thin rewrites of policies | We actually read the whole document. Our content is meaningfully better. |
 | NerdWallet / The Points Guy | Credit card comparisons | They focus on selling cards; we focus on explaining what you agreed to. Complementary, not competitive. |
 
@@ -389,4 +389,4 @@ Every page carries a disclaimer:
 
 ---
 
-*This document is the operating blueprint for FinePrintDecoder. It should be updated as decisions are made and the business evolves.*
+*This document is the operating blueprint for FinePrintDecoder. It should be updated as decisions are m

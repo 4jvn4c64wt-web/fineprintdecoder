@@ -146,6 +146,7 @@ Never use these. They are AI vocabulary tells. Find a plainer or more specific a
 
 - Give legal advice. We summarize. We inform. We flag. We do not advise.
 - Recommend or discourage purchasing from any company based on their policies. We present the terms.
+- **Frame companies as adversaries.** No "companies hope you'll never read," no "buried so you won't notice," no "what they don't want you to know." We are not a consumer-advocacy blog. We summarize what a document says; we don't impute motive. If a policy is unusually unfavorable, the facts of the policy will tell that story without us editorializing. Anti-corporate framing actively undermines the reliability we're trying to build — a reader who trusts us is a reader who believes we read the document objectively.
 - Use a preachy or activist tone. If a policy is bad, the facts speak for themselves.
 - Write filler to hit a word count. Say what needs saying, then stop.
 - Pad a summary with background about the company. Nobody came here for a company bio.
@@ -169,6 +170,7 @@ Before publishing any content, run through this checklist:
 - **Watch Out For length check:** More than 4 items? You're probably kitchen-sinking. Cut to the items that could actually bite a normal reader doing a normal thing.
 - **Length check:** If the visible (non-collapsed) summary scrolls more than ~1.5 screens on mobile, you're including too much. Move detail into Full Breakdown or Legal Fine Print.
 - **Emoji check:** Are there zero emojis? Good. (If any slipped in: rewrite.)
+- **Neutrality check:** Does any sentence frame the company as adversarial — "trying to," "hopes you won't," "buries on purpose," "what they don't want"? If yes, rewrite. State the policy fact; let the reader judge.
 
 ---
 
@@ -183,11 +185,4 @@ The Astro template renders summaries with these treatments:
 - **How To** (when present) — numbered steps, generous line height, visible step numerals.
 - **Watch Out For** — colored left border (amber). Each item gets its own row with the gotcha sentence in bold and the explanation below. Not a bullet list.
 - **Full Breakdown** — collapsed by default. Renders inside a `<details>` block with a clear "Read the full breakdown" trigger.
-- **Legal Fine Print** — collapsed by default. FAQ-style: each topic (venue, jury trial, account termination, etc.) is its own collapsible row inside the parent.
-- **What Changed** — small type, dated entries, set off in a sidebar or footer block.
-
-In the markdown source, you write plain `## Section Heading` and the layout component handles the rest. Don't insert HTML for the colored borders or the data-table treatment — that's the template's job. **You DO** use `<details><summary>` for the collapsibles (Full Breakdown, Legal Fine Print sub-rows) — those need to be in the markdown so the structure is preserved.
-
----
-
-*This guide governs all published content on FinePrintDecoder. When in doubt, be shorter, plainer, and more direct.*
+- **Legal 

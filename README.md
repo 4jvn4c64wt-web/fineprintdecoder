@@ -1,6 +1,6 @@
 # FinePrintDecoder
 
-Plain-English summaries of the consumer agreements companies hope you'll never read — return policies, cancellation terms, credit card agreements, warranties, and terms of service.
+Plain-English summaries of consumer agreements — return policies, cancellation terms, credit card agreements, warranties, and terms of service. Each summary lays out the practical facts (windows, fees, conditions) and links back to the source document.
 
 ## Repository structure
 

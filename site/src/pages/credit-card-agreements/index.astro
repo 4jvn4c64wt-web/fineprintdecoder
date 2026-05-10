@@ -1,5 +1,6 @@
 ---
 import BaseLayout from '../../layouts/BaseLayout.astro';
+import CompareWidget from '../../components/CompareWidget.astro';
 
 const cards = [
   { slug: 'chase-sapphire-preferred', name: 'Chase Sapphire Preferred' },
@@ -19,8 +20,10 @@ const cards = [
   <div class="container">
     <div class="category-header">
       <h1>Credit Card Agreements</h1>
-      <p>Fees, rates, and the clauses buried on page 12.</p>
+      <p>Annual fees, APRs, foreign transaction fees, and the conditions attached to the rewards and benefits.</p>
     </div>
+
+    <CompareWidget category="credit-card-agreements" categoryLabel="Credit Card Agreements" />
 
     <div class="card-grid">
       {cards.map(item => (

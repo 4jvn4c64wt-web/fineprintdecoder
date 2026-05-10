@@ -1,5 +1,6 @@
 ---
 import BaseLayout from '../../layouts/BaseLayout.astro';
+import CompareWidget from '../../components/CompareWidget.astro';
 
 const policies = [
   { slug: 'amazon', company: 'Amazon' },
@@ -29,8 +30,10 @@ const policies = [
   <div class="container">
     <div class="category-header">
       <h1>Return Policies</h1>
-      <p>Decoded from the actual documents. What you can return, when, and what they don't tell you upfront.</p>
+      <p>Plain-English summaries of return policies from major retailers. How long you have, what condition the item needs to be in, and what gets refunded.</p>
     </div>
+
+    <CompareWidget category="return-policies" categoryLabel="Return Policies" />
 
     <div class="card-grid">
       {policies.map(item => (

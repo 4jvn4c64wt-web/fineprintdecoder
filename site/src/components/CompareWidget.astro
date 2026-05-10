@@ -1,0 +1,238 @@
+---
+import { getCollection } from 'astro:content';
+
+interface Props {
+  category: 'return-policies' | 'cancellation-policies' | 'credit-card-agreements' | 'warranty-fine-print' | 'terms-of-service';
+  categoryLabel: string;
+}
+
+const { category, categoryLabel } = Astro.props;
+
+// Pull all summaries in this category. Empty until summaries are published.
+const entries = await getCollection('policies', ({ data }) => data.category === category);
+
+// Serialize just the data the client needs for the comparison table.
+const policies = entries.map((e) => {
+  const slug = e.id.split('/')[1].replace(/\.md$/, '');
+  return {
+    slug,
+    company: e.data.company,
+    url: `/${e.data.category}/${slug}/`,
+    bottomLine: e.data.bottomLine,
+    keyFacts: e.data.keyFacts,
+    sourceUrl: e.data.sourceUrl,
+  };
+});
+
+const canCompare = policies.length >= 2;
+const widgetId = `cmp-${category}`;
+---
+
+<div class="compare-widget" id={widgetId}>
+  <button
+    type="button"
+    class="compare-trigger"
+    data-action="open"
+    disabled={!canCompare}
+    aria-disabled={!canCompare}
+    aria-haspopup="dialog"
+    aria-controls={`${widgetId}-modal`}
+  >
+    Compare {categoryLabel.toLowerCase()}
+    {!canCompare && <span class="compare-trigger__hint"> (need 2+ summaries)</span>}
+  </button>
+
+  <div
+    class="compare-modal"
+    id={`${widgetId}-modal`}
+    role="dialog"
+    aria-modal="true"
+    aria-labelledby={`${widgetId}-title`}
+    hidden
+  >
+    <div class="compare-modal__overlay" data-action="close" aria-hidden="true"></div>
+    <div class="compare-modal__panel" role="document">
+      <header class="compare-modal__header">
+        <h2 id={`${widgetId}-title`} class="compare-modal__title">Compare {categoryLabel}</h2>
+        <button
+          type="button"
+          class="compare-modal__close"
+          data-action="close"
+          aria-label="Close comparison dialog"
+        >
+          ×
+        </button>
+      </header>
+
+      <!-- View 1: selection -->
+      <section class="compare-modal__view" data-view="select">
+        <p class="compare-modal__instruction">
+          Select 2 or more policies to see them side by side.
+        </p>
+        <ul class="compare-modal__list">
+          {policies.map((p) => (
+            <li>
+              <label class="compare-modal__option">
+                <input type="checkbox" data-policy-slug={p.slug} />
+                <span class="compare-modal__company">{p.company}</span>
+              </label>
+            </li>
+          ))}
+        </ul>
+        <footer class="compare-modal__footer">
+          <button
+            type="button"
+            class="compare-modal__compare-btn"
+            data-action="compare"
+            disabled
+          >
+            Compare 0
+          </button>
+        </footer>
+      </section>
+
+      <!-- View 2: comparison table (rendered by script) -->
+      <section class="compare-modal__view" data-view="results" hidden>
+        <button
+          type="button"
+          class="compare-modal__back"
+          data-action="back"
+        >
+          ← Back to selection
+        </button>
+        <div class="compare-modal__table-wrap" data-target="table"></div>
+      </section>
+    </div>
+  </div>
+</div>
+
+<script define:vars={{ policies, widgetId }}>
+  // Scope all logic to this widget instance so multiple widgets per page (unlikely here, but safe) don't collide.
+  const widget = document.getElementById(widgetId);
+  if (widget) {
+    const modal = widget.querySelector('.compare-modal');
+    const overlay = widget.querySelector('.compare-modal__overlay');
+    const closeBtn = widget.querySelector('.compare-modal__close');
+    const trigger = widget.querySelector('.compare-trigger');
+    const checkboxes = widget.querySelectorAll('input[type="checkbox"][data-policy-slug]');
+    const compareBtn = widget.querySelector('[data-action="compare"]');
+    const backBtn = widget.querySelector('[data-action="back"]');
+    const selectView = widget.querySelector('[data-view="select"]');
+    const resultsView = widget.querySelector('[data-view="results"]');
+    const tableWrap = widget.querySelector('[data-target="table"]');
+
+    const policiesById = Object.fromEntries(policies.map((p) => [p.slug, p]));
+    let lastFocused = null;
+
+    function openModal() {
+      lastFocused = document.activeElement;
+      modal.hidden = false;
+      document.body.style.overflow = 'hidden';
+      // Move focus into the dialog
+      closeBtn.focus();
+    }
+
+    function closeModal() {
+      modal.hidden = true;
+      document.body.style.overflow = '';
+      // Return to selection view next time
+      showView('select');
+      // Clear selections
+      checkboxes.forEach((cb) => (cb.checked = false));
+      updateCompareBtn();
+      if (lastFocused) lastFocused.focus();
+    }
+
+    function showView(name) {
+      selectView.hidden = name !== 'select';
+      resultsView.hidden = name !== 'results';
+    }
+
+    function selectedSlugs() {
+      return Array.from(checkboxes)
+        .filter((cb) => cb.checked)
+        .map((cb) => cb.dataset.policySlug);
+    }
+
+    function updateCompareBtn() {
+      const count = selectedSlugs().length;
+      compareBtn.textContent = count === 0 ? 'Compare 0' : `Compare ${count}`;
+      compareBtn.disabled = count < 2;
+    }
+
+    function escapeHtml(str) {
+      return String(str)
+        .replace(/&/g, '&amp;')
+        .replace(/</g, '&lt;')
+        .replace(/>/g, '&gt;')
+        .replace(/"/g, '&quot;')
+        .replace(/'/g, '&#39;');
+    }
+
+    function renderTable(slugs) {
+      const selected = slugs.map((s) => policiesById[s]).filter(Boolean);
+      if (selected.length < 2) return;
+
+      // Union of all key-fact labels across selected policies, preserving insertion order.
+      const labelOrder = [];
+      const labelSet = new Set();
+      selected.forEach((p) => {
+        p.keyFacts.forEach((kf) => {
+          if (!labelSet.has(kf.label)) {
+            labelSet.add(kf.label);
+            labelOrder.push(kf.label);
+          }
+        });
+      });
+
+      // Build the table HTML
+      let html = '<table class="compare-table"><thead><tr>';
+      html += '<th scope="col">Field</th>';
+      selected.forEach((p) => {
+        html += `<th scope="col"><a href="${escapeHtml(p.url)}">${escapeHtml(p.company)}</a></th>`;
+      });
+      html += '</tr></thead><tbody>';
+
+      // Bottom Line row first
+      html += '<tr><th scope="row">Bottom line</th>';
+      selected.forEach((p) => {
+        html += `<td class="compare-table__bottom-line">${escapeHtml(p.bottomLine)}</td>`;
+      });
+      html += '</tr>';
+
+      // Then one row per key-fact label
+      labelOrder.forEach((label) => {
+        html += `<tr><th scope="row">${escapeHtml(label)}</th>`;
+        selected.forEach((p) => {
+          const fact = p.keyFacts.find((kf) => kf.label === label);
+          html += `<td>${fact ? escapeHtml(fact.value) : '<span class="compare-table__empty">—</span>'}</td>`;
+        });
+        html += '</tr>';
+      });
+
+      html += '</tbody></table>';
+      tableWrap.innerHTML = html;
+    }
+
+    // Event wiring
+    trigger.addEventListener('click', () => {
+      if (!trigger.disabled) openModal();
+    });
+    overlay.addEventListener('click', closeModal);
+    closeBtn.addEventListener('click', closeModal);
+    backBtn.addEventListener('click', () => showView('select'));
+
+    document.addEventListener('keydown', (e) => {
+      if (!modal.hidden && e.key === 'Escape') closeModal();
+    });
+
+    checkboxes.forEach((cb) => cb.addEventListener('change', updateCompareBtn));
+
+    compareBtn.addEventListener('click', () => {
+      const slugs = selectedSlugs();
+      if (slugs.length < 2) return;
+      renderTable(slugs);
+      showView('results');
+    });
+  }
+</script>
