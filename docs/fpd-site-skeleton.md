@@ -370,27 +370,23 @@ Priority order based on estimated search volume:
 
 ### Source archival convention
 
-Every summary references a local archived copy of the source document via the `sourceFile` frontmatter field. This is Chris's record-keeping requirement: we keep a permanent dated copy of every policy we've decoded, so future re-verifications can compare apples to apples and we can prove what the policy said on the date we published.
+Every summary references one or more local archived copies of source documents via the `sourceFiles` frontmatter array. This is Chris's record-keeping requirement: we keep a permanent dated copy of every policy we've decoded, so future re-verifications can compare apples to apples and we can prove what a policy said on the date we published.
 
-Archive structure:
+**Archive is organized by vendor, not by category:**
 
 ```
 sources/
-  return-policies/
-    amazon_return-policy_2026-03-15.pdf
-    walmart_return-policy_2026-03-18.html
-  cancellation-policies/
-    planet-fitness_cancellation-policy_2026-04-02.pdf
-  credit-card-agreements/
-    chase-sapphire-preferred_card-agreement_2026-04-10.pdf
-  warranty-fine-print/
-  terms-of-service/
+├── amazon/
+│   ├── return-policy_2026-05-10.txt
+│   ├── conditions-of-use_2026-05-10.txt
+│   ├── prime_terms-of-service_2026-05-10.txt
+│   └── prime-video_terms-of-service_2026-05-10.txt
+├── chase-sapphire-preferred/
+│   ├── cardmember-agreement_2026-04-15.pdf
+│   └── rewards-program_2026-04-15.pdf
+├── netflix/
+│   └── terms-of-use_2026-05-12.html
+└── README.md
 ```
 
-**Naming convention:** `[company-slug]_[policy-type]_[YYYY-MM-DD].[ext]` where the date is the date of the source file (not the date Chris downloaded it, if known). PDF preferred for stability; HTML acceptable when only HTML is available.
-
-Source files are **not** served on the live site (they're not in `/public/` and the Astro build doesn't copy them into `dist/`). They live in the repo for record-keeping only.
-
----
-
-*This skeleton is the structural blueprint. Individual page content is produced per the Voice & Style Guide.*
+**Why vendor-folder, not category-folder:** A single source document often covers multiple reader intents — Amazon Prime's T&C document contains the cancellation flow, auto-renewal terms, dispute jurisdiction, and liability cap, all in one. Filing by category forces a choice that doesn't fit. Filing by vendor lets the publishing layer (one summary p

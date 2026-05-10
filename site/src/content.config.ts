@@ -28,10 +28,15 @@ const policies = defineCollection({
       'terms-of-service',
     ]),
 
-    // Source provenance — the local archived copy is authoritative for what we summarized
+    // Source provenance — the local archived copies are authoritative for what we summarized.
+    // sourceFiles is an array because (a) one summary may cite multiple source documents
+    // (e.g., a Chase card summary citing both the cardmember agreement and the rewards
+    // program agreement), and (b) one source document may also produce multiple summaries
+    // (each cites the same file). Paths are relative to the project workspace, e.g.
+    // "sources/amazon/prime_terms-of-service_2026-05-10.txt".
     sourceUrl: z.string().url(),
     sourceUrlsAdditional: z.array(z.string().url()).default([]),
-    sourceFile: z.string().optional(),
+    sourceFiles: z.array(z.string()).default([]),
 
     // Freshness tracking
     lastVerified: z.coerce.date(),
