@@ -12,17 +12,17 @@ featured: true
 
 governingLaw: "US federal law and Washington state law (without regard to conflict-of-laws principles). Stated in Amazon's Conditions of Use."
 
-disputeVenue: "State or federal courts in King County, Washington. Amazon's Conditions of Use require exclusive jurisdiction and venue in those courts for any dispute relating to use of any Amazon service."
+disputeVenue: "State or federal courts in King County, Washington. Exclusive jurisdiction for all disputes."
 
 juryTrial: "Waived. Both you and Amazon waive any right to a jury trial."
 
-arbitration: "Not required for ordinary consumer disputes. Amazon removed the mandatory arbitration clause from its Conditions of Use in 2021; disputes go to court in King County, Washington instead. Class action is not explicitly waived in the Conditions of Use, but any class action would also have to be filed in King County. Note that sub-products may impose their own arbitration (see Amazon Content Creator Terms, which DO require arbitration for creators)."
+arbitration: "Not required. Amazon removed mandatory arbitration from its Conditions of Use in 2021. No explicit class action waiver. Individual sub-products may carry their own arbitration terms."
 
-liabilityCap: "Standard 'as-is, as-available' disclaimer with no dollar cap in the main Conditions of Use. Amazon disclaims all warranties and broadly disclaims liability for any damages, including direct, indirect, incidental, punitive, and consequential. Sub-products carry their own caps in addition: Prime Video software-related claims are capped at $50 total; Prime Video content-related claims at the amount paid in the past 12 months."
+liabilityCap: "No dollar cap in the main Conditions of Use. Amazon broadly disclaims liability for all damages."
 
-accountTermination: "Amazon may refuse service, terminate accounts, terminate your rights to use Amazon services, remove or edit content, or cancel orders in its sole discretion. No notice is required."
+accountTermination: "Amazon may refuse service or terminate accounts at its sole discretion. No notice required."
 
-privacyHighLevel: "Amazon collects identifiable customer data (account information, transaction history, browsing activity, device information, location) and uses it for personalization, advertising, fulfillment, and analytics. Amazon shares with affiliates and certain service providers. Customers consent to receive electronic communications from Amazon. Full details are in Amazon's separate Privacy Notice; this site does not yet summarize it independently."
+privacyHighLevel: "Amazon collects account, transaction, browsing, and device data. Used for personalization, advertising, and fulfillment. Shared with affiliates and service providers. Full details at amazon.com/privacy."
 
 termModification: "Amazon reserves the right to change the Conditions of Use, Service Terms, and site policies at any time. Changes apply on posting; continued use after a change is treated as acceptance."
 
