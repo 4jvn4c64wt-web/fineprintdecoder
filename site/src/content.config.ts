@@ -42,8 +42,14 @@ const policies = defineCollection({
     // Search keywords (per-policy; vendor-level matching is automatic via vendorSlug)
     searchKeywords: z.array(z.string()).default([]),
 
-    // Above-the-fold structured content
+    // Above-the-fold structured content.
+    // A summary uses EITHER single-channel mode (keyFacts + howTo) OR multi-channel mode
+    // (channels array, each with its own keyFacts + howTo). Multi-channel is intended
+    // for return policies where the answer materially depends on where the user bought
+    // the item. See reference/04-site-skeleton.md §2.3.1 for the design rationale.
     bottomLine: z.string(),
+
+    // Single-channel: used when the policy has one effective answer.
     keyFacts: z
       .array(
         z.object({
@@ -51,8 +57,33 @@ const policies = defineCollection({
           value: z.string(),
         })
       )
-      .min(1),
+      .optional(),
     howTo: z.array(z.string()).optional(),
+
+    // Multi-channel: used when the policy varies meaningfully by purchase channel.
+    // The layout renders these as tabs below the Bottom Line; clicking a tab swaps
+    // the Key Facts and How To shown. The first entry is the default tab.
+    // No-JS fallback: all channels render stacked, each labeled with its channel name.
+    channels: z
+      .array(
+        z.object({
+          label: z.string(),          // Tab label, ~1–3 words ("Online", "In-store", "Marketplace")
+          slug: z.string().regex(/^[a-z0-9-]+$/, 'channel slug must be lowercase, hyphenated'),
+          keyFacts: z
+            .array(
+              z.object({
+                label: z.string(),
+                value: z.string(),
+              })
+            )
+            .min(1),
+          howTo: z.array(z.string()).optional(),
+        })
+      )
+      .min(2)
+      .max(4, 'channels caps at 4 — tabs must fit on one row and avoid overwhelming the reader')
+      .optional(),
+
     watchOutFor: z
       .array(
         z.object({
@@ -75,7 +106,16 @@ const policies = defineCollection({
         })
       )
       .default([]),
-  }),
+  })
+  // Exactly one of `keyFacts` (single-channel mode) or `channels` (multi-channel mode)
+  // must be populated. Both empty = nothing to render; both populated = ambiguous.
+  .refine(
+    (d) => Boolean(d.keyFacts?.length) !== Boolean(d.channels?.length),
+    {
+      message:
+        'A policy must use EITHER single-channel mode (populate keyFacts + howTo) OR multi-channel mode (populate channels array), not both. Pick one.',
+    }
+  ),
 });
 
 // =================================================================

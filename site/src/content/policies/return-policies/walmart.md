@@ -27,34 +27,109 @@ searchKeywords:
   - "no receipt"
 
 bottomLine: |
-  Most items have 90 days from purchase or delivery to return for a refund to the original payment method. Returns are free in-store, curbside, by mail, or by scheduled FedEx pickup. The 90-day window shrinks for several big categories: 30 days for electronics, 14 days for wireless phones, and just 2 days for major appliances. No receipt is workable through card or order lookup, or by showing a government ID for a Walmart gift card refund.
+  Most items have 90 days to return for a refund to the original payment method. The exact rules depend on where you bought it: online from Walmart, in-store, from a Marketplace seller, or via Walmart+ home pickup. Pick the tab that matches your purchase. The 90-day window shrinks for several big categories — 30 days for electronics, 14 days for wireless phones, just 2 days for major appliances.
 
-keyFacts:
-  - label: "Return window"
-    value: |
-      <strong>Default:</strong> 90 days from purchase or delivery<br>
-      <strong>Electronics, most Marketplace items:</strong> 30 days<br>
-      <strong>Wireless phones, Marketplace luxury/collectibles:</strong> 14 days<br>
-      <strong>Major appliances:</strong> 2 days from accepted delivery
-  - label: "Refund method"
-    value: "Original payment method. If that fails, a Walmart Gift Card (in-store) or Walmart Balance (online)."
-  - label: "Refund timing"
-    value: |
-      <strong>Cash, Walmart Gift Card, EBT cash:</strong> immediate or up to 3 hours<br>
-      <strong>Debit card:</strong> up to 7 business days<br>
-      <strong>Credit card:</strong> up to 10 business days
-  - label: "Return shipping"
-    value: "Free by mail, FedEx drop-off, or scheduled FedEx pickup. Free in-store or curbside."
-  - label: "Receipt required"
-    value: "Not strictly. Walmart can look up store purchases by card or online orders by phone or email. No receipt = government ID required, refund issued as a Walmart Gift Card."
-  - label: "Item condition"
-    value: "Items requiring assembly must be disassembled and repackaged. Rechargeable-battery items must include the original battery. Major appliances should be inspected before accepting delivery."
+channels:
+  - label: "Online"
+    slug: "online"
+    keyFacts:
+      - label: "Return window"
+        value: |
+          <strong>Default:</strong> 90 days from delivery<br>
+          <strong>Electronics:</strong> 30 days<br>
+          <strong>Wireless phones:</strong> 14 days<br>
+          <strong>Major appliances:</strong> 2 days from accepted delivery
+      - label: "Refund method"
+        value: "Original payment method. If that fails, refund issued to Walmart Balance."
+      - label: "Refund timing"
+        value: |
+          <strong>Walmart Balance, gift card:</strong> up to 3 hours<br>
+          <strong>Debit card:</strong> up to 7 business days<br>
+          <strong>Credit card:</strong> up to 10 business days
+      - label: "Return shipping"
+        value: "Free by mail, FedEx drop-off, or scheduled FedEx pickup. Free in-store drop-off too."
+      - label: "Receipt required"
+        value: "No. Order number is in your Walmart account."
+      - label: "Item condition"
+        value: "Items requiring assembly must be disassembled and repackaged. Rechargeable-battery items must include the original battery. Hazmat and oversized items may not ship back."
+    howTo:
+      - "Sign in at walmart.com or open the Walmart app. Go to your order history."
+      - "Find the item and click \"Return or replace items.\" Or, if you don't have an account, start at walmart.com/returns and look up the order with the phone number or email used."
+      - "Pick a return method: free mail-back with a FedEx label, FedEx drop-off, scheduled FedEx pickup, or drop off at any Walmart store."
+      - "Drop off or hand over. Refund posts based on the original payment method (3 hours for Walmart Balance, up to 10 business days for credit card)."
 
-howTo:
-  - "Start the return in the Walmart app, at walmart.com/returns, or at business.walmart.com. If you don't have an account, walmart.com/returns lets you start without one."
-  - "Pick a return method: in-store, curbside, free mail-back, or scheduled FedEx pickup. Walmart+ members can also schedule home pickup."
-  - "Drop off the item or hand it over at pickup. No receipt? Walmart can look up store purchases by card or online orders by phone or email; otherwise present a government ID for a gift card refund."
-  - "Refund timing depends on the original payment method: immediate for cash and gift cards, up to 7 business days for debit, up to 10 for credit."
+  - label: "In-store"
+    slug: "in-store"
+    keyFacts:
+      - label: "Return window"
+        value: |
+          <strong>Default:</strong> 90 days from purchase<br>
+          <strong>Electronics:</strong> 30 days<br>
+          <strong>Wireless phones:</strong> 14 days<br>
+          <strong>Major appliances:</strong> Not returnable in stores
+      - label: "Refund method"
+        value: "Original payment method. If that fails, store credit on a Walmart Gift Card."
+      - label: "Refund timing"
+        value: |
+          <strong>Cash, EBT cash:</strong> immediate<br>
+          <strong>Walmart Gift Card, EBT card:</strong> up to 3 hours<br>
+          <strong>Debit card:</strong> up to 7 business days<br>
+          <strong>Credit card:</strong> up to 10 business days
+      - label: "Return shipping"
+        value: "Not applicable. Returns are free at customer service or curbside."
+      - label: "Receipt required"
+        value: "Not strictly. Walmart can look up store purchases by the card used. Without either, a government ID gets you a Walmart Gift Card refund."
+      - label: "Item condition"
+        value: "Items requiring assembly must be disassembled. Rechargeable-battery items must include the original battery. Some Marketplace items can't be returned in-store."
+    howTo:
+      - "Bring the item to any Walmart store. Customer Service handles returns; some categories also work via curbside drop-off."
+      - "Have your receipt, the card you used, or a phone number/email tied to the order. No receipt and no lookup? A government ID gets you a Walmart Gift Card refund."
+      - "Manager-discretion items (alcohol, ammunition, etc., listed as final sale) won't be accepted. Most everything else takes a few minutes."
+      - "Refund timing depends on payment method. Cash returns are immediate; card refunds post within a week."
+
+  - label: "Marketplace seller"
+    slug: "marketplace"
+    keyFacts:
+      - label: "Return window"
+        value: |
+          <strong>Most items:</strong> 30 days<br>
+          <strong>Luxury, collectibles:</strong> 14 days<br>
+          <strong>Major appliances:</strong> 2 days from accepted delivery
+      - label: "Refund method"
+        value: "Original payment method. Issued by the seller, not Walmart."
+      - label: "Restocking fee"
+        value: "Up to 20%, at the seller's discretion. Most common on appliances, luxury, and worn or altered apparel."
+      - label: "Return shipping"
+        value: "Prepaid label provided by Walmart or the seller. Some items not eligible for in-store drop-off."
+      - label: "Receipt required"
+        value: "Order is in your Walmart account; the seller verifies it."
+      - label: "Refund timing"
+        value: "Seller has 2 business days after receiving the return to process. Refund lands within 10 business days after that."
+    howTo:
+      - "Sign in at walmart.com. The order page will identify the Marketplace seller."
+      - "Click \"Return or replace items\" within the seller's window (30 days for most, 14 for luxury). Walmart provides the seller's return instructions."
+      - "Package the item with all original boxes and tags. For items over $600, consider adding insurance before shipping back."
+      - "Drop off via FedEx or, if eligible, at a Walmart store. Some categories (oversized, hazmat, collectible) can only be mailed back."
+      - "Refund processes once the seller receives and verifies the item. Up to 20% restocking fee may be deducted."
+
+  - label: "Walmart+ home pickup"
+    slug: "walmart-plus"
+    keyFacts:
+      - label: "Who's eligible"
+        value: "Active Walmart+ members only. Available at select addresses."
+      - label: "Item limits"
+        value: "Up to 15 lbs, longest edge ≤36 in., item value <$500. Maximum 4 items per pickup."
+      - label: "What's excluded"
+        value: "Marketplace items, alcohol, prescription and OTC medication, cosmetics, toys, paper goods, pet supplies, household chemicals, grocery, lawn and garden products. Anything from in-store or curbside purchase."
+      - label: "Refund method + timing"
+        value: "Same as the underlying purchase (Online tab). Original payment method, posted after Walmart receives the item."
+      - label: "Receipt required"
+        value: "No. Tied to your Walmart+ account."
+    howTo:
+      - "Start the return in the Walmart app or at walmart.com/returns as usual."
+      - "When choosing a return method, look for \"Returns from Home\" as an option. It only appears if the item and your address are eligible."
+      - "Schedule a pickup window. You must be present and have the return barcode ready for scanning."
+      - "Hand the items to the pickup driver. Refund processes once Walmart receives them, the same way an Online return does."
 
 watchOutFor:
   - headline: "Major appliances get 2 days, and only if you didn't accept delivery damaged."
@@ -66,19 +141,9 @@ watchOutFor:
   - headline: "No receipt means a Walmart Gift Card, not your money back."
     detail: "Without a receipt, a valid government-issued photo ID is required. Your ID information is stored in a database Walmart uses to authorize returns. If the system approves the return, the refund is issued as a Walmart Gift Card — not cash, and not back to your original payment method."
 
-channelVariations:
-  - channel: "In-store / curbside"
-    note: "Default 90 days. Free, no shipping involved. Major appliances cannot be returned in stores."
-  - channel: "Online (shipped by Walmart)"
-    note: "Same 90 days. Mail back via FedEx, schedule a FedEx pickup, or drop at a Walmart store. Hazmat, oversized, freight, and items with fuel may not be returnable by mail."
-  - channel: "Marketplace sellers"
-    note: "30 days default (14 for luxury or collectibles). Goes to the seller, not Walmart. Up to 20% restocking fee on some categories. Some items can't be returned in-store at all."
-  - channel: "Walmart+ members"
-    note: "Returns from Home pickup available for items 15 lbs or under, 36 inches or shorter, under $500, and not Marketplace. Excludes alcohol, medications, groceries, cosmetics, and several other categories."
-
 whatChanged:
   - date: "2026-05-10"
-    note: "Initial summary published."
+    note: "Initial summary published with multi-channel tabs (Online, In-store, Marketplace, Walmart+ home pickup)."
 ---
 
 ### Return windows by category
@@ -155,17 +220,12 @@ Card-refund returns without a receipt may take up to 10 business days.
 
 If Walmart can't refund the original card, store purchases default to a Walmart Gift Card; online purchases default to Walmart Balance.
 
-### Marketplace returns
+### Marketplace returns — additional detail
 
-Items shipped by third-party Marketplace sellers — most often electronics, collectibles, and specialty items — follow the seller's return policy, not Walmart's directly. The default window for most Marketplace items is 30 days. Collectibles and luxury items get 14 days.
+The Marketplace tab above covers the basics. Two additional points if you're returning a high-value item from a third-party seller:
 
-Three points worth flagging:
-
-- **Restocking fees up to 20%** can apply on Marketplace returns, especially for major appliances, worn or altered apparel, collectibles, and luxury items.
-- **Return shipping** is the Marketplace seller's responsibility, but the exact mechanism (prepaid label, store drop-off, mail) depends on the seller's setup. Walmart recommends insuring anything over $600 before shipping it back.
-- **In-store returns may be refused** for some Marketplace items, especially oversized, freight, hazmat, collectible, or luxury items.
-
-Marketplace sellers have 2 business days after receiving the item to verify it and process the refund, then up to 10 business days for the funds to land.
+- **Insure items valued over $600** before shipping back. Walmart recommends this; the seller is not liable for in-transit loss.
+- **Collectibles and luxury items have stricter rules.** Apparel and accessories must be unworn with original tags; collectibles must include any grading or authentication certificates. The seller has the right to reject the return and not refund if the item arrives damaged, worn, or with packaging unsealed.
 
 ### Major appliances: the 2-day rule
 
@@ -181,7 +241,7 @@ Walmart Marketplace appliance returns face the same 2-day window with additional
 
 ### Walmart+ membership and protection plans
 
-A Walmart+ membership can be refunded within 90 days as long as it hasn't been used or activated. Walmart Protection Plans and AppleCare+ have their own cancellation process, with details linked from the source policy.
+A Walmart+ membership purchase can be refunded within 90 days only if the membership hasn't been used or activated. Once used or activated, the fee is non-refundable. For ongoing cancellation of an active membership, see the [Walmart+ cancellation summary](/cancellation-policies/walmart-plus/). Walmart Protection Plans and AppleCare+ have their own cancellation process, with details linked from the source policy.
 
 Money services have their own rules: money transfers can be refunded if the funds haven't been picked up; money orders can be refunded in cash up to 180 days from purchase with the original receipt. Walmart Express Bill Payments, reloadable cards, lottery tickets, branded gift cards (Visa, MC, Amex), and check-cashing fees are non-refundable.
 

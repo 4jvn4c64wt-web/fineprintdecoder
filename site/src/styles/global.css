@@ -1866,3 +1866,197 @@ main {
 .merchant__source-list a {
   word-break: break-all;
 }
+
+/* ============================================================
+   Channel Tabs — multi-channel Key Facts + How To.
+   Renders when `channels` is populated on a policy summary.
+   Active tab visually "snaps" into the card below; clicking
+   another tab swaps the card contents with a subtle motion.
+   ============================================================ */
+
+.channel-tabs {
+  margin: 1.75rem 0 2rem;
+}
+
+.channel-tabs__intro {
+  font-size: 0.82rem;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+  color: var(--color-text-muted);
+  margin: 0 0 0.65rem;
+}
+
+/* Viewport row: optional prev arrow, the tablist itself, optional next arrow */
+.channel-tabs__viewport {
+  display: flex;
+  align-items: stretch;
+  gap: 0.25rem;
+  position: relative;
+  z-index: 2;
+}
+
+.channel-tabs__arrow {
+  background: transparent;
+  border: none;
+  color: var(--color-text-muted);
+  font-size: 1.4rem;
+  line-height: 1;
+  padding: 0 0.4rem;
+  cursor: pointer;
+  border-radius: 6px;
+  align-self: flex-end;
+  margin-bottom: 0.1rem;
+  transition: background 0.12s, color 0.12s;
+}
+
+.channel-tabs__arrow:hover {
+  background: #f5f4f1;
+  color: var(--color-text);
+}
+
+.channel-tabs__arrow:focus-visible {
+  outline: 2px solid var(--color-primary);
+  outline-offset: 2px;
+}
+
+.channel-tabs__arrow[hidden] {
+  visibility: hidden;
+  display: inline-block;  /* keep layout space so tabs don't shift */
+  pointer-events: none;
+}
+
+.channel-tabs__tablist {
+  display: flex;
+  flex: 1;
+  flex-wrap: wrap;
+  gap: 0;
+  padding: 0;
+  margin: 0;
+}
+
+/* Notebook-style tabs.
+   Inactive: muted, small bottom border integrated into the card's top edge.
+   Active: white background, rounded top corners only, NO bottom border —
+   the tab visually merges into the card below it. */
+.channel-tabs__tab {
+  background: #efece6;
+  border: 1px solid var(--color-border);
+  border-bottom: 1px solid var(--color-border);
+  border-radius: 8px 8px 0 0;
+  padding: 0.55rem 1.1rem;
+  margin-right: 0.25rem;
+  margin-bottom: -1px;  /* overlap card top by 1px so border lines align */
+  font-family: inherit;
+  font-size: 0.92rem;
+  font-weight: 600;
+  color: var(--color-text-muted);
+  cursor: pointer;
+  position: relative;
+  transition: background 0.15s, color 0.15s, transform 0.15s;
+}
+
+.channel-tabs__tab:last-child {
+  margin-right: 0;
+}
+
+.channel-tabs__tab:hover {
+  background: #f5f3ed;
+  color: var(--color-text);
+}
+
+.channel-tabs__tab:focus-visible {
+  outline: 2px solid var(--color-primary);
+  outline-offset: -2px;
+}
+
+.channel-tabs__tab.is-active {
+  background: var(--color-surface);
+  color: var(--color-primary-dark);
+  border-color: var(--color-border);
+  border-bottom-color: var(--color-surface);  /* merge with card */
+  z-index: 1;
+}
+
+.channel-tabs__panels {
+  background: var(--color-surface);
+  border: 1px solid var(--color-border);
+  border-radius: 0 8px 8px 8px;
+  box-shadow: 0 2px 12px rgba(0, 0, 0, 0.04);
+  padding: 1.5rem 1.5rem;
+  position: relative;
+  z-index: 1;
+}
+
+/* Inactive panels are hidden via the [hidden] HTML attribute set in the layout.
+   The active panel fades in on tab switch. No JS-class plumbing needed: the
+   layout renders panel 0 visible and panels 1+ with [hidden]; the script swaps
+   [hidden] on click. */
+.channel-tabs__panel[hidden] {
+  display: none;
+}
+
+.channel-tabs__panel.is-active {
+  animation: channel-tabs-fade 0.18s ease-out;
+}
+
+@keyframes channel-tabs-fade {
+  from {
+    opacity: 0;
+    transform: translateY(2px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+/* Respect user motion preferences */
+@media (prefers-reduced-motion: reduce) {
+  .channel-tabs__tab,
+  .channel-tabs__panel.is-active {
+    transition: none;
+    animation: none;
+    transform: none;
+  }
+}
+
+.channel-tabs__panel-label {
+  font-size: 0.82rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+  color: var(--color-text-muted);
+  margin: 0 0 0.65rem;
+}
+
+.channel-tabs__howto {
+  margin-top: 1.25rem;
+  padding-top: 1rem;
+  border-top: 1px solid var(--color-border);
+}
+
+/* The sr-only "For [Channel] purchases — " prefix inside each panel heading is hidden
+   for sighted users when JS is on (the active tab makes the channel obvious). For
+   no-JS users it's revealed via a <noscript><style> tag the layout injects. */
+
+@media (max-width: 540px) {
+  /* On mobile, the tablist gets a horizontal scroll if it overflows — arrows
+     handle the wayfinding. Keep tabs in a single row, not stacked, so the
+     notebook-tab metaphor still reads. */
+  .channel-tabs__tablist {
+    overflow-x: auto;
+    flex-wrap: nowrap;
+    scrollbar-width: thin;
+  }
+
+  .channel-tabs__tab {
+    flex-shrink: 0;
+    font-size: 0.88rem;
+    padding: 0.5rem 0.9rem;
+  }
+
+  .channel-tabs__panels {
+    padding: 1.25rem 1.1rem;
+  }
+}

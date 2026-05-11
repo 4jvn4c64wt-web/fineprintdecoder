@@ -25,31 +25,80 @@ searchKeywords:
   - "send back"
 
 bottomLine: |
-  Most items can be returned within 30 days of delivery for a full refund. Returns are free at over 8,000 drop-off locations, and most items don't need to be boxed or labeled. A handful of categories have different windows, and some items can't be returned at all. The most common non-returnable items are Final Sale products, perishables, and customized goods.
+  Most items can be returned within 30 days of delivery for a full refund. Returns are free at 8,000+ drop-off locations, and most items don't need to be boxed or labeled. The exact rules depend on who shipped your item and what kind of item it is — pick the tab that matches your purchase. The most common non-returnable items are Final Sale products, perishables, and customized goods.
 
-keyFacts:
-  - label: "Return window"
-    value: "30 days from delivery (most items)"
-  - label: "Refund method"
-    value: "Original payment method"
-  - label: "Refund timing"
-    value: |
-      <strong>Gift card:</strong> 2 to 3 hours<br>
-      <strong>Credit card:</strong> 3 to 5 business days<br>
-      <strong>Debit, checking, EBT, cash:</strong> up to 10 business days<br>
-      <strong>Prepaid card:</strong> up to 30 days
-  - label: "Return shipping"
-    value: "Free at 8,000+ UPS, Whole Foods, Kohl's, and Amazon Locker drop-offs for most items"
-  - label: "Receipt required"
-    value: "No. Your Order History serves as the receipt."
-  - label: "Item condition"
-    value: "Original or unused, with tags attached and original packaging"
+channels:
+  - label: "Online"
+    slug: "online"
+    keyFacts:
+      - label: "Return window"
+        value: |
+          <strong>Default:</strong> 30 days from delivery<br>
+          <strong>Apple, Boost Infinite:</strong> 15 days<br>
+          <strong>Amazon Renewed (Premium):</strong> up to 365 days<br>
+          <strong>Mattresses, baby gifts, registry items:</strong> 90–365 days
+      - label: "Refund method"
+        value: "Original payment method"
+      - label: "Refund timing"
+        value: |
+          <strong>Amazon Gift Card balance:</strong> 2–3 hours<br>
+          <strong>Credit card:</strong> 3–5 business days<br>
+          <strong>Debit, checking, EBT, cash:</strong> up to 10 business days<br>
+          <strong>Prepaid card:</strong> up to 30 days
+      - label: "Return shipping"
+        value: "Free at 8,000+ UPS, Whole Foods, Kohl's, and Amazon Locker drop-offs for most items. No box or label required at most locations."
+      - label: "Receipt required"
+        value: "No. Your Order History serves as the receipt."
+      - label: "Item condition"
+        value: "Original or unused, with tags attached and original packaging."
+    howTo:
+      - "Sign in at amazon.com and go to Your Orders."
+      - "Find the item and click \"Return or replace items.\" Pick a reason."
+      - "Choose a return method. Most options are free and generate a QR code or printable label. Most items don't need to be boxed."
+      - "Drop the item off at a UPS Store, Whole Foods, Kohl's, or Amazon Locker — typically within about 5 miles."
+      - "Once Amazon receives the item, the refund posts in 3–5 business days for a credit card; faster for gift cards, slower for debit, cash, or prepaid."
 
-howTo:
-  - "Go to Your Orders, find the item, and click \"Return or replace items.\""
-  - "Pick a reason and a return method. Most options are free; the system generates a QR code or printable label."
-  - "Drop the item off at the chosen location, usually a UPS Store, Whole Foods, Kohl's, or Amazon Locker within about 5 miles. Most items don't need to be boxed."
-  - "Once Amazon receives the item, your refund posts in 3–5 business days for a credit card (faster for gift cards, slower for debit/cash/prepaid)."
+  - label: "In-store"
+    slug: "in-store"
+    keyFacts:
+      - label: "Where this applies"
+        value: "Amazon doesn't have its own retail stores. \"In-store\" here means dropping off an online return at a physical location: UPS Store, Whole Foods, Kohl's, or Amazon Locker."
+      - label: "Return window"
+        value: "Same as Online — 30 days from delivery is the default. The drop-off location doesn't change the window."
+      - label: "Cost"
+        value: "Free. No box or label needed at most drop-off locations."
+      - label: "What you need to bring"
+        value: "The QR code from your Amazon account (shown in the app or printed). The item, in any condition that meets the return rules."
+      - label: "Refund timing"
+        value: "Same as Online — depends on the original payment method. Card refunds take 3–5 business days after the drop-off location scans the item."
+    howTo:
+      - "Start the return online first: Your Orders → \"Return or replace items.\" The system asks where you want to drop it off."
+      - "Pick the closest UPS, Whole Foods, Kohl's, or Amazon Locker. The app generates a QR code."
+      - "Bring the item and the QR code to that location. No box or printed label needed for most items."
+      - "The staff scans the code, accepts the item, and you get an email confirmation. The refund posts to your original payment method on the standard schedule."
+
+  - label: "Third-party seller"
+    slug: "third-party-seller"
+    keyFacts:
+      - label: "Who handles it"
+        value: "The seller, not Amazon. The seller chooses how to process returns."
+      - label: "Seller's options"
+        value: |
+          The seller must offer one of three:<br>
+          <strong>1.</strong> A US return address you can ship to<br>
+          <strong>2.</strong> A prepaid return label<br>
+          <strong>3.</strong> A full refund without requiring the item back
+      - label: "Return window"
+        value: "Typically 30 days, but the seller's listed window controls."
+      - label: "Refund timing"
+        value: "Set by the seller. May be slower than Amazon-fulfilled returns."
+      - label: "If the seller doesn't honor any option"
+        value: "Escalate via the Amazon A-to-z Guarantee from Your Orders."
+    howTo:
+      - "Sign in at amazon.com. The order page identifies whether the item was sold by a third-party seller."
+      - "Click \"Return or replace items.\" Amazon walks you through the seller's chosen process."
+      - "Follow the seller's instructions exactly — wrong return address or skipped steps can void the refund."
+      - "If the seller doesn't respond, doesn't refund, or refuses a valid return, file an A-to-z claim from the order page within the claim window."
 
 watchOutFor:
   - headline: "\"Final Sale\" items can't be returned at all."
@@ -63,7 +112,7 @@ watchOutFor:
 
 whatChanged:
   - date: "2026-05-10"
-    note: "Initial summary published."
+    note: "Initial summary published with multi-channel tabs (Online, In-store, Third-party seller). Global Store, Luxury, and Heavy/bulky returns are covered in the body."
 ---
 
 ### Return windows by category
@@ -144,6 +193,10 @@ Gift returns work from the Returns page using the 17-digit order number from the
 ### Global Store returns
 
 Items shipped from Amazon.com under the Global Store program follow the standard 30-day window with a few procedural differences: most ship back via a prepaid UPS label (any UPS drop-off in the US works), and processing can take up to 25 days for the item to reach Amazon, plus 2 business days to process and 3–5 business days for the refund to appear. Amazon automatically refunds up to $20 of return postage; for amounts over that, you contact Customer Service. Defective, damaged, or incorrect items get the full postage cost refunded plus the Import Fees Deposit.
+
+### Amazon Luxury Stores returns
+
+Items bought through Amazon Luxury Stores follow the standard 30-day window with one major difference: the damage fee is up to 100% of the item price (instead of the standard 50%) if the item comes back in non-original condition. Each Luxury return is authenticated before a refund is issued. Keep all original packaging, tags, and authentication materials with the item — Amazon needs them to validate the return. Refunds post after the authenticity check clears, typically within 3–5 business days of validation.
 
 ### Product warranties
 
