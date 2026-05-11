@@ -32,25 +32,31 @@ channels:
     slug: "online"
     keyFacts:
       - label: "Return window"
-        value: |
-          <strong>Default:</strong> 30 days from delivery<br>
-          <strong>Apple, Boost Infinite:</strong> 15 days<br>
-          <strong>Amazon Renewed (Premium):</strong> up to 365 days<br>
-          <strong>Mattresses, baby gifts, registry items:</strong> 90–365 days
+        value: ""
+        returnWindows:
+          - window: "365 days"
+            items: "Amazon Renewed Premium; Baby Registry items"
+          - window: "180 days"
+            items: "Wedding Registry items"
+          - window: "90 days"
+            items: "Renewed (Acceptable–Excellent); mattresses; Birthday/Custom Gift List items"
+          - window: "30 days"
+            items: "Most items"
+          - window: "15 days"
+            items: "Apple-brand and Boost Infinite products; Amazon Haul items over $3"
+      - label: "Condition required"
+        value: "Unused, with original tags attached and original packaging."
+      - label: "Proof of purchase"
+        value: "Not required. Your Order History serves as the receipt."
+      - label: "Ineligible items"
+        value: "Perishables, hazardous materials, customized/made-to-order products, redeemed codes and gift cards, Amazon Pharmacy and pet medication, automobiles, Final Sale items (trading cards, Haul items $3 and under)"
+        ineligibleItems: "Perishables, hazardous materials, customized/made-to-order products, redeemed codes and gift cards, Final Sale items (trading cards, Haul items $3 and under)"
       - label: "Refund method"
-        value: "Original payment method"
-      - label: "Refund timing"
-        value: |
-          <strong>Amazon Gift Card balance:</strong> 2–3 hours<br>
-          <strong>Credit card:</strong> 3–5 business days<br>
-          <strong>Debit, checking, EBT, cash:</strong> up to 10 business days<br>
-          <strong>Prepaid card:</strong> up to 30 days
+        value: "Original payment method."
+      - label: "Refund timeline"
+        value: "Gift Card balance: 2–3 hours. Credit card: 3–5 business days. Debit, checking, EBT, cash: up to 10 business days. Prepaid card: up to 30 days."
       - label: "Return shipping"
-        value: "Free at 8,000+ UPS, Whole Foods, Kohl's, and Amazon Locker drop-offs for most items. No box or label required at most locations."
-      - label: "Receipt required"
-        value: "No. Your Order History serves as the receipt."
-      - label: "Item condition"
-        value: "Original or unused, with tags attached and original packaging."
+        value: "Free at 8,000+ UPS, Whole Foods, Kohl's, and Amazon Locker locations. No box or label required at most."
     howTo:
       - "Sign in at amazon.com and go to Your Orders."
       - "Find the item and click \"Return or replace items.\" Pick a reason."
@@ -61,16 +67,21 @@ channels:
   - label: "In-store"
     slug: "in-store"
     keyFacts:
-      - label: "Where this applies"
-        value: "Amazon doesn't have its own retail stores. \"In-store\" here means dropping off an online return at a physical location: UPS Store, Whole Foods, Kohl's, or Amazon Locker."
       - label: "Return window"
-        value: "Same as Online — 30 days from delivery is the default. The drop-off location doesn't change the window."
-      - label: "Cost"
-        value: "Free. No box or label needed at most drop-off locations."
-      - label: "What you need to bring"
-        value: "The QR code from your Amazon account (shown in the app or printed). The item, in any condition that meets the return rules."
-      - label: "Refund timing"
-        value: "Same as Online — depends on the original payment method. Card refunds take 3–5 business days after the drop-off location scans the item."
+        value: "30 days from delivery for most items. Apple-brand and Boost Infinite products: 15 days. Baby Registry items: 365 days. The drop-off location doesn't change the window."
+      - label: "Condition required"
+        value: "Unused, with original tags attached and original packaging."
+      - label: "Proof of purchase"
+        value: "Not required. Bring the QR code from your Amazon account (app or printed)."
+      - label: "Ineligible items"
+        value: "Perishables, hazardous materials, customized/made-to-order products, redeemed codes and gift cards, Final Sale items (trading cards, Haul items $3 and under)"
+        ineligibleItems: "Perishables, hazardous materials, customized/made-to-order products, redeemed codes and gift cards, Final Sale items (trading cards, Haul items $3 and under)"
+      - label: "Refund method"
+        value: "Original payment method."
+      - label: "Refund timeline"
+        value: "Card refunds: 3–5 business days after the drop-off location scans the item."
+      - label: "Where this applies"
+        value: "Amazon has no retail stores. Drop off at UPS Store, Whole Foods, Kohl's, or Amazon Locker. No box or label needed at most locations."
     howTo:
       - "Start the return online first: Your Orders → \"Return or replace items.\" The system asks where you want to drop it off."
       - "Pick the closest UPS, Whole Foods, Kohl's, or Amazon Locker. The app generates a QR code."
@@ -80,19 +91,19 @@ channels:
   - label: "Third-party seller"
     slug: "third-party-seller"
     keyFacts:
-      - label: "Who handles it"
-        value: "The seller, not Amazon. The seller chooses how to process returns."
-      - label: "Seller's options"
-        value: |
-          The seller must offer one of three:<br>
-          <strong>1.</strong> A US return address you can ship to<br>
-          <strong>2.</strong> A prepaid return label<br>
-          <strong>3.</strong> A full refund without requiring the item back
       - label: "Return window"
         value: "Typically 30 days, but the seller's listed window controls."
-      - label: "Refund timing"
+      - label: "Condition required"
+        value: "Per the seller's policy. Generally unused and in original packaging."
+      - label: "Proof of purchase"
+        value: "Your Order History. Amazon identifies the seller on the order page."
+      - label: "Ineligible items"
+        value: "Per the seller's policy. Same Amazon-wide non-returnables also apply."
+      - label: "Refund method"
+        value: "Original payment method, issued by the seller."
+      - label: "Refund timeline"
         value: "Set by the seller. May be slower than Amazon-fulfilled returns."
-      - label: "If the seller doesn't honor any option"
+      - label: "If the seller doesn't respond"
         value: "Escalate via the Amazon A-to-z Guarantee from Your Orders."
     howTo:
       - "Sign in at amazon.com. The order page identifies whether the item was sold by a third-party seller."

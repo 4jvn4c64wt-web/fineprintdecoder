@@ -53,6 +53,30 @@ if (data.legalFinePrint) {
 }
 
 const description = data.summary;
+
+// ---------------------------------------------------------------------------
+// Key Fact rendering helpers
+// ---------------------------------------------------------------------------
+
+// Render the <dd> content for a single key fact row.
+// Handles three cases:
+//   1. returnWindows array → mini sub-table (only when 2+ windows)
+//   2. ineligibleItems string → truncated at ~120 chars with "see more →" anchor
+//   3. plain value string → rendered as HTML (supports inline markup via set:html)
+//
+// Returns an object with { type, ...data } so the template can branch cleanly.
+
+const INELIGIBLE_CAP = 120; // characters before truncation
+
+function truncateIneligible(full: string): { display: string; truncated: boolean } {
+  if (full.length <= INELIGIBLE_CAP) return { display: full, truncated: false };
+  const slice = full.slice(0, INELIGIBLE_CAP);
+  const lastComma = slice.lastIndexOf(',');
+  // Cut at last comma, then trim trailing whitespace and punctuation
+  const raw = lastComma > 0 ? slice.slice(0, lastComma) : slice;
+  const display = raw.replace(/[,\s]+$/, '');
+  return { display, truncated: true };
+}
 ---
 
 <BaseLayout title={data.title} description={description}>
@@ -162,12 +186,37 @@ const description = data.summary;
               >
                 <h3 class="channel-tabs__panel-label">Key Facts</h3>
                 <dl class="key-facts__list">
-                  {ch.keyFacts.map((kf) => (
-                    <div class="key-facts__row">
-                      <dt>{kf.label}</dt>
-                      <dd set:html={kf.value} />
-                    </div>
-                  ))}
+                  {ch.keyFacts.map((kf) => {
+                    const ineligible = kf.ineligibleItems ? truncateIneligible(kf.ineligibleItems) : null;
+                    return (
+                      <div class="key-facts__row">
+                        <dt>{kf.label}</dt>
+                        <dd>
+                          {kf.returnWindows && kf.returnWindows.length >= 2 ? (
+                            <table class="return-window-table" aria-label="Return windows by category">
+                              <tbody>
+                                {kf.returnWindows.map((rw) => (
+                                  <tr>
+                                    <td class="return-window-table__items">{rw.items}</td>
+                                    <td class="return-window-table__window">{rw.window}</td>
+                                  </tr>
+                                ))}
+                              </tbody>
+                            </table>
+                          ) : ineligible ? (
+                            <span class="ineligible-items">
+                              <span class="ineligible-items__list">{ineligible.display}</span>
+                              {ineligible.truncated && (
+                                <a href="#full-breakdown" class="see-more-link">See full list →</a>
+                              )}
+                            </span>
+                          ) : (
+                            <Fragment set:html={kf.value} />
+                          )}
+                        </dd>
+                      </div>
+                    );
+                  })}
                 </dl>
 
                 {ch.howTo && ch.howTo.length > 0 && (
@@ -219,12 +268,40 @@ const description = data.summary;
             <section class="key-facts" aria-label="Key facts">
               <h2 class="section-label">Key Facts</h2>
               <dl class="key-facts__list">
-                {data.keyFacts.map((kf) => (
-                  <div class="key-facts__row">
-                    <dt>{kf.label}</dt>
-                    <dd set:html={kf.value} />
-                  </div>
-                ))}
+                {data.keyFacts.map((kf) => {
+                  const ineligible = kf.ineligibleItems ? truncateIneligible(kf.ineligibleItems) : null;
+                  return (
+                    <div class="key-facts__row">
+                      <dt>{kf.label}</dt>
+                      <dd>
+                        {kf.returnWindows && kf.returnWindows.length >= 2 ? (
+                          <table class="return-window-table" aria-label="Return windows by category">
+                            <tbody>
+                              {kf.returnWindows.map((rw) => (
+                                <tr>
+                                  <td class="return-window-table__window">{rw.window}</td>
+                                  <td class="return-window-table__items">{rw.items}</td>
+                                </tr>
+                              ))}
+                            </tbody>
+                          </table>
+                        ) : ineligible ? (
+                          <span>
+                            {ineligible.display}
+                            {ineligible.truncated && (
+                              <Fragment>
+                                {', '}
+                                <a href="#full-breakdown" class="see-more-link">see more →</a>
+                              </Fragment>
+                            )}
+                          </span>
+                        ) : (
+                          <Fragment set:html={kf.value} />
+                        )}
+                      </dd>
+                    </div>
+                  );
+                })}
               </dl>
             </section>
           )}
@@ -258,7 +335,7 @@ const description = data.summary;
       )}
 
       <!-- Full Breakdown (collapsed by default) -->
-      <details class="collapsible">
+      <details id="full-breakdown" class="collapsible">
         <summary>Read the full breakdown</summary>
         <div class="collapsible__content prose">
           <Content />
@@ -333,6 +410,18 @@ const description = data.summary;
       - Inactive panels carry the [hidden] attribute (set in the layout); script swaps it.
       - No-JS fallback is handled by a <noscript><style> block in the layout, not here.
       - Safe to ship on every policy page — script is inert when no tablist exists. */}
+  {/* "See more →" links open the full-breakdown <details> if it's collapsed. */}
+  <script is:inline>
+    (function () {
+      document.querySelectorAll('.see-more-link').forEach(function (link) {
+        link.addEventListener('click', function () {
+          var el = document.getElementById('full-breakdown');
+          if (el) el.open = true;
+        });
+      });
+    })();
+  </script>
+
   {data.channels && data.channels.length > 0 && (
     <script is:inline>
       (function () {

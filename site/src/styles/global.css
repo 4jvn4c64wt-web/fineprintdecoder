@@ -799,6 +799,86 @@ main {
   }
 }
 
+/* Return window sub-table — rendered inside a key-facts <dd> when a policy has
+   multiple distinct return windows (e.g., 90 days / 30 days / 48 hours).
+   Layout: category label (left/middle) → time period (right, bold).
+   Boxed as a unit so it reads as a contained reference, not loose rows. */
+.return-window-table {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: 0.875rem;
+  margin: 0;
+  background: #f5f3ee;
+  border-radius: 5px;
+  overflow: hidden;
+}
+
+.return-window-table tr {
+  border-bottom: 1px solid rgba(0,0,0,0.07);
+}
+
+.return-window-table tr:last-child {
+  border-bottom: none;
+}
+
+.return-window-table td {
+  padding: 0.3rem 0.6rem;
+  vertical-align: middle;
+}
+
+.return-window-table tr:first-child td {
+  padding-top: 0.45rem;
+}
+
+.return-window-table tr:last-child td {
+  padding-bottom: 0.45rem;
+}
+
+.return-window-table__items {
+  color: var(--color-text);
+  line-height: 1.4;
+  width: 100%;
+}
+
+.return-window-table__window {
+  font-weight: 700;
+  color: var(--color-primary-dark);
+  white-space: nowrap;
+  text-align: right;
+  padding-left: 1rem;
+  min-width: 5.5rem;
+}
+
+/* Ineligible items wrapper — list text above, boxed "See full list" button below.
+   The button uses the same background-box treatment as the return-window-table
+   so it reads as a contained navigable element, not inline text. */
+.ineligible-items {
+  display: block;
+}
+
+.ineligible-items__list {
+  display: inline;
+  margin-right: 0.35rem;
+}
+
+.see-more-link {
+  display: inline-block;
+  font-size: 0.8rem;
+  font-weight: 600;
+  color: var(--color-primary-dark);
+  background: #f5f3ee;
+  border-radius: 4px;
+  padding: 0.2rem 0.55rem;
+  text-decoration: none;
+  white-space: nowrap;
+  transition: background 0.12s, color 0.12s;
+}
+
+.see-more-link:hover {
+  background: #eceae3;
+  color: var(--color-primary-dark);
+}
+
 /* How To — numbered steps */
 .how-to {
   margin: 1.75rem 0;

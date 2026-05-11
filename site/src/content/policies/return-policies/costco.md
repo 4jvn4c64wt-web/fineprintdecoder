@@ -38,27 +38,25 @@ channels:
     slug: "online"
     keyFacts:
       - label: "Return window"
-        value: |
-          <strong>Most items:</strong> No stated deadline (satisfaction guarantee)<br>
-          <strong>Electronics (TVs, projectors, computers, tablets, cameras, phones, drones, wearables, camcorders, MP3 players):</strong> 90 days from receipt<br>
-          <strong>Major appliances (refrigerators above 10 cu. ft., freezers, ranges, cooktops, microwaves, range hoods, dishwashers, water heaters, washers, dryers):</strong> 90 days from receipt<br>
-          <strong>Recreational carts:</strong> 90 days from receipt
+        value: ""
+        returnWindows:
+          - window: "No deadline"
+            items: "Most items (satisfaction guarantee)"
+          - window: "90 days"
+            items: "Electronics, major appliances, recreational carts"
+      - label: "Condition required"
+        value: "No explicit condition requirement for most items. Diamonds over 1.00 ct must include IGI/GIA certificates. Apple products require a factory reset and Activation Lock disabled before return."
+      - label: "Proof of purchase"
+        value: "Not required. Order history is in your Costco.com account."
+      - label: "Ineligible items"
+        value: "Cigarettes, alcohol (where prohibited by law), airline and event tickets, precious metals, Shop Cards, custom/special order items (except warranty failure)"
+        ineligibleItems: "Cigarettes, airline and live-event tickets, precious metals, Shop Cards, custom or special-order items (except for warranty failure)"
       - label: "Refund method"
-        value: "Refunded to the original payment method used on Costco.com."
-      - label: "Refund timing"
-        value: |
-          <strong>UPS return label or drop-off:</strong> 2–3 business days after label is scanned<br>
-          <strong>Freight pickup:</strong> 2 business days after carrier pickup<br>
-          <strong>Credit/debit card:</strong> additional time per your financial institution after refund is issued<br>
-          <strong>Check:</strong> 15 business days by mail<br>
-          <strong>Shop Card:</strong> reloaded within 48 hours; new Digital Shop Card issued in 1–2 business days if reload fails<br>
-          Some items require an additional 3–5 business days for verification before the refund is issued.
+        value: "Original payment method used on Costco.com. Shipping and handling fees are also refunded."
+      - label: "Refund timeline"
+        value: "UPS label/drop-off: 2–3 business days after scan. Freight pickup: 2 business days after carrier pickup. Check: 15 business days by mail. Some items need 3–5 additional business days for verification."
       - label: "Return shipping"
-        value: "Free. Costco provides a UPS return label or arranges freight pickup at no charge. Shipping and handling fees are refunded."
-      - label: "Receipt required"
-        value: "No. Your order history is in your Costco.com account."
-      - label: "Item condition"
-        value: "No explicit condition requirement stated in the return policy. Contact lenses, eyeglasses, jewelry, and Apple products have specific return procedures — see the Full Breakdown."
+        value: "Free. Costco provides a UPS label or arranges freight pickup."
     howTo:
       - "Sign in at Costco.com. Go to Orders & Returns."
       - "Find the order and click \"Return or Replace Items.\" Follow the prompts to select the return reason."
@@ -69,20 +67,23 @@ channels:
     slug: "in-store"
     keyFacts:
       - label: "Return window"
-        value: |
-          <strong>Most items:</strong> No stated deadline (satisfaction guarantee)<br>
-          <strong>Electronics and major appliances:</strong> 90 days from receipt<br>
-          <strong>Note:</strong> You can return an item purchased online at any Costco warehouse
+        value: ""
+        returnWindows:
+          - window: "No deadline"
+            items: "Most items (satisfaction guarantee)"
+          - window: "90 days"
+            items: "Electronics and major appliances"
+      - label: "Condition required"
+        value: "No explicit condition requirement for most items. Diamonds over 1.00 ct must include all IGI/GIA certificates."
+      - label: "Proof of purchase"
+        value: "Helpful but not required. Costco may not need receipt or original packaging."
+      - label: "Ineligible items"
+        value: "Cigarettes, airline and live-event tickets, precious metals, Shop Cards, custom or special-order items (except for warranty failure)"
+        ineligibleItems: "Cigarettes, airline and live-event tickets, precious metals, Shop Cards, custom or special-order items (except for warranty failure)"
       - label: "Refund method"
-        value: "Refunded to the original payment method where possible. Accepted refund methods differ at the warehouse versus online — check Costco.com for the current list."
-      - label: "Refund timing"
-        value: "Processed at the returns counter. Timing for the refund to post depends on your payment method and financial institution."
-      - label: "Return shipping"
-        value: "Not applicable. Bring the item to any Costco warehouse returns counter."
-      - label: "Receipt required"
-        value: "Helpful but not required. Costco recommends having your receipt or original packaging, but states it may not be necessary to process the return."
-      - label: "Item condition"
-        value: "No explicit condition requirement stated for most items. Diamonds over 1.00 ct must be returned with all original IGI/GIA certificates and will receive a Jewelry Credit Memo; a Graduate Gemologist inspects within 48 hours."
+        value: "Original payment method where possible. Accepted methods may differ from online — check Costco.com for current list."
+      - label: "Refund timeline"
+        value: "Processed at the returns counter. Timing depends on your payment method and financial institution."
     howTo:
       - "Bring the item to the returns counter at any Costco warehouse. Items purchased online can be returned in-warehouse."
       - "Bring your receipt or original packaging if you have them — not strictly required but speeds processing."

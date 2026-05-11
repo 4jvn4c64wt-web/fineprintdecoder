@@ -55,6 +55,23 @@ const policies = defineCollection({
         z.object({
           label: z.string(),
           value: z.string(),
+          // Optional: when a return window varies by product category, populate this
+          // instead of (or in addition to) value. The layout renders a mini sub-table
+          // inside the right column. Only supply when there are 2+ distinct windows.
+          returnWindows: z
+            .array(
+              z.object({
+                window: z.string(),   // e.g. "90 days", "48 hours"
+                items: z.string(),    // e.g. "Most items", "Major appliances"
+              })
+            )
+            .min(2)
+            .optional(),
+          // Optional: full comma-separated list of ineligible items, ordered by consumer
+          // impact (most surprising/costly first). The layout truncates at ~120 characters
+          // at the last complete item before the cap, appending a "see more →" anchor
+          // that deep-links to the full breakdown section on the same page.
+          ineligibleItems: z.string().optional(),
         })
       )
       .optional(),
@@ -74,6 +91,18 @@ const policies = defineCollection({
               z.object({
                 label: z.string(),
                 value: z.string(),
+                // Optional: return window sub-table (see single-channel keyFacts above)
+                returnWindows: z
+                  .array(
+                    z.object({
+                      window: z.string(),
+                      items: z.string(),
+                    })
+                  )
+                  .min(2)
+                  .optional(),
+                // Optional: truncated ineligible items list (see single-channel keyFacts above)
+                ineligibleItems: z.string().optional(),
               })
             )
             .min(1),

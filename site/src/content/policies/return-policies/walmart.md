@@ -34,24 +34,29 @@ channels:
     slug: "online"
     keyFacts:
       - label: "Return window"
-        value: |
-          <strong>Default:</strong> 90 days from delivery<br>
-          <strong>Electronics:</strong> 30 days<br>
-          <strong>Wireless phones:</strong> 14 days<br>
-          <strong>Major appliances:</strong> 2 days from accepted delivery
+        value: ""
+        returnWindows:
+          - window: "90 days"
+            items: "Most items"
+          - window: "30 days"
+            items: "Electronics, cooling/heating appliances, PCs, vacuums, e-bikes"
+          - window: "14 days"
+            items: "Wireless phones; Marketplace collectibles and luxury items"
+          - window: "2 days"
+            items: "Major appliances (from accepted delivery)"
+      - label: "Condition required"
+        value: "Items requiring assembly must be disassembled and repackaged. Rechargeable-battery items must include the original battery."
+      - label: "Proof of purchase"
+        value: "Not required. Order number is in your Walmart account."
+      - label: "Ineligible items"
+        value: "Alcohol, tobacco, firearms, ammunition, prescription medication, gift cards, prepaid cards, opened software, trading cards, gas-powered recreational vehicles, used/mounted tires, special orders"
+        ineligibleItems: "Alcohol, tobacco, firearms, ammunition, prescription medication, gift cards and prepaid cards, opened software, trading cards, gas-powered recreational vehicles, used or mounted tires"
       - label: "Refund method"
         value: "Original payment method. If that fails, refund issued to Walmart Balance."
-      - label: "Refund timing"
-        value: |
-          <strong>Walmart Balance, gift card:</strong> up to 3 hours<br>
-          <strong>Debit card:</strong> up to 7 business days<br>
-          <strong>Credit card:</strong> up to 10 business days
+      - label: "Refund timeline"
+        value: "Walmart Balance or gift card: up to 3 hours. Debit card: up to 7 business days. Credit card: up to 10 business days."
       - label: "Return shipping"
-        value: "Free by mail, FedEx drop-off, or scheduled FedEx pickup. Free in-store drop-off too."
-      - label: "Receipt required"
-        value: "No. Order number is in your Walmart account."
-      - label: "Item condition"
-        value: "Items requiring assembly must be disassembled and repackaged. Rechargeable-battery items must include the original battery. Hazmat and oversized items may not ship back."
+        value: "Free by mail, FedEx drop-off, or scheduled FedEx pickup."
     howTo:
       - "Sign in at walmart.com or open the Walmart app. Go to your order history."
       - "Find the item and click \"Return or replace items.\" Or, if you don't have an account, start at walmart.com/returns and look up the order with the phone number or email used."
@@ -62,25 +67,27 @@ channels:
     slug: "in-store"
     keyFacts:
       - label: "Return window"
-        value: |
-          <strong>Default:</strong> 90 days from purchase<br>
-          <strong>Electronics:</strong> 30 days<br>
-          <strong>Wireless phones:</strong> 14 days<br>
-          <strong>Major appliances:</strong> Not returnable in stores
+        value: ""
+        returnWindows:
+          - window: "90 days"
+            items: "Most items"
+          - window: "30 days"
+            items: "Electronics, cooling/heating appliances, PCs, vacuums, e-bikes"
+          - window: "14 days"
+            items: "Wireless phones"
+          - window: "Not accepted"
+            items: "Major appliances (use Online return flow)"
+      - label: "Condition required"
+        value: "Items requiring assembly must be disassembled. Rechargeable-battery items must include the original battery."
+      - label: "Proof of purchase"
+        value: "Walmart can look up by card used. No receipt and no lookup: government ID required; refund issued as Walmart Gift Card."
+      - label: "Ineligible items"
+        value: "Alcohol, tobacco, firearms, ammunition, prescription medication, gift cards and prepaid cards, opened software, trading cards, gas-powered recreational vehicles, used or mounted tires. Some Marketplace items cannot be returned in-store."
+        ineligibleItems: "Alcohol, tobacco, firearms, ammunition, prescription medication, gift cards and prepaid cards, opened software, trading cards, gas-powered recreational vehicles, used or mounted tires"
       - label: "Refund method"
-        value: "Original payment method. If that fails, store credit on a Walmart Gift Card."
-      - label: "Refund timing"
-        value: |
-          <strong>Cash, EBT cash:</strong> immediate<br>
-          <strong>Walmart Gift Card, EBT card:</strong> up to 3 hours<br>
-          <strong>Debit card:</strong> up to 7 business days<br>
-          <strong>Credit card:</strong> up to 10 business days
-      - label: "Return shipping"
-        value: "Not applicable. Returns are free at customer service or curbside."
-      - label: "Receipt required"
-        value: "Not strictly. Walmart can look up store purchases by the card used. Without either, a government ID gets you a Walmart Gift Card refund."
-      - label: "Item condition"
-        value: "Items requiring assembly must be disassembled. Rechargeable-battery items must include the original battery. Some Marketplace items can't be returned in-store."
+        value: "Original payment method. If that fails, Walmart Gift Card."
+      - label: "Refund timeline"
+        value: "Cash or EBT cash: immediate. Gift Card or EBT card: up to 3 hours. Debit card: up to 7 business days. Credit card: up to 10 business days."
     howTo:
       - "Bring the item to any Walmart store. Customer Service handles returns; some categories also work via curbside drop-off."
       - "Have your receipt, the card you used, or a phone number/email tied to the order. No receipt and no lookup? A government ID gets you a Walmart Gift Card refund."
@@ -91,20 +98,26 @@ channels:
     slug: "marketplace"
     keyFacts:
       - label: "Return window"
-        value: |
-          <strong>Most items:</strong> 30 days<br>
-          <strong>Luxury, collectibles:</strong> 14 days<br>
-          <strong>Major appliances:</strong> 2 days from accepted delivery
+        value: ""
+        returnWindows:
+          - window: "30 days"
+            items: "Most items"
+          - window: "14 days"
+            items: "Luxury and collectible items"
+          - window: "2 days"
+            items: "Major appliances (from accepted delivery)"
+      - label: "Condition required"
+        value: "Unused, original packaging. Apparel must be unworn with tags; collectibles must include grading or authentication certificates."
+      - label: "Proof of purchase"
+        value: "Order is in your Walmart account; the seller verifies it."
+      - label: "Ineligible items"
+        value: "Same Walmart-wide non-returnables apply. Some collectibles are final sale even when the equivalent Walmart item would not be."
       - label: "Refund method"
-        value: "Original payment method. Issued by the seller, not Walmart."
+        value: "Original payment method, issued by the seller."
+      - label: "Refund timeline"
+        value: "Seller has 2 business days after receiving return to process. Refund lands within 10 business days after that."
       - label: "Restocking fee"
         value: "Up to 20%, at the seller's discretion. Most common on appliances, luxury, and worn or altered apparel."
-      - label: "Return shipping"
-        value: "Prepaid label provided by Walmart or the seller. Some items not eligible for in-store drop-off."
-      - label: "Receipt required"
-        value: "Order is in your Walmart account; the seller verifies it."
-      - label: "Refund timing"
-        value: "Seller has 2 business days after receiving the return to process. Refund lands within 10 business days after that."
     howTo:
       - "Sign in at walmart.com. The order page will identify the Marketplace seller."
       - "Click \"Return or replace items\" within the seller's window (30 days for most, 14 for luxury). Walmart provides the seller's return instructions."
@@ -122,7 +135,7 @@ channels:
       - label: "What's excluded"
         value: "Marketplace items, alcohol, prescription and OTC medication, cosmetics, toys, paper goods, pet supplies, household chemicals, grocery, lawn and garden products. Anything from in-store or curbside purchase."
       - label: "Refund method + timing"
-        value: "Same as the underlying purchase (Online tab). Original payment method, posted after Walmart receives the item."
+        value: "Original payment method, posted after Walmart receives the item. Walmart Balance or gift card: up to 3 hours. Debit card: up to 7 business days. Credit card: up to 10 business days."
       - label: "Receipt required"
         value: "No. Tied to your Walmart+ account."
     howTo:

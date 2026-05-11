@@ -34,22 +34,31 @@ channels:
     slug: "online"
     keyFacts:
       - label: "Return window"
-        value: |
-          <strong>Standard members:</strong> 15 days from receipt<br>
-          <strong>My Best Buy Plus / Total members:</strong> 60 days from receipt<br>
-          <strong>Activatable devices (phones, cellular tablets, hotspots, cellular wearables):</strong> 14 days for all members<br>
-          <strong>Verizon activatable devices:</strong> 30 days for all members
+        value: ""
+        returnWindows:
+          - window: "60 days"
+            items: "My Best Buy Plus and Total members (most items)"
+          - window: "30 days"
+            items: "Verizon activatable devices (all members)"
+          - window: "15 days"
+            items: "Standard members (most items)"
+          - window: "14 days"
+            items: "Phones, cellular tablets, hotspots, cellular wearables (all members)"
+      - label: "Condition required"
+        value: "Like-new. Damaged, dented, scratched, unsanitary, or missing major contents may be denied. Apparel must be unworn and unwashed with original tags attached."
+      - label: "Proof of purchase"
+        value: "Order is in your Best Buy account."
+      - label: "Ineligible items"
+        value: "Custom orders, Final Sale items, non-subscription digital content, prepaid cards and gift cards, trading cards, vehicle key fobs, memberships, golf carts/e-bikes/UTVs, plumbing items, 300Wh+ battery products"
+        ineligibleItems: "Custom orders, Final Sale items, non-subscription digital content, prepaid cards and gift cards, trading cards, vehicle key fobs, memberships"
+      - label: "Refund method"
+        value: "Original payment method."
+      - label: "Refund timeline"
+        value: "Issued once return is received and inspected."
       - label: "Return shipping"
-        value: "Free. Use the prepaid label from your Best Buy account."
+        value: "Free via prepaid label from your Best Buy account. Major appliances and TVs over 50 inches cannot ship — call 1-888-237-8289 for pickup."
       - label: "Restocking fee"
-        value: |
-          <strong>Activatable devices (excluding prepaid phones):</strong> $45<br>
-          <strong>Drones, digital cameras, camera lenses, camcorders (including action cameras), golf launch monitors, premium scooters, mobility scooters, electric wheelchairs, projectors, projector screens, premium cold tubs, premium saunas, leg/body recovery systems, special-order products:</strong> 15% of purchase price<br>
-          <strong>No fee if:</strong> item is unopened, or purchase was in AL, CO, HI, IA, MS, OH, OK, or SC
-      - label: "Item condition"
-        value: "Like-new. Damaged, unsanitary, dented, scratched, or missing major contents may be denied. Apparel must be unworn and unwashed with original tags attached."
-      - label: "Exceptions for large items"
-        value: "Major appliances, TVs over 50 inches, kegerators, and SodaStream makers cannot be returned via shipping. Call 1-888-BEST BUY (1-888-237-8289) for pickup."
+        value: "Activatable devices: $45. Drones, cameras, projectors, and select high-value categories: 15% of purchase price. Waived if item is unopened or purchased in AL, CO, HI, IA, MS, OH, OK, or SC."
     howTo:
       - "Log in to your Best Buy account and locate the order."
       - "Print the prepaid return shipping label."
@@ -61,19 +70,29 @@ channels:
     slug: "in-store"
     keyFacts:
       - label: "Return window"
-        value: |
-          <strong>Standard members:</strong> 15 days from receipt<br>
-          <strong>My Best Buy Plus / Total members:</strong> 60 days from receipt<br>
-          <strong>Activatable devices:</strong> 14 days for all members<br>
-          <strong>Verizon activatable devices:</strong> 30 days for all members
-      - label: "Where to go"
-        value: "Any Best Buy store (except Pacific Sales Kitchen & Home locations, and stores in Puerto Rico). Marketplace Seller items may also be returned in-store; Best Buy handles the refund and ships it back to the seller."
-      - label: "What to bring"
-        value: "The item with original contents and packaging. Packing slip or receipt if you have one. The credit card used to purchase."
-      - label: "Restocking fee"
-        value: "Same as Online. $45 for activatable devices; 15% for high-value electronics categories. No fee for unopened items or purchases in exempt states."
-      - label: "Item condition"
+        value: ""
+        returnWindows:
+          - window: "60 days"
+            items: "My Best Buy Plus and Total members (most items)"
+          - window: "30 days"
+            items: "Verizon activatable devices (all members)"
+          - window: "15 days"
+            items: "Standard members (most items)"
+          - window: "14 days"
+            items: "Phones, cellular tablets, hotspots, cellular wearables (all members)"
+      - label: "Condition required"
         value: "Like-new. Damaged, dented, scratched, or missing major contents may be refused."
+      - label: "Proof of purchase"
+        value: "Packing slip or receipt if available; not strictly required. Bring the credit card used to purchase."
+      - label: "Ineligible items"
+        value: "Custom orders, Final Sale items, non-subscription digital content, prepaid cards and gift cards, trading cards, vehicle key fobs, memberships, golf carts/e-bikes/UTVs, plumbing items, 300Wh+ battery products. Some Marketplace items cannot be returned in-store (size limits; Puerto Rico and Pacific Sales locations excluded entirely)."
+        ineligibleItems: "Custom orders, Final Sale items, non-subscription digital content, prepaid cards and gift cards, trading cards, vehicle key fobs, memberships"
+      - label: "Refund method"
+        value: "Original payment method."
+      - label: "Refund timeline"
+        value: "Processed at the Customer Service desk at time of return."
+      - label: "Restocking fee"
+        value: "Activatable devices: $45. Drones, cameras, projectors, and select high-value categories: 15% of purchase price. Waived if item is unopened or purchased in AL, CO, HI, IA, MS, OH, OK, or SC."
     howTo:
       - "Gather the item and its original contents and packaging."
       - "Bring your packing slip or receipt and the credit card used for the purchase, if available. These aren't required but speed up processing."
