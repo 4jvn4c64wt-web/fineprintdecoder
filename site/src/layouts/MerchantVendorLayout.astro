@@ -1,0 +1,151 @@
+---
+import BaseLayout from './BaseLayout.astro';
+import { getCollection, render, type CollectionEntry } from 'astro:content';
+
+interface Props {
+  entry: CollectionEntry<'merchantVendors'>;
+}
+
+const { entry } = Astro.props;
+const data = entry.data;
+const { Content } = await render(entry);
+
+// Pull all scenarios for this vendor.
+const allScenarios = await getCollection(
+  'merchantScenarios',
+  ({ data: d }) => d.vendorSlug === data.vendorSlug,
+);
+
+// Sort scenarios alphabetically by title for now; later this can be priority-ranked.
+allScenarios.sort((a, b) => a.data.title.localeCompare(b.data.title));
+
+function scenarioHref(s: CollectionEntry<'merchantScenarios'>): string {
+  // entry.id for scenarios is `<vendorSlug>/<scenarioSlug>` (without .md)
+  const clean = s.id.replace(/\.md$/, '');
+  const parts = clean.split('/');
+  const scenarioSlug = parts[parts.length - 1];
+  return `/merchants/${data.vendorSlug}/${scenarioSlug}/`;
+}
+
+const verifiedFmt = new Intl.DateTimeFormat('en-US', {
+  year: 'numeric',
+  month: 'long',
+  day: 'numeric',
+}).format(new Date(data.lastVerified));
+
+// 6 universal merchant-snapshot rows in fixed order
+const snapshotRows = [
+  { label: 'Fund holds & reserves', value: data.fundHolds },
+  { label: 'Account suspension & termination', value: data.suspensionRights },
+  { label: 'Chargeback rights', value: data.chargebackRights },
+  { label: 'Fee change rights', value: data.feeChangeRights },
+  { label: 'Your legal remedies', value: data.legalRemedies },
+  { label: 'Personal liability & indemnity', value: data.personalLiability },
+];
+
+const breadcrumbList = {
+  '@context': 'https://schema.org',
+  '@type': 'BreadcrumbList',
+  itemListElement: [
+    { '@type': 'ListItem', position: 1, name: 'Home', item: 'https://fineprintdecoder.com/' },
+    { '@type': 'ListItem', position: 2, name: 'Merchants', item: 'https://fineprintdecoder.com/merchants/' },
+    { '@type': 'ListItem', position: 3, name: data.displayName, item: `https://fineprintdecoder.com/merchants/${data.vendorSlug}/` },
+  ],
+};
+
+const orgSchema = {
+  '@context': 'https://schema.org',
+  '@type': 'Article',
+  headline: `${data.displayName} — Merchant Reference`,
+  description: data.oneSentenceWhat,
+  dateModified: new Date(data.lastUpdated).toISOString(),
+  datePublished: new Date(data.lastVerified).toISOString(),
+  author: { '@type': 'Organization', name: 'FinePrintDecoder', url: 'https://fineprintdecoder.com/' },
+  publisher: { '@type': 'Organization', name: 'FinePrintDecoder', url: 'https://fineprintdecoder.com/' },
+  about: { '@type': 'Organization', name: data.displayName },
+};
+---
+
+<BaseLayout
+  title={`${data.displayName} — Merchant Reference`}
+  description={data.oneSentenceWhat}
+  structuredData={[orgSchema, breadcrumbList]}
+>
+  <article class="merchant">
+    <div class="container merchant__container">
+
+      <nav class="breadcrumb" aria-label="Breadcrumb">
+        <a href="/">Home</a>
+        <span aria-hidden="true">›</span>
+        <a href="/merchants/">Merchants</a>
+        <span aria-hidden="true">›</span>
+        <span>{data.displayName}</span>
+      </nav>
+
+      <header class="merchant__header">
+        <h1>{data.displayName} — For Merchants</h1>
+        <p class="merchant__intro">{data.oneSentenceWhat}</p>
+        <p class="merchant__meta">
+          <span>Last verified <strong>{verifiedFmt}</strong></span>
+        </p>
+      </header>
+
+      {/* Common scenarios — links to the situational scenario pages */}
+      {allScenarios.length > 0 && (
+        <section class="merchant__policies">
+          <h2 class="section-label">Common scenarios for {data.displayName} merchants</h2>
+          <div class="merchant__policy-grid">
+            {allScenarios.map((s) => (
+              <a class="merchant__policy-card" href={scenarioHref(s)}>
+                <div class="merchant__policy-card-label">Scenario</div>
+                <div class="merchant__policy-card-title">{s.data.title}</div>
+                <p class="merchant__policy-card-summary">{s.data.summary}</p>
+              </a>
+            ))}
+          </div>
+        </section>
+      )}
+
+      {/* Six-row merchant snapshot */}
+      <section class="merchant__snapshot" aria-labelledby="snapshot-heading">
+        <h2 id="snapshot-heading" class="section-label">What the agreement actually says — at a glance</h2>
+        <p class="merchant__snapshot-intro">
+          Six things every {data.displayName} merchant should know about the Services Agreement.
+        </p>
+        <dl class="snapshot-list">
+          {snapshotRows.map((row) => (
+            <div class="snapshot-list__row">
+              <dt class="snapshot-list__label">
+                <span>{row.label}</span>
+              </dt>
+              <dd>
+                <div class="snapshot-list__value">{row.value}</div>
+              </dd>
+            </div>
+          ))}
+        </dl>
+      </section>
+
+      {/* Free-form prose (the markdown body of the vendor entry) */}
+      <section class="merchant__notes prose">
+        <Content />
+      </section>
+
+      <section class="merchant__sources">
+        <h2 class="section-label">Source documents</h2>
+        <ul class="merchant__source-list">
+          {data.sourceUrls.map((url) => (
+            <li><a href={url} target="_blank" rel="noopener">{url}</a></li>
+          ))}
+        </ul>
+      </section>
+
+      <aside class="summary__disclaimer">
+        <p>
+          This is a plain-English summary of {data.displayName}'s publicly available agreement, compiled from the documents linked above. It is not legal advice. Companies change their terms; this overview may not reflect the latest version. If you find an error or notice a change, <a href="/contact/">let us know</a>.
+        </p>
+      </aside>
+
+    </div>
+  </article>
+</BaseLayout>

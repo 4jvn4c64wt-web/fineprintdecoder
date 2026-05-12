@@ -1,0 +1,23 @@
+---
+import { getCollection } from 'astro:content';
+import MerchantScenarioLayout from '../../../layouts/MerchantScenarioLayout.astro';
+
+export async function getStaticPaths() {
+  const scenarios = await getCollection('merchantScenarios');
+  return scenarios.map((entry) => {
+    // entry.id is `<vendorSlug>/<scenarioSlug>` (the .md is stripped by the glob loader)
+    const cleanId = entry.id.replace(/\.md$/, '');
+    const parts = cleanId.split('/');
+    const vendor = parts[0];
+    const slug = parts[parts.length - 1];
+    return {
+      params: { vendor, slug },
+      props: { entry },
+    };
+  });
+}
+
+const { entry } = Astro.props;
+---
+
+<MerchantScenarioLayout entry={entry} />

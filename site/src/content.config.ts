@@ -200,4 +200,97 @@ const vendors = defineCollection({
   }),
 });
 
-export const collections = { policies, vendors };
+// =================================================================
+// MERCHANT-PILOT COLLECTIONS
+// merchant-vendors: one entry per merchant-facing vendor (Stripe, Shopify, etc.)
+// merchant-scenarios: one entry per "problem the merchant is searching for"
+//
+// These are separate from the consumer-side `policies` and `vendors` collections.
+// They use the same shape philosophy (Bottom Line, Key Facts, How To, Pitfalls, Full Breakdown)
+// but with merchant-appropriate fields and snapshot rows.
+//
+// Routes:
+//   /merchants/[vendorSlug]/                 — merchant vendor hub
+//   /merchants/[vendorSlug]/[scenarioSlug]/  — individual scenario page
+// =================================================================
+
+const merchantVendors = defineCollection({
+  loader: glob({ pattern: '*.md', base: './src/content/merchant-vendors' }),
+  schema: z.object({
+    vendorSlug: z.string().regex(/^[a-z0-9][a-z0-9-]*$/, 'vendorSlug must be lowercase, hyphenated'),
+    displayName: z.string(),
+    // One-line description rendered under the h1 and used as meta description.
+    oneSentenceWhat: z.string().min(20).max(280),
+    // Freshness
+    lastVerified: z.coerce.date(),
+    lastUpdated: z.coerce.date(),
+    status: z.enum(['current', 'stale', 'needs-review']).default('current'),
+    // === Merchant snapshot — 6 universal rows, all required ===
+    // These differ from the consumer 8-row snapshot: they reflect what a merchant
+    // facing a problem with the platform actually needs to know about the agreement.
+    fundHolds: z.string(),           // How and when the platform can hold your money
+    suspensionRights: z.string(),    // What the platform can do to your account, with what notice
+    chargebackRights: z.string(),    // Your role/rights in disputes
+    feeChangeRights: z.string(),     // Whether the platform can change fees on you
+    legalRemedies: z.string(),       // Arbitration, small claims carve-out, class action
+    personalLiability: z.string(),   // Personal guarantee / indemnification scope
+    // Sources
+    sourceUrls: z.array(z.string().url()),
+    sourceFiles: z.array(z.string()).default([]),
+    // Featured in nav / homepage
+    featured: z.boolean().default(false),
+  }),
+});
+
+const merchantScenarios = defineCollection({
+  // Stored as merchant-scenarios/<vendorSlug>/<scenarioSlug>.md
+  loader: glob({ pattern: '**/*.md', base: './src/content/merchant-scenarios' }),
+  schema: z.object({
+    title: z.string(),
+    vendorSlug: z.string().regex(/^[a-z0-9][a-z0-9-]*$/, 'vendorSlug must be lowercase, hyphenated'),
+    vendorDisplayName: z.string(),
+    // Search-style phrasing of the problem — what a merchant would actually type into Google.
+    // Used in the page H2 and as the SEO primary target.
+    problemPhrase: z.string(),
+    // One-line meta description / SERP snippet (140-160 chars sweet spot, 280 hard cap)
+    summary: z.string().min(20).max(280),
+    // Freshness
+    lastVerified: z.coerce.date(),
+    lastUpdated: z.coerce.date(),
+    status: z.enum(['current', 'stale', 'needs-review']).default('current'),
+    tier: z.union([z.literal(1), z.literal(2), z.literal(3)]).default(1),
+    // Sources for this scenario
+    sourceUrls: z.array(z.string().url()),
+    sourceFiles: z.array(z.string()).default([]),
+    // === Structured content ===
+    bottomLine: z.string(),
+    // Each row of the Key Facts table; merchants benefit from facts being
+    // labeled with the contract section they come from.
+    keyFacts: z.array(
+      z.object({
+        label: z.string(),
+        value: z.string(),
+        // Optional contract citation (e.g., "General Terms §10.1(b)")
+        citation: z.string().optional(),
+      })
+    ).min(3),
+    // What to do, in order. Each step is one action with stakes.
+    whatToDo: z.array(z.string()).min(2),
+    // Non-obvious gotchas. Same shape as consumer Watch Out For.
+    pitfalls: z.array(
+      z.object({
+        headline: z.string(),
+        detail: z.string(),
+      })
+    ).max(5).default([]),
+    // What changed (for re-verification audit trail)
+    whatChanged: z.array(
+      z.object({
+        date: z.coerce.date(),
+        note: z.string(),
+      })
+    ).default([]),
+  }),
+});
+
+export const collections = { policies, vendors, merchantVendors, merchantScenarios };

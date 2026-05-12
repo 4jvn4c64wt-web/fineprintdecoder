@@ -9,7 +9,7 @@ import { getCollection } from 'astro:content';
 // Vendor entries rank higher for vendor-name queries because their title IS the vendor name.
 
 type IndexEntry = {
-  kind: 'policy' | 'vendor';
+  kind: 'policy' | 'vendor' | 'merchant-vendor' | 'merchant-scenario';
   url: string;
   title: string;
   company: string;
@@ -23,6 +23,8 @@ type IndexEntry = {
 export const GET: APIRoute = async () => {
   const policies = await getCollection('policies');
   const vendors = await getCollection('vendors');
+  const merchantVendors = await getCollection('merchantVendors');
+  const merchantScenarios = await getCollection('merchantScenarios');
 
   const policyEntries: IndexEntry[] = policies.map((p) => {
     const cleanId = p.id.replace(/\.md$/, '');
@@ -53,7 +55,42 @@ export const GET: APIRoute = async () => {
     summary: v.data.oneSentenceWhat,
   }));
 
-  return new Response(JSON.stringify([...vendorEntries, ...policyEntries]), {
+  const merchantVendorEntries: IndexEntry[] = merchantVendors.map((v) => ({
+    kind: 'merchant-vendor',
+    url: `/merchants/${v.data.vendorSlug}/`,
+    title: `${v.data.displayName} (For Merchants)`,
+    company: v.data.displayName,
+    vendorSlug: v.data.vendorSlug,
+    policyType: 'Merchant Reference',
+    category: 'merchant-overview',
+    keywords: [],
+    summary: v.data.oneSentenceWhat,
+  }));
+
+  const merchantScenarioEntries: IndexEntry[] = merchantScenarios.map((s) => {
+    const cleanId = s.id.replace(/\.md$/, '');
+    const parts = cleanId.split('/');
+    const vendor = parts[0];
+    const slug = parts[parts.length - 1];
+    return {
+      kind: 'merchant-scenario',
+      url: `/merchants/${vendor}/${slug}/`,
+      title: s.data.title,
+      company: s.data.vendorDisplayName,
+      vendorSlug: s.data.vendorSlug,
+      policyType: 'Merchant Scenario',
+      category: 'merchant-scenario',
+      keywords: [s.data.problemPhrase],
+      summary: s.data.summary,
+    };
+  });
+
+  return new Response(JSON.stringify([
+    ...vendorEntries,
+    ...merchantVendorEntries,
+    ...policyEntries,
+    ...merchantScenarioEntries,
+  ]), {
     headers: {
       'Content-Type': 'application/json',
       'Cache-Control': 'public, max-age=300',

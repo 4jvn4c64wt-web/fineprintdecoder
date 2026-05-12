@@ -1,84 +1,51 @@
 ---
 import BaseLayout from '../layouts/BaseLayout.astro';
-import SearchBar from '../components/SearchBar.astro';
-import MerchantCarousel from '../components/MerchantCarousel.astro';
 import { getCollection } from 'astro:content';
 
-// Browse-by-category cards. "Terms of Service" intentionally not included — vendor-level
-// legal content lives on merchant overviews (/[vendorSlug]/), not on a TOS category page.
-const categories = [
-  {
-    href: '/return-policies/',
-    title: 'Return Policies',
-    description: 'How long you have, what you need, what gets refunded.',
-  },
-  {
-    href: '/cancellation-policies/',
-    title: 'Cancellation Policies',
-    description: 'How to actually cancel, what it costs, and how long it takes.',
-  },
-  {
-    href: '/credit-card-agreements/',
-    title: 'Credit Card Agreements',
-    description: 'Annual fee, APR, foreign transaction fees, and the conditions on the rewards.',
-  },
-  {
-    href: '/warranty-fine-print/',
-    title: 'Warranty Fine Print',
-    description: 'What is covered, what is excluded, and how to file a claim.',
-  },
-];
+// Featured merchant vendors for the homepage grid.
+const merchantVendors = await getCollection('merchantVendors', ({ data }) => data.featured);
+merchantVendors.sort((a, b) => a.data.displayName.localeCompare(b.data.displayName));
 
-// Popular Summaries — manually curated short list of high-value policy summaries.
-// As the published count grows, swap to traffic-driven selection. For now, show whatever
-// is published from this curated set; skip the ones we haven't decoded yet.
-const popularList = [
-  { vendorSlug: 'amazon', category: 'return-policies' },
-  { vendorSlug: 'amazon', category: 'cancellation-policies' },        // Amazon Prime cancellation
-  { vendorSlug: 'amazon', category: 'terms-of-service' },             // Prime Video TOS
-];
-
-const allPolicies = await getCollection('policies');
-const popularSummaries = popularList
-  .map(({ vendorSlug, category }) => {
-    return allPolicies.find((p) => p.data.vendorSlug === vendorSlug && p.data.category === category);
-  })
-  .filter((p): p is NonNullable<typeof p> => Boolean(p))
-  .map((p) => {
-    const cleanId = p.id.replace(/\.md$/, '');
-    const [cat, ...rest] = cleanId.split('/');
-    return {
-      href: `/${cat}/${rest.join('/')}/`,
-      title: `${p.data.company} ${p.data.policyType}`,
-      summary: p.data.summary,
-    };
-  });
+// Most-trafficked scenarios across all merchant vendors (Tier 1 only)
+const allScenarios = await getCollection('merchantScenarios', ({ data }) => data.tier === 1);
+// Limit homepage to 6 scenarios max so it stays scannable
+const featuredScenarios = allScenarios.slice(0, 6).map((s) => {
+  const cleanId = s.id.replace(/\.md$/, '');
+  const parts = cleanId.split('/');
+  const vendor = parts[0];
+  const slug = parts[parts.length - 1];
+  return {
+    href: `/merchants/${vendor}/${slug}/`,
+    title: s.data.title,
+    summary: s.data.summary,
+    vendor: s.data.vendorDisplayName,
+  };
+});
 ---
 
-<BaseLayout title="We read the fine print so you don't have to">
+<BaseLayout
+  title="We read the agreement so you don't have to"
+  description="Plain-English reference on what your payment processor and platform agreements actually say. Built for small business owners who don't want to hire a lawyer to read Stripe's TOS."
+>
 
-  <!-- Hero -->
   <section class="hero">
     <div class="container">
-      <h1>We read the fine print so you don't have to.</h1>
-      <p>Plain-English summaries of return policies, cancellation terms, credit card agreements, warranties, and terms of service. Each summary links back to the source document.</p>
-
-      <div class="hero__search">
-        <SearchBar variant="hero" placeholder="Search a company or policy — try &quot;Amazon&quot; or &quot;cancel&quot;" />
-        <p class="hero__browse-link"><a href="/companies/">Or browse by company →</a></p>
-      </div>
+      <h1>We read the agreement so you don't have to.</h1>
+      <p>If you run a small business, you signed an agreement with Stripe, Shopify, Square, Toast, or Amazon that you almost certainly didn't read in full. We did. Here's what each one says about the situations that actually affect you — cited to the section, written for non-lawyers, and re-verified on a regular cadence.</p>
+      <p class="hero__browse-link"><a href="/merchants/">Browse by vendor →</a></p>
     </div>
   </section>
 
   <div class="container">
 
-    <!-- Popular Summaries -->
-    {popularSummaries.length > 0 && (
+    {featuredScenarios.length > 0 && (
       <section>
-        <h2 class="section-heading">Popular Summaries</h2>
+        <h2 class="section-heading">Common situations</h2>
+        <p>If something on your account broke and you need a real answer:</p>
         <div class="card-grid">
-          {popularSummaries.map((item) => (
+          {featuredScenarios.map((item) => (
             <a href={item.href} class="card">
+              <div class="merchant__policy-card-label">{item.vendor}</div>
               <h3>{item.title}</h3>
               <p>{item.summary}</p>
             </a>
@@ -87,25 +54,28 @@ const popularSummaries = popularList
       </section>
     )}
 
-    <!-- Popular Companies carousel -->
-    <MerchantCarousel />
+    {merchantVendors.length > 0 && (
+      <section>
+        <h2 class="section-heading">Vendors covered</h2>
+        <div class="card-grid">
+          {merchantVendors.map((v) => (
+            <a href={`/merchants/${v.data.vendorSlug}/`} class="card card--category">
+              <h3>{v.data.displayName}</h3>
+              <p>{v.data.oneSentenceWhat}</p>
+            </a>
+          ))}
+        </div>
+      </section>
+    )}
 
-    <!-- Browse by Category -->
     <section>
-      <h2 class="section-heading">Browse by Category</h2>
-      <div class="card-grid">
-        {categories.map(cat => (
-          <a href={cat.href} class="card card--category">
-            <h3>{cat.title}</h3>
-            <p>{cat.description}</p>
-          </a>
-        ))}
-      </div>
+      <h2 class="section-heading">Why this site exists</h2>
+      <p>Search Google when a payment processor freezes your account and you'll get three kinds of results: the processor's own help docs (vague by design), competitor blogs that want you to switch processors, and chargeback consultants who want to sell you their service. Nobody is just reading the actual contract carefully and telling you what it says.</p>
+      <p>That's what we do. Every claim on this site is cited to a specific section of the agreement. Every page is dated. We re-verify the high-traffic pages every quarter so a stale answer doesn't strand you.</p>
     </section>
 
-    <!-- CTA -->
     <section class="cta-section">
-      <p>Can't find a policy? Tell us what to decode next.</p>
+      <p>Don't see your vendor? Tell us which one to cover next.</p>
       <a href="/contact/">Request a Decode &rarr;</a>
     </section>
 

@@ -1,0 +1,38 @@
+---
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import { getCollection } from 'astro:content';
+
+const vendors = await getCollection('merchantVendors');
+vendors.sort((a, b) => a.data.displayName.localeCompare(b.data.displayName));
+---
+
+<BaseLayout
+  title="For Merchants — Payment Processor & Platform Reference"
+  description="Plain-English reference for small business owners on what Stripe, Shopify, Square, and other platform agreements actually say. Cited, dated, structured."
+>
+  <div class="container companies-page">
+    <header class="companies-page__header">
+      <h1>For Merchants</h1>
+      <p>If you run a small business, you signed an agreement with your payment processor and platform vendors that you almost certainly didn't read in full. We did. Here's what each one actually says — cited to the section, written in plain English, and re-verified on a regular cadence.</p>
+      <p>Start with the vendor you have a question about.</p>
+    </header>
+
+    <section class="companies-page__featured">
+      <h2 class="section-label">Vendors</h2>
+      <div class="card-grid">
+        {vendors.map((v) => (
+          <a href={`/merchants/${v.data.vendorSlug}/`} class="card">
+            <h3>{v.data.displayName}</h3>
+            <p>{v.data.oneSentenceWhat}</p>
+          </a>
+        ))}
+      </div>
+    </section>
+
+    {vendors.length === 0 && (
+      <p class="placeholder-notice">
+        No vendor references published yet. <a href="/contact/">Request one →</a>
+      </p>
+    )}
+  </div>
+</BaseLayout>

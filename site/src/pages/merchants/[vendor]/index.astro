@@ -1,0 +1,16 @@
+---
+import { getCollection } from 'astro:content';
+import MerchantVendorLayout from '../../../layouts/MerchantVendorLayout.astro';
+
+export async function getStaticPaths() {
+  const vendors = await getCollection('merchantVendors');
+  return vendors.map((entry) => ({
+    params: { vendor: entry.data.vendorSlug },
+    props: { entry },
+  }));
+}
+
+const { entry } = Astro.props;
+---
+
+<MerchantVendorLayout entry={entry} />

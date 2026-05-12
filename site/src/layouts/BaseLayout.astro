@@ -6,9 +6,36 @@ import '../styles/global.css';
 interface Props {
   title: string;
   description?: string;
+  /** Optional OG image (1200x630). Falls back to /og-default.png. */
+  ogImage?: string;
+  /** Optional JSON-LD structured data objects to emit in <head>. */
+  structuredData?: Record<string, unknown> | Record<string, unknown>[];
 }
 
-const { title, description = 'We read the fine print so you don\'t have to. Plain-English summaries of return policies, cancellation terms, credit card agreements, and more.' } = Astro.props;
+const {
+  title,
+  description = 'We read the fine print so you don\'t have to. Plain-English summaries of return policies, cancellation terms, credit card agreements, and more.',
+  ogImage = '/og-default.png',
+  structuredData,
+} = Astro.props;
+
+const fullTitle = `${title} | FinePrintDecoder`;
+const canonicalUrl = Astro.url.href;
+
+// Preview/staging hosts (Cloudflare Pages deploy URLs) should not be indexed.
+// Production is fineprintdecoder.com; everything else (.pages.dev, localhost, etc.) gets noindex.
+const isProd = Astro.url.hostname === 'fineprintdecoder.com';
+
+// Build absolute URL for the OG image so it works across crawlers.
+const siteUrl = Astro.site?.toString().replace(/\/$/, '') ?? 'https://fineprintdecoder.com';
+const ogImageAbsolute = ogImage.startsWith('http') ? ogImage : `${siteUrl}${ogImage}`;
+
+// Normalize structuredData to an array for simpler rendering.
+const sdArray = structuredData
+  ? Array.isArray(structuredData)
+    ? structuredData
+    : [structuredData]
+  : [];
 ---
 
 <!DOCTYPE html>
@@ -16,8 +43,30 @@ const { title, description = 'We read the fine print so you don\'t have to. Plai
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>{fullTitle}</title>
   <meta name="description" content={description} />
-  <title>{title} | FinePrintDecoder</title>
+  <link rel="canonical" href={canonicalUrl} />
+  {!isProd && <meta name="robots" content="noindex, nofollow" />}
+
+  {/* Open Graph */}
+  <meta property="og:title" content={fullTitle} />
+  <meta property="og:description" content={description} />
+  <meta property="og:type" content="article" />
+  <meta property="og:url" content={canonicalUrl} />
+  <meta property="og:site_name" content="FinePrintDecoder" />
+  <meta property="og:image" content={ogImageAbsolute} />
+
+  {/* Twitter */}
+  <meta name="twitter:card" content="summary_large_image" />
+  <meta name="twitter:title" content={fullTitle} />
+  <meta name="twitter:description" content={description} />
+  <meta name="twitter:image" content={ogImageAbsolute} />
+
+  {/* Structured data (JSON-LD) */}
+  {sdArray.map((data) => (
+    <script type="application/ld+json" set:html={JSON.stringify(data)} />
+  ))}
+
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet" />
